@@ -623,7 +623,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82c5eeeab160bc04496083c5a4798eff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _startBuildingPrefab: {fileID: 8444963515788990484, guid: 57b0b1cf4e248934898c107d2848a3a3,
+  _buildingPrefab: {fileID: 8444963515788990484, guid: 57b0b1cf4e248934898c107d2848a3a3,
     type: 3}
   _maxDistance: 100
 --- !u!4 &1519535410

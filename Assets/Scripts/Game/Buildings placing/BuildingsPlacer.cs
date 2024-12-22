@@ -1,3 +1,4 @@
+using Lean.Pool;
 using UnityEngine;
 
 namespace Islanders.Game.Buildings_placing
@@ -5,9 +6,9 @@ namespace Islanders.Game.Buildings_placing
     public class BuildingsPlacer : MonoBehaviour
     {
         #region Variables
-        
+
         [Header("Debug only")]
-        [SerializeField] private GameObject _startBuildingPrefab;
+        [SerializeField] private GameObject _buildingPrefab;
 
         [Header("Options")]
         [SerializeField] private float _maxDistance = 100f;
@@ -22,7 +23,7 @@ namespace Islanders.Game.Buildings_placing
 
         private void Start()
         {
-            SetBuilding(_startBuildingPrefab);
+            SetBuilding(_buildingPrefab);
         }
 
         private void Update()
@@ -32,7 +33,7 @@ namespace Islanders.Game.Buildings_placing
             if (Input.GetMouseButtonDown(0))
             {
                 Place();
-                SetBuilding(_startBuildingPrefab);
+                SetBuilding(_buildingPrefab);
             }
         }
 
@@ -42,12 +43,14 @@ namespace Islanders.Game.Buildings_placing
 
         public void SetBuilding(GameObject buildingPrefab)
         {
+            _buildingPrefab = buildingPrefab;
+
             if (_building != null)
             {
                 Destroy(_building);
             }
-            
-            _building = Instantiate(buildingPrefab, _cursorPosition ?? Vector3.zero, Quaternion.identity);
+
+            _building = LeanPool.Spawn(buildingPrefab, _cursorPosition ?? Vector3.zero, Quaternion.identity);
 
             if (_building.TryGetComponent(out Collider cl))
             {
@@ -74,18 +77,21 @@ namespace Islanders.Game.Buildings_placing
 
         private void MoveBuildingWithCursor() // TODO: use DoTween
         {
-            if (_building == null)
+            if (_cursorPosition == null && _building != null)
             {
+                LeanPool.Despawn(_building);
+                _building = null;
                 return;
             }
-            
-            if (_cursorPosition == null)
+
+            if (_cursorPosition != null && _building == null)
             {
-                _building.SetActive(false);
+                _building = LeanPool.Spawn(_buildingPrefab, _cursorPosition ?? Vector3.zero, Quaternion.identity);
+                return;
             }
-            else
+
+            if (_building != null)
             {
-                _building.SetActive(true);
                 _building.transform.position = _cursorPosition ?? Vector3.zero;
             }
         }
@@ -94,7 +100,7 @@ namespace Islanders.Game.Buildings_placing
         {
             if (_building.TryGetComponent(out Collider cl))
             {
-                cl.enabled = true;
+                //cl.enabled = true;
             }
 
             _building = null;
