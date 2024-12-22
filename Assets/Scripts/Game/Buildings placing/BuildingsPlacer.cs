@@ -1,7 +1,6 @@
 using UnityEngine;
-using UnityEngine.Serialization;
 
-namespace Islanders
+namespace Islanders.Game.Buildings_placing
 {
     public class BuildingsPlacer : MonoBehaviour
     {
