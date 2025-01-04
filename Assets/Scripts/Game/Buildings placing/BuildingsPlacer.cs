@@ -73,6 +73,7 @@ namespace Islanders.Game.Buildings_placing
 
             FetchDefaultMaterial();
             _building.gameObject.layer = LayerMask.NameToLayer(Layers.ActiveBuilding);
+            _defaultMaterialIsSet = true;
             _checker.SetBuilding(_building);
         }
 
@@ -122,6 +123,7 @@ namespace Islanders.Game.Buildings_placing
             if (_building == null)
             {
                 _building = LeanPool.Spawn(_buildingPrefab, _cursorPosition ?? Vector3.zero, Quaternion.identity);
+                _checker.Reset();
             }
             else
             {

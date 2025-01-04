@@ -8,6 +8,7 @@ namespace Islanders.Game.Utility
         public static readonly string Sand = "Sand";
         public static readonly string Stone = "Stone";
         public static readonly string Water = "Water";
+        public static readonly string House = "House";
 
         #endregion
     }
