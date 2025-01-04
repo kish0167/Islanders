@@ -1,10 +1,11 @@
 using System;
+using Islanders.Game.Utility;
 using Lean.Pool;
-using UnityEditor.Hardware;
 using UnityEngine;
 
 namespace Islanders.Game.Buildings_placing
 {
+    [RequireComponent(typeof(PlacingChecker))]
     public class BuildingsPlacer : MonoBehaviour
     {
         #region Variables
@@ -16,11 +17,11 @@ namespace Islanders.Game.Buildings_placing
         [SerializeField] private float _maxDistance = 100f;
         [SerializeField] private Material _prohibitingMaterial;
 
-        private PlaceableObject _building;
-
         [Header("Required components")]
         [SerializeField] private PlacingChecker _checker;
-        
+
+        private PlaceableObject _building;
+
         private Vector3? _cursorPosition;
         private Material _defaultMaterial;
         private bool _defaultMaterialIsSet;
@@ -30,7 +31,7 @@ namespace Islanders.Game.Buildings_placing
 
         #region Events
 
-        public event Action<GameObject, Vector3> OnBuldingPlaced;
+        public event Action<PlaceableObject, Vector3> OnBuildingPlaced;
 
         #endregion
 
@@ -45,6 +46,9 @@ namespace Islanders.Game.Buildings_placing
         {
             CastARay();
             MoveBuildingWithCursor();
+            CheckPlacingPossibility();
+            UpdateBuildingMaterial();
+
             if (Input.GetMouseButtonDown(0) && _placingPossible) // input system
             {
                 Place();
@@ -67,7 +71,8 @@ namespace Islanders.Game.Buildings_placing
 
             _building = LeanPool.Spawn(buildingPrefab, _cursorPosition ?? Vector3.zero, Quaternion.identity);
 
-            UpdateDefaultMaterial();
+            FetchDefaultMaterial();
+            _building.gameObject.layer = LayerMask.NameToLayer(Layers.ActiveBuilding);
             _checker.SetBuilding(_building);
         }
 
@@ -78,7 +83,8 @@ namespace Islanders.Game.Buildings_placing
         private void CastARay()
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out RaycastHit hit, _maxDistance))
+            
+            if (Physics.Raycast(ray, out RaycastHit hit, _maxDistance, ~LayerMask.GetMask(Layers.ActiveBuilding)))
             {
                 _cursorPosition = hit.point;
             }
@@ -121,19 +127,18 @@ namespace Islanders.Game.Buildings_placing
             {
                 _building.transform.position = _cursorPosition ?? Vector3.zero;
             }
-
-            CheckPlacingPossibility();
-            UpdateBuildingMaterial();
         }
 
         private void Place()
         {
+            _building.gameObject.layer = LayerMask.NameToLayer(Layers.PlacedBuilding);
+            OnBuildingPlaced?.Invoke(_building, _cursorPosition ?? Vector3.zero);
             _building = null;
         }
 
         private void UpdateBuildingMaterial()
         {
-            if (!_building.TryGetComponent(out MeshRenderer meshRenderer))
+            if (_building == null ||  !_building.TryGetComponent(out MeshRenderer meshRenderer))
             {
                 return;
             }
@@ -150,7 +155,7 @@ namespace Islanders.Game.Buildings_placing
             }
         }
 
-        private void UpdateDefaultMaterial()
+        private void FetchDefaultMaterial()
         {
             if (_building.TryGetComponent(out MeshRenderer meshRenderer))
             {
