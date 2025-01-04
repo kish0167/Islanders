@@ -1,4 +1,6 @@
+using System;
 using Lean.Pool;
+using UnityEditor.Hardware;
 using UnityEngine;
 
 namespace Islanders.Game.Buildings_placing
@@ -8,14 +10,27 @@ namespace Islanders.Game.Buildings_placing
         #region Variables
 
         [Header("Debug only")]
-        [SerializeField] private GameObject _buildingPrefab;
+        [SerializeField] private PlaceableObject _buildingPrefab;
 
         [Header("Options")]
         [SerializeField] private float _maxDistance = 100f;
+        [SerializeField] private Material _prohibitingMaterial;
 
-        private GameObject _building;
+        private PlaceableObject _building;
 
+        [Header("Required components")]
+        [SerializeField] private PlacingChecker _checker;
+        
         private Vector3? _cursorPosition;
+        private Material _defaultMaterial;
+        private bool _defaultMaterialIsSet;
+        private bool _placingPossible;
+
+        #endregion
+
+        #region Events
+
+        public event Action<GameObject, Vector3> OnBuldingPlaced;
 
         #endregion
 
@@ -30,7 +45,7 @@ namespace Islanders.Game.Buildings_placing
         {
             CastARay();
             MoveBuildingWithCursor();
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(0) && _placingPossible) // input system
             {
                 Place();
                 SetBuilding(_buildingPrefab);
@@ -41,7 +56,7 @@ namespace Islanders.Game.Buildings_placing
 
         #region Public methods
 
-        public void SetBuilding(GameObject buildingPrefab)
+        public void SetBuilding(PlaceableObject buildingPrefab)
         {
             _buildingPrefab = buildingPrefab;
 
@@ -52,10 +67,8 @@ namespace Islanders.Game.Buildings_placing
 
             _building = LeanPool.Spawn(buildingPrefab, _cursorPosition ?? Vector3.zero, Quaternion.identity);
 
-            if (_building.TryGetComponent(out Collider cl))
-            {
-                cl.enabled = false;
-            }
+            UpdateDefaultMaterial();
+            _checker.SetBuilding(_building);
         }
 
         #endregion
@@ -64,7 +77,7 @@ namespace Islanders.Game.Buildings_placing
 
         private void CastARay()
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition); // TODO: maybe check Camera.main
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out RaycastHit hit, _maxDistance))
             {
                 _cursorPosition = hit.point;
@@ -75,35 +88,74 @@ namespace Islanders.Game.Buildings_placing
             }
         }
 
-        private void MoveBuildingWithCursor() // TODO: use DoTween
+        private void CheckPlacingPossibility()
         {
-            if (_cursorPosition == null && _building != null)
+            if (_building == null)
+            {
+                _placingPossible = false;
+                return;
+            }
+
+            _placingPossible = _checker.IsPossible();
+        }
+
+        private void MoveBuildingWithCursor() // TODO: maybe use DoTween
+        {
+            if (_building == null && _cursorPosition == null)
+            {
+                return;
+            }
+
+            if (_cursorPosition == null)
             {
                 LeanPool.Despawn(_building);
                 _building = null;
                 return;
             }
 
-            if (_cursorPosition != null && _building == null)
+            if (_building == null)
             {
                 _building = LeanPool.Spawn(_buildingPrefab, _cursorPosition ?? Vector3.zero, Quaternion.identity);
-                return;
             }
-
-            if (_building != null)
+            else
             {
                 _building.transform.position = _cursorPosition ?? Vector3.zero;
             }
+
+            CheckPlacingPossibility();
+            UpdateBuildingMaterial();
         }
 
         private void Place()
         {
-            if (_building.TryGetComponent(out Collider cl))
+            _building = null;
+        }
+
+        private void UpdateBuildingMaterial()
+        {
+            if (!_building.TryGetComponent(out MeshRenderer meshRenderer))
             {
-                //cl.enabled = true;
+                return;
             }
 
-            _building = null;
+            if (_placingPossible && !_defaultMaterialIsSet)
+            {
+                meshRenderer.material = _defaultMaterial;
+                _defaultMaterialIsSet = true;
+            }
+            else if (!_placingPossible && _defaultMaterialIsSet)
+            {
+                meshRenderer.material = _prohibitingMaterial;
+                _defaultMaterialIsSet = false;
+            }
+        }
+
+        private void UpdateDefaultMaterial()
+        {
+            if (_building.TryGetComponent(out MeshRenderer meshRenderer))
+            {
+                _defaultMaterial = meshRenderer.material;
+            }
         }
 
         #endregion
