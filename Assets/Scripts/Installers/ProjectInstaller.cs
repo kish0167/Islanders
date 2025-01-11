@@ -1,6 +1,8 @@
+using Islanders.Game.ScoreHandling;
+using UnityEngine;
 using Zenject;
 
-namespace Installers
+namespace Islanders.Installers
 {
     public class ProjectInstaller : MonoInstaller
     {
@@ -8,9 +10,9 @@ namespace Installers
 
         public override void InstallBindings()
         {
-            
+            ScoreServiceInstaller.Install(Container);
+            Debug.Log("project context installed");
         }
-
         #endregion
     }
 }

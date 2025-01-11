@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Islanders.Game.ScoreHandling
 {
-    public class ScoreTable
+    public class ScoreService
     {
         #region Variables
 
@@ -14,10 +14,11 @@ namespace Islanders.Game.ScoreHandling
 
         #region Unity lifecycle
 
-        private void Start()
+        public ScoreService()
         {
             CreateTable();
             InitializeTable();
+            Debug.Log(nameof(ScoreService) + " created");
         }
 
         #endregion
@@ -35,6 +36,8 @@ namespace Islanders.Game.ScoreHandling
 
         private void CreateTable()
         {
+            _table = new Dictionary<ObjectType, Dictionary<ObjectType, int>>();
+            
             foreach (ObjectType objectTypeI in Enum.GetValues(typeof(ObjectType)))
             {
                 Dictionary<ObjectType, int> row = new();

@@ -15,9 +15,10 @@ GameObject:
   - component: {fileID: 8249866706012545344}
   - component: {fileID: 8328304876280171333}
   - component: {fileID: 5329374275806281584}
-  m_Layer: 0
+  - component: {fileID: -8805831769729853902}
+  m_Layer: 6
   m_Name: BlueCube
-  m_TagString: Untagged
+  m_TagString: House
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -164,3 +165,17 @@ MonoBehaviour:
   - Stone
   _linecastDirection: {x: 0, y: -1, z: 0}
   _observer: {fileID: 8328304876280171333}
+--- !u!114 &-8805831769729853902
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7757709683333937283}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6902e68ebd074a6684169edad3d61ec0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _objectType: 0
+  _radius: 4
