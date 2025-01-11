@@ -21,13 +21,16 @@ namespace Islanders.Game.ScoreHandling
 
         #region Events
 
-        public static event Action<List<ScoreCounter>> OnSphereCasted;
+        public static event Action<int> OnScoreAcquiring; // для начисления очков
+        public static event Action<int> OnScoreCalculated; // для "предпоказа" очков
+        public static event Action<Dictionary<Transform, int>> OnSphereCasted; // для UI чисел над постройками на сцене
 
         #endregion
 
         #region Properties
 
         public ObjectType Type => _objectType;
+        public float Radius => _radius;
 
         #endregion
 
@@ -75,6 +78,7 @@ namespace Islanders.Game.ScoreHandling
         private void BuildingPlacedCallback(PlaceableObject arg1, Vector3 arg2)
         {
             _isPlaced = true;
+            OnScoreAcquiring?.Invoke(_currentScore);
             _placer.OnBuildingPlaced -= BuildingPlacedCallback;
         }
 
@@ -84,7 +88,7 @@ namespace Islanders.Game.ScoreHandling
             hits = Physics.OverlapSphere(gameObject.transform.position, _radius,
                 LayerMask.GetMask(Layers.PlacedBuilding));
 
-            List<ScoreCounter> reachedBuildings = new();
+            Dictionary<Transform, int> numbersToShow = new();
 
             _currentScore = 0;
 
@@ -95,11 +99,12 @@ namespace Islanders.Game.ScoreHandling
                     Debug.LogError(hit.gameObject.name + " somehow missing " + nameof(ScoreCounter));
                 }
 
-                reachedBuildings.Add(scoreCounter);
+                numbersToShow.Add(hit.gameObject.transform, _ownScoreMap[scoreCounter.Type]);
                 _currentScore += _ownScoreMap[scoreCounter.Type];
             }
 
-            OnSphereCasted?.Invoke(reachedBuildings);
+            OnScoreCalculated?.Invoke(_currentScore);
+            OnSphereCasted?.Invoke(numbersToShow);
         }
 
         #endregion
