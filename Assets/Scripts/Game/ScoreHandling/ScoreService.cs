@@ -4,18 +4,19 @@ using UnityEngine;
 
 namespace Islanders.Game.ScoreHandling
 {
-    public class ScoreTable : MonoBehaviour
+    public class ScoreTable
     {
         #region Variables
-        
-        [SerializeField] private Dictionary<ObjectType, Dictionary<ObjectType, int>> _table;
-        
+
+        private Dictionary<ObjectType, Dictionary<ObjectType, int>> _table; // сериализовать не получается :С
+
         #endregion
 
         #region Unity lifecycle
 
         private void Start()
         {
+            CreateTable();
             InitializeTable();
         }
 
@@ -32,7 +33,7 @@ namespace Islanders.Game.ScoreHandling
 
         #region Private methods
 
-        private void InitializeTable()
+        private void CreateTable()
         {
             foreach (ObjectType objectTypeI in Enum.GetValues(typeof(ObjectType)))
             {
@@ -45,6 +46,18 @@ namespace Islanders.Game.ScoreHandling
 
                 _table.Add(objectTypeI, row);
             }
+        }
+
+        private void InitializeTable() // le cringe, но ладно
+        {
+            _table[ObjectType.TestHouse0][ObjectType.TestHouse0] = 3;
+            _table[ObjectType.TestHouse0][ObjectType.TestHouse2] = 1;
+
+            _table[ObjectType.TestHouse1][ObjectType.TestHouse0] = 1;
+            _table[ObjectType.TestHouse1][ObjectType.TestHouse1] = -1;
+            _table[ObjectType.TestHouse1][ObjectType.TestHouse2] = 1;
+
+            _table[ObjectType.TestHouse2][ObjectType.TestHouse1] = 5;
         }
 
         #endregion
