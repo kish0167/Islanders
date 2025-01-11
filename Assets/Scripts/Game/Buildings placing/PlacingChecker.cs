@@ -81,7 +81,7 @@ namespace Islanders.Game.Buildings_placing
                     return true;
                 }
             }
-
+            
             return false;
         }
 
