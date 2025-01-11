@@ -2,6 +2,7 @@ using System;
 using Islanders.Game.Utility;
 using Lean.Pool;
 using UnityEngine;
+using Zenject;
 
 namespace Islanders.Game.Buildings_placing
 {
@@ -21,6 +22,7 @@ namespace Islanders.Game.Buildings_placing
         [SerializeField] private PlacingChecker _checker;
 
         private PlaceableObject _building;
+        private PlaceableObjectFactory _objectFactory;
 
         private Vector3? _cursorPosition;
         private Material _defaultMaterial;
@@ -36,6 +38,12 @@ namespace Islanders.Game.Buildings_placing
         #endregion
 
         #region Unity lifecycle
+
+        [Inject]
+        public void Construct(PlaceableObjectFactory placeableObjectFactory)
+        {
+            _objectFactory = placeableObjectFactory;
+        }
 
         private void Start()
         {
@@ -69,8 +77,9 @@ namespace Islanders.Game.Buildings_placing
                 Destroy(_building);
             }
 
-            _building = LeanPool.Spawn(buildingPrefab, _cursorPosition ?? Vector3.zero, Quaternion.identity);
-
+            //_building = LeanPool.Spawn(buildingPrefab, _cursorPosition ?? Vector3.zero, Quaternion.identity);
+            _building = _objectFactory.CreateFromPrefab(buildingPrefab, _cursorPosition ?? Vector3.zero);
+            
             FetchDefaultMaterial();
             _building.gameObject.layer = LayerMask.NameToLayer(Layers.ActiveBuilding);
             _defaultMaterialIsSet = true;
@@ -122,7 +131,8 @@ namespace Islanders.Game.Buildings_placing
 
             if (_building == null)
             {
-                _building = LeanPool.Spawn(_buildingPrefab, _cursorPosition ?? Vector3.zero, Quaternion.identity);
+                //_building = LeanPool.Spawn(_buildingPrefab, _cursorPosition ?? Vector3.zero, Quaternion.identity);
+                _building = _objectFactory.CreateFromPrefab(_buildingPrefab, _cursorPosition ?? Vector3.zero);
                 _checker.Reset();
             }
             else

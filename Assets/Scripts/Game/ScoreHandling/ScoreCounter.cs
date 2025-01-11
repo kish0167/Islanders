@@ -1,8 +1,8 @@
 using System;
+using System.Collections.Generic;
+using Islanders.Game.Buildings_placing;
 using Islanders.Game.Utility;
-using Unity.VisualScripting;
 using UnityEngine;
-using Zenject;
 
 namespace Islanders.Game.ScoreHandling
 {
@@ -12,9 +12,16 @@ namespace Islanders.Game.ScoreHandling
 
         [SerializeField] private ObjectType _objectType;
         [SerializeField] private float _radius;
+        private int _currentScore;
+        private bool _isPlaced;
+        private Dictionary<ObjectType, int> _ownScoreMap;
+        private BuildingsPlacer _placer;
 
-        private ScoreService _scoreService;
-        private bool _isPlaced = false;
+        #endregion
+
+        #region Events
+
+        public static event Action<List<ScoreCounter>> OnSphereCasted;
 
         #endregion
 
@@ -22,35 +29,77 @@ namespace Islanders.Game.ScoreHandling
 
         public ObjectType Type => _objectType;
 
+        #endregion
+
+        #region Unity lifecycle
+
+        private void Update()
+        {
+            if (_isPlaced)
+            {
+                return;
+            }
+
+            CastASphereAndCalculateScore();
+
+            Debug.Log(_currentScore);
+        }
+
         public void OnDrawGizmos()
         {
             if (_isPlaced)
             {
                 return;
             }
-            
+
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(gameObject.transform.position, _radius);
         }
 
-        [Inject]
-        private void Construct(ScoreService service)
+        #endregion
+
+        #region Public methods
+
+        public void Construct(ScoreService service, BuildingsPlacer placer)
         {
-            Debug.Log("sfasfa");
-            _scoreService = service;
+            _placer = placer;
+            _ownScoreMap = service.GetDictionaryForType(_objectType);
+            _placer.OnBuildingPlaced += BuildingPlacedCallback;
+            Debug.Log("score counter constructed!");
         }
 
-        private void Update()
-        {
-            Collider[] hits = Array.Empty<Collider>();
-            Physics.OverlapSphereNonAlloc(gameObject.transform.position, _radius, hits);
+        #endregion
 
-            //Debug.LogError(hits.Length);
-            
+        #region Private methods
+
+        private void BuildingPlacedCallback(PlaceableObject arg1, Vector3 arg2)
+        {
+            _isPlaced = true;
+            _placer.OnBuildingPlaced -= BuildingPlacedCallback;
+        }
+
+        private void CastASphereAndCalculateScore()
+        {
+            Collider[] hits;
+            hits = Physics.OverlapSphere(gameObject.transform.position, _radius,
+                LayerMask.GetMask(Layers.PlacedBuilding));
+
+            List<ScoreCounter> reachedBuildings = new();
+
+            _currentScore = 0;
+
             foreach (Collider hit in hits)
             {
-                Debug.Log(hit.gameObject.name);
+                if (!hit.gameObject.TryGetComponent(out ScoreCounter scoreCounter))
+                {
+                    Debug.LogError(hit.gameObject.name + " somehow missing " + nameof(ScoreCounter));
+                }
+
+                reachedBuildings.Add(scoreCounter);
+                _currentScore += _ownScoreMap[scoreCounter.Type];
             }
+
+            OnSphereCasted?.Invoke(reachedBuildings);
         }
 
         #endregion
