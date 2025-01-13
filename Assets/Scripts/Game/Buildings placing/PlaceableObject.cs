@@ -1,9 +1,11 @@
 using System.Collections.Generic;
+using Islanders.Game.ScoreHandling;
 using UnityEngine;
 
 namespace Islanders.Game.Buildings_placing
 {
     [RequireComponent(typeof(CollisionsObserver))]
+    [RequireComponent(typeof(ScoreCounter))]
     public class PlaceableObject : MonoBehaviour
     {
         #region Variables

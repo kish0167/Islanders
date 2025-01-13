@@ -58339,7 +58339,7 @@ GameObject:
   - component: {fileID: 1551439105}
   m_Layer: 8
   m_Name: Cube (1)
-  m_TagString: House
+  m_TagString: Stone
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -70067,7 +70067,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1831510831}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.105708934, y: -0.873913, z: 0.23038559, w: -0.414758}
+  m_LocalRotation: {x: -0.06434113, y: -0.8923563, z: 0.1431846, w: -0.4231534}
   m_LocalPosition: {x: -57.8, y: 10.4, z: -1.6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -72060,7 +72060,7 @@ Transform:
   m_GameObject: {fileID: 1871433306}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -45.875965, y: 0.185, z: -14.97}
+  m_LocalPosition: {x: -45.875965, y: 0.224, z: -14.97}
   m_LocalScale: {x: 1.82, y: 1, z: 2.03}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -80505,9 +80505,11 @@ Tilemap:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 11276696}
   - {fileID: 1831510835}
   - {fileID: 918095003}
-  - {fileID: 1782141504}
+  - {fileID: 1741674866}
   - {fileID: 1186642260}
+  - {fileID: 1782141504}
   - {fileID: 1871433310}
   - {fileID: 1551439108}

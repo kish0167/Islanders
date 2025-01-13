@@ -1,7 +1,7 @@
 using System;
 using Islanders.Game.Utility;
-using Lean.Pool;
 using UnityEngine;
+using Zenject;
 
 namespace Islanders.Game.Buildings_placing
 {
@@ -25,6 +25,7 @@ namespace Islanders.Game.Buildings_placing
         private Vector3? _cursorPosition;
         private Material _defaultMaterial;
         private bool _defaultMaterialIsSet;
+        private PlaceableObjectFactory _placeableObjectFactory;
         private bool _placingPossible;
 
         #endregion
@@ -32,6 +33,16 @@ namespace Islanders.Game.Buildings_placing
         #region Events
 
         public event Action<PlaceableObject, Vector3> OnBuildingPlaced;
+
+        #endregion
+
+        #region Setup/Teardown
+
+        [Inject]
+        public void Construct(PlaceableObjectFactory placeableObjectFactory)
+        {
+            _placeableObjectFactory = placeableObjectFactory;
+        }
 
         #endregion
 
@@ -69,7 +80,7 @@ namespace Islanders.Game.Buildings_placing
                 Destroy(_building);
             }
 
-            _building = LeanPool.Spawn(buildingPrefab, _cursorPosition ?? Vector3.zero, Quaternion.identity);
+            _building = _placeableObjectFactory.CreateFromPrefab(buildingPrefab, _cursorPosition ?? Vector3.zero);
 
             FetchDefaultMaterial();
             _building.gameObject.layer = LayerMask.NameToLayer(Layers.ActiveBuilding);
@@ -84,7 +95,7 @@ namespace Islanders.Game.Buildings_placing
         private void CastARay()
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            
+
             if (Physics.Raycast(ray, out RaycastHit hit, _maxDistance, ~LayerMask.GetMask(Layers.ActiveBuilding)))
             {
                 _cursorPosition = hit.point;
@@ -106,6 +117,14 @@ namespace Islanders.Game.Buildings_placing
             _placingPossible = _checker.IsPossible();
         }
 
+        private void FetchDefaultMaterial()
+        {
+            if (_building.TryGetComponent(out MeshRenderer meshRenderer))
+            {
+                _defaultMaterial = meshRenderer.material;
+            }
+        }
+
         private void MoveBuildingWithCursor() // TODO: maybe use DoTween
         {
             if (_building == null && _cursorPosition == null)
@@ -115,14 +134,15 @@ namespace Islanders.Game.Buildings_placing
 
             if (_cursorPosition == null)
             {
-                LeanPool.Despawn(_building);
+                _placeableObjectFactory.Deconstruct(_building);
+
                 _building = null;
                 return;
             }
 
             if (_building == null)
             {
-                _building = LeanPool.Spawn(_buildingPrefab, _cursorPosition ?? Vector3.zero, Quaternion.identity);
+                _building = _placeableObjectFactory.CreateFromPrefab(_buildingPrefab, _cursorPosition ?? Vector3.zero);
                 _checker.Reset();
             }
             else
@@ -140,7 +160,7 @@ namespace Islanders.Game.Buildings_placing
 
         private void UpdateBuildingMaterial()
         {
-            if (_building == null ||  !_building.TryGetComponent(out MeshRenderer meshRenderer))
+            if (_building == null || !_building.TryGetComponent(out MeshRenderer meshRenderer))
             {
                 return;
             }
@@ -154,14 +174,6 @@ namespace Islanders.Game.Buildings_placing
             {
                 meshRenderer.material = _prohibitingMaterial;
                 _defaultMaterialIsSet = false;
-            }
-        }
-
-        private void FetchDefaultMaterial()
-        {
-            if (_building.TryGetComponent(out MeshRenderer meshRenderer))
-            {
-                _defaultMaterial = meshRenderer.material;
             }
         }
 
