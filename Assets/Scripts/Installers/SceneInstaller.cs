@@ -1,4 +1,5 @@
 using Islanders.Game.Buildings_placing;
+using Islanders.Game.Player;
 using Islanders.Game.ScoreHandling;
 using Islanders.Game.Utility;
 using UnityEngine;
@@ -17,6 +18,7 @@ namespace Islanders.Installers
             Container.Bind<PlaceableObjectFactory>().FromNew().AsSingle();
             Container.Bind<BuildingsPlacer>().FromInstance(_buildingsPlacer).AsSingle();
             Container.Bind<PrefabsProvider>().FromInstance(_prefabProvider).AsSingle();
+            Container.Bind<Player>().FromNew().AsSingle().NonLazy();
             Debug.Log("scene context installed");
         }
     }

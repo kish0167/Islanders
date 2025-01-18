@@ -18,16 +18,19 @@ namespace Islanders.Game.Buildings_placing
         private void OnCollisionEnter(Collision other)
         {
             OnEnter?.Invoke(other);
+            Debug.LogError("Enter");
         }
 
         private void OnCollisionExit(Collision other)
         {
             OnExit?.Invoke(other);
+            Debug.LogError("Exit");
         }
 
         private void OnCollisionStay(Collision other)
         {
             OnStay?.Invoke(other);
+            Debug.LogError("Stay");
         }
 
         #endregion

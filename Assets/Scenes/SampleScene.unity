@@ -49456,7 +49456,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82c5eeeab160bc04496083c5a4798eff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _buildingPrefab: {fileID: 5329374275806281584, guid: 6d2af8427edaa6a49bb4f7d66d8dbbc5,
+  _buildingPrefab: {fileID: 8255254960364829407, guid: 16e541c84f30c964ba133819dc7b3d14,
     type: 3}
   _maxDistance: 10206.3
   _prohibitingMaterial: {fileID: 2100000, guid: 028b21ca7adb34c4aa77de3a59f57463,
@@ -73118,7 +73118,7 @@ Transform:
   m_GameObject: {fileID: 1831510831}
   serializedVersion: 2
   m_LocalRotation: {x: -0.06434113, y: -0.8923563, z: 0.1431846, w: -0.4231534}
-  m_LocalPosition: {x: -57.8, y: 10.4, z: -1.6}
+  m_LocalPosition: {x: -50.21, y: 3.08, z: -9.08}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
