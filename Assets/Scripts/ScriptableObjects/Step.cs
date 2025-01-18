@@ -13,6 +13,12 @@ namespace Islanders.ScriptableObjects
         [SerializeField] private List<PlaceableObjectArray> _choise2;
         [SerializeField] private uint _scoreToPass = 1;
 
+        public List<PlaceableObjectArray> Choise1 => _choise1;
+
+        public List<PlaceableObjectArray> Choise2 => _choise2;
+
+        public uint ScoreToPass => _scoreToPass;
+
         #endregion
 
         #region Unity lifecycle

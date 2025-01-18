@@ -25,6 +25,9 @@ namespace Islanders.Game.Buildings_placing
         public Vector3 LinecastDirection => _linecastDirection;
         public CollisionsObserver Observer => _observer;
 
+
+        public VisualSphere Sphere = null;
+
         #endregion
     }
 }

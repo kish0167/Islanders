@@ -18,7 +18,7 @@ namespace Islanders.Installers
             Container.Bind<PlaceableObjectFactory>().FromNew().AsSingle();
             Container.Bind<BuildingsPlacer>().FromInstance(_buildingsPlacer).AsSingle();
             Container.Bind<PrefabsProvider>().FromInstance(_prefabProvider).AsSingle();
-            Container.Bind<Player>().FromNew().AsSingle().NonLazy();
+            Container.Bind<Player>().FromNewComponentOnNewGameObject().AsSingle().NonLazy();
             Debug.Log("scene context installed");
         }
     }

@@ -34,12 +34,14 @@ namespace Islanders.Game.Buildings_placing
         {
             PlaceableObject building = LeanPool.Spawn(prefab, position, Quaternion.identity);
             building.gameObject.GetComponent<ScoreCounter>().Construct(_scoreService, _buildingsPlacer);
+            building.gameObject.layer = LayerMask.NameToLayer(Layers.ActiveBuilding);
             
             VisualSphere sphere = LeanPool.Spawn(_prefabProvider.TransparentSphere, position, Quaternion.identity);
-            sphere.Construct(_buildingsPlacer);
+            //sphere.Construct(_buildingsPlacer);
             sphere.transform.SetParent(building.transform);
             sphere.transform.localPosition = Vector3.zero;
             sphere.transform.localScale = Vector3.one * building.gameObject.GetComponent<ScoreCounter>().Radius * 2;
+            building.Sphere = sphere;
             
             return building;
         }
@@ -48,11 +50,7 @@ namespace Islanders.Game.Buildings_placing
 
         public void Deconstruct(PlaceableObject building)
         {
-            if (building.transform.childCount >= 1 && building.transform.GetChild(0).gameObject.TryGetComponent(out VisualSphere sphere))
-            {
-                sphere.Dispose();
-            }
-                
+            LeanPool.Despawn(building.Sphere);
             LeanPool.Despawn(building);
         }
     }

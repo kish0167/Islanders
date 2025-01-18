@@ -44,8 +44,6 @@ namespace Islanders.Game.ScoreHandling
             }
 
             CastASphereAndCalculateScore();
-
-            Debug.Log(_currentScore);
         }
 
         public void OnDrawGizmos()
@@ -68,7 +66,6 @@ namespace Islanders.Game.ScoreHandling
             _placer = placer;
             _ownScoreMap = service.GetDictionaryForType(_objectType);
             _placer.OnBuildingPlaced += BuildingPlacedCallback;
-            Debug.Log("score counter constructed!");
         }
 
         #endregion

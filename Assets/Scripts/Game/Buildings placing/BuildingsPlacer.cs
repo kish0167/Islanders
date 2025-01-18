@@ -25,6 +25,7 @@ namespace Islanders.Game.Buildings_placing
         private Vector3? _cursorPosition;
         private Material _defaultMaterial;
         private bool _defaultMaterialIsSet;
+        private bool _enabled;
         private PlaceableObjectFactory _placeableObjectFactory;
         private bool _placingPossible;
 
@@ -50,11 +51,16 @@ namespace Islanders.Game.Buildings_placing
 
         private void Start()
         {
-            SetBuilding(_buildingPrefab);
+            // SetBuilding(_buildingPrefab);
         }
 
         private void Update()
         {
+            if (!_enabled)
+            {
+                return;
+            }
+
             CastARay();
             MoveBuildingWithCursor();
             CheckPlacingPossibility();
@@ -71,21 +77,32 @@ namespace Islanders.Game.Buildings_placing
 
         #region Public methods
 
+        public void Disable()
+        {
+            _enabled = false;
+        }
+
+        public void Enable()
+        {
+            _enabled = true;
+        }
+
         public void SetBuilding(PlaceableObject buildingPrefab)
         {
             _buildingPrefab = buildingPrefab;
 
             if (_building != null)
             {
-                Destroy(_building);
+                _placeableObjectFactory.Deconstruct(_building);
             }
 
             _building = _placeableObjectFactory.CreateFromPrefab(buildingPrefab, _cursorPosition ?? Vector3.zero);
 
             FetchDefaultMaterial();
-            _building.gameObject.layer = LayerMask.NameToLayer(Layers.ActiveBuilding);
             _defaultMaterialIsSet = true;
             _checker.SetBuilding(_building);
+
+            _enabled = true;
         }
 
         #endregion
@@ -154,8 +171,9 @@ namespace Islanders.Game.Buildings_placing
         private void Place()
         {
             _building.gameObject.layer = LayerMask.NameToLayer(Layers.PlacedBuilding);
-            OnBuildingPlaced?.Invoke(_building, _cursorPosition ?? Vector3.zero);
+            _building.Sphere.Dispose();
             _building = null;
+            OnBuildingPlaced?.Invoke(_building, _cursorPosition ?? Vector3.zero);
         }
 
         private void UpdateBuildingMaterial()
