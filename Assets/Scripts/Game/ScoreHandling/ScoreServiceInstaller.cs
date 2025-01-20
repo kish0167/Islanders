@@ -8,7 +8,7 @@ namespace Islanders.Game.ScoreHandling
     {
         public override void InstallBindings()
         {
-            Container.Bind<ScoreService>().FromNew().AsSingle().NonLazy();
+            Container.Bind<ScoreTableService>().FromNew().AsSingle().NonLazy();
         }
     }
 }

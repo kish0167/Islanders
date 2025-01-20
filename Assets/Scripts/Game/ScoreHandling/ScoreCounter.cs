@@ -29,8 +29,9 @@ namespace Islanders.Game.ScoreHandling
 
         #region Properties
 
-        public ObjectType Type => _objectType;
         public float Radius => _radius;
+
+        public ObjectType Type => _objectType;
 
         #endregion
 
@@ -61,10 +62,10 @@ namespace Islanders.Game.ScoreHandling
 
         #region Public methods
 
-        public void Construct(ScoreService service, BuildingsPlacer placer)
+        public void Construct(ScoreTableService tableService, BuildingsPlacer placer)
         {
             _placer = placer;
-            _ownScoreMap = service.GetDictionaryForType(_objectType);
+            _ownScoreMap = tableService.GetDictionaryForType(_objectType);
             _placer.OnBuildingPlaced += BuildingPlacedCallback;
         }
 

@@ -11,7 +11,7 @@ namespace Islanders.Game.Buildings_placing
         #region Variables
 
         private BuildingsPlacer _buildingsPlacer;
-        private ScoreService _scoreService;
+        private ScoreTableService _scoreTableService;
         private PrefabsProvider _prefabProvider;
 
         #endregion
@@ -19,9 +19,9 @@ namespace Islanders.Game.Buildings_placing
         #region Setup/Teardown
 
         [Inject]
-        private void Construct(ScoreService service, BuildingsPlacer placer, PrefabsProvider provider)
+        private void Construct(ScoreTableService tableService, BuildingsPlacer placer, PrefabsProvider provider)
         {
-            _scoreService = service;
+            _scoreTableService = tableService;
             _buildingsPlacer = placer;
             _prefabProvider = provider;
         }
@@ -33,7 +33,7 @@ namespace Islanders.Game.Buildings_placing
         public PlaceableObject CreateFromPrefab(PlaceableObject prefab, Vector3 position)
         {
             PlaceableObject building = LeanPool.Spawn(prefab, position, Quaternion.identity);
-            building.gameObject.GetComponent<ScoreCounter>().Construct(_scoreService, _buildingsPlacer);
+            building.gameObject.GetComponent<ScoreCounter>().Construct(_scoreTableService, _buildingsPlacer);
             building.gameObject.layer = LayerMask.NameToLayer(Layers.ActiveBuilding);
             
             VisualSphere sphere = LeanPool.Spawn(_prefabProvider.TransparentSphere, position, Quaternion.identity);

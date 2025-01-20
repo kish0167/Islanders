@@ -66,10 +66,10 @@ namespace Islanders.Game.Buildings_placing
             CheckPlacingPossibility();
             UpdateBuildingMaterial();
 
-            if (Input.GetMouseButtonDown(0) && _placingPossible) // input system
+            if (UnityEngine.Input.GetMouseButtonDown(0) && _placingPossible) // input system
             {
                 Place();
-                SetBuilding(_buildingPrefab);
+                //SetBuilding(_buildingPrefab);
             }
         }
 
@@ -111,7 +111,7 @@ namespace Islanders.Game.Buildings_placing
 
         private void CastARay()
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            Ray ray = Camera.main.ScreenPointToRay(UnityEngine.Input.mousePosition);
 
             if (Physics.Raycast(ray, out RaycastHit hit, _maxDistance, ~LayerMask.GetMask(Layers.ActiveBuilding)))
             {
@@ -172,8 +172,10 @@ namespace Islanders.Game.Buildings_placing
         {
             _building.gameObject.layer = LayerMask.NameToLayer(Layers.PlacedBuilding);
             _building.Sphere.Dispose();
+            PlaceableObject buf = _building;
             _building = null;
-            OnBuildingPlaced?.Invoke(_building, _cursorPosition ?? Vector3.zero);
+            
+            OnBuildingPlaced?.Invoke(buf, _cursorPosition ?? Vector3.zero);
         }
 
         private void UpdateBuildingMaterial()

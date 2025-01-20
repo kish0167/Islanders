@@ -3533,6 +3533,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _buildingsPlacer: {fileID: 1186642259}
   _prefabProvider: {fileID: 844653454}
+  _playerHotBar: {fileID: 0}
 --- !u!114 &76386754
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -49456,8 +49457,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82c5eeeab160bc04496083c5a4798eff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _buildingPrefab: {fileID: 8255254960364829407, guid: 16e541c84f30c964ba133819dc7b3d14,
-    type: 3}
+  _buildingPrefab: {fileID: 0}
   _maxDistance: 10206.3
   _prohibitingMaterial: {fileID: 2100000, guid: 028b21ca7adb34c4aa77de3a59f57463,
     type: 2}
