@@ -8,12 +8,12 @@ namespace Islanders.Game.UI
 
         public void Hide()
         {
-            throw new System.NotImplementedException();
+            
         }
 
         public void Show()
         {
-            throw new System.NotImplementedException();
+            
         }
 
         #endregion

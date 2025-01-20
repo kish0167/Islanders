@@ -66,10 +66,9 @@ namespace Islanders.Game.Buildings_placing
             CheckPlacingPossibility();
             UpdateBuildingMaterial();
 
-            if (UnityEngine.Input.GetMouseButtonDown(0) && _placingPossible) // input system
+            if (Input.GetMouseButtonDown(0) && _placingPossible) // input system
             {
                 Place();
-                //SetBuilding(_buildingPrefab);
             }
         }
 
@@ -82,7 +81,7 @@ namespace Islanders.Game.Buildings_placing
             _enabled = false;
         }
 
-        public void Enable()
+        private void Enable()
         {
             _enabled = true;
         }
@@ -102,7 +101,7 @@ namespace Islanders.Game.Buildings_placing
             _defaultMaterialIsSet = true;
             _checker.SetBuilding(_building);
 
-            _enabled = true;
+            Enable();
         }
 
         #endregion
@@ -174,6 +173,7 @@ namespace Islanders.Game.Buildings_placing
             _building.Sphere.Dispose();
             PlaceableObject buf = _building;
             _building = null;
+            Disable();
             
             OnBuildingPlaced?.Invoke(buf, _cursorPosition ?? Vector3.zero);
         }

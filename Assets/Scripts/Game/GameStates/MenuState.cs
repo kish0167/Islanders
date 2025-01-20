@@ -21,7 +21,6 @@ namespace Islanders.Game.GameStates
         public override void Exit()
         {
             _menuScreen.Hide();
-            
         }
     }
 }

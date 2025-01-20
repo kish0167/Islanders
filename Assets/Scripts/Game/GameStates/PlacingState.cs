@@ -25,7 +25,7 @@ namespace Islanders.Game.GameStates
 
         public override void Enter()
         {
-            _placer.Enable();
+            
         }
 
         public override void Exit()
