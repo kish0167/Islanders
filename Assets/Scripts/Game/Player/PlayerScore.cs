@@ -2,11 +2,10 @@ namespace Islanders.Game.Player
 {
     public class PlayerScore
     {
-        
-        
-        public void SetToZero()
-        {
-            
-        }
+        #region Public methods
+
+        public void SetToZero() { }
+
+        #endregion
     }
 }

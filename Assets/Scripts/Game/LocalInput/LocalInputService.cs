@@ -13,6 +13,12 @@ namespace Islanders.Game.LocalInput
 
         private Dictionary<KeyBind, KeyCode> _controls = new()
         {
+            { KeyBind.CameraForward, KeyCode.W },
+            { KeyBind.CameraBackward, KeyCode.S },
+            { KeyBind.CameraSlideRight, KeyCode.D },
+            { KeyBind.CameraSlideLeft, KeyCode.A },
+            { KeyBind.CameraYawRight, KeyCode.E },
+            { KeyBind.CameraYawLeft, KeyCode.Q },
             { KeyBind.Pause, KeyCode.Escape },
             { KeyBind.HotBar1, KeyCode.Alpha1 },
             { KeyBind.HotBar2, KeyCode.Alpha2 },
@@ -45,7 +51,7 @@ namespace Islanders.Game.LocalInput
         {
             foreach (KeyBind bind in _allBinds)
             {
-                if (!Input.GetKeyDown(_controls[bind]))
+                if (!_controls.TryGetValue(bind, out KeyCode control) || !Input.GetKey(control))
                 {
                     continue;
                 }

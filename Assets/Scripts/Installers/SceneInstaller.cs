@@ -1,5 +1,6 @@
 using Islanders.Game.Buildings_placing;
 using Islanders.Game.GameStates;
+using Islanders.Game.LocalCamera;
 using Islanders.Game.LocalInput;
 using Islanders.Game.Pause;
 using Islanders.Game.Player;
@@ -19,6 +20,7 @@ namespace Islanders.Installers
         [SerializeField] private PlayerHotBar _playerHotBar;
         [SerializeField] private MenuScreen _menuScreen;
         [SerializeField] private ChoiceScreen _choiceScreen;
+        [SerializeField] private CameraMovement _cameraMovement;
 
         #endregion
 
@@ -36,6 +38,8 @@ namespace Islanders.Installers
             Container.Bind<LocalInputService>().FromNewComponentOnNewGameObject().AsSingle().NonLazy();
             Container.Bind<KeysActions>().FromNew().AsSingle().NonLazy();
             Container.Bind<PauseService>().FromNew().AsSingle().NonLazy();
+            Container.Bind<UiInput>().FromNew().AsSingle().NonLazy();
+            Container.Bind<CameraMovement>().FromInstance(_cameraMovement).AsSingle();
 
             // screens
             Container.Bind<MenuScreen>().FromInstance(_menuScreen).AsSingle().NonLazy();

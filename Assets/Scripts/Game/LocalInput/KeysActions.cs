@@ -1,7 +1,7 @@
-using Islanders.Game.GameStates;
+using Islanders.Game.LocalCamera;
 using Islanders.Game.Pause;
 using Islanders.Game.UI;
-using UnityEngine.UIElements;
+using UnityEngine;
 using Zenject;
 
 namespace Islanders.Game.LocalInput
@@ -11,17 +11,20 @@ namespace Islanders.Game.LocalInput
         #region Variables
 
         private readonly LocalInputService _inputService;
-        private readonly PauseService _pauseService;
+        private readonly UiInput _uiInput;
+        private readonly CameraMovement _cameraMovement;
+        
 
         #endregion
 
         #region Setup/Teardown
 
         [Inject]
-        public KeysActions(LocalInputService inputService, PauseService pauseService)
+        public KeysActions(LocalInputService inputService, UiInput uiInput, CameraMovement cameraMovement)
         {
             _inputService = inputService;
-            _pauseService = pauseService;
+            _uiInput = uiInput;
+            _cameraMovement = cameraMovement;
             _inputService.OnKeyPressed += KeyPressedCallback;
         }
 
@@ -40,13 +43,19 @@ namespace Islanders.Game.LocalInput
 
         private void KeyPressedCallback(KeyBind key)
         {
-            if (key == KeyBind.Pause)
+            
+            if (key > KeyBind.CameraStart && key < KeyBind.CameraEnd)
             {
-                _pauseService.Toggle();
+                _cameraMovement.DoAction(key);
+                return;
+            }
+            
+            if (key > KeyBind.UiStart && key < KeyBind.UiEnd)
+            {
+                _uiInput.DoAction(key);
+                return;
             }
         }
-        
-        
 
         #endregion
     }
