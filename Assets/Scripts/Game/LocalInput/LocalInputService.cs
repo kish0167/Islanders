@@ -32,6 +32,7 @@ namespace Islanders.Game.LocalInput
         #region Events
 
         public event Action<KeyBind> OnKeyPressed;
+        public event Action<KeyBind> OnKeyDown;
 
         #endregion
 
@@ -57,6 +58,11 @@ namespace Islanders.Game.LocalInput
                 }
 
                 OnKeyPressed?.Invoke(bind);
+
+                if (Input.GetKeyDown(control))
+                {
+                    OnKeyDown?.Invoke(bind);
+                }
             }
         }
 

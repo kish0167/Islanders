@@ -26,6 +26,7 @@ namespace Islanders.Game.LocalInput
             _uiInput = uiInput;
             _cameraMovement = cameraMovement;
             _inputService.OnKeyPressed += KeyPressedCallback;
+            _inputService.OnKeyDown += KeyDownCallback;
         }
 
         #endregion
@@ -35,6 +36,7 @@ namespace Islanders.Game.LocalInput
         public void Destroy()
         {
             _inputService.OnKeyPressed -= KeyPressedCallback;
+            _inputService.OnKeyDown -= KeyDownCallback;
         }
 
         #endregion
@@ -49,7 +51,10 @@ namespace Islanders.Game.LocalInput
                 _cameraMovement.DoAction(key);
                 return;
             }
-            
+        }
+        
+        private void KeyDownCallback(KeyBind key)
+        {
             if (key > KeyBind.UiStart && key < KeyBind.UiEnd)
             {
                 _uiInput.DoAction(key);

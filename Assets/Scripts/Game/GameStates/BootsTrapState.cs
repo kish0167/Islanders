@@ -32,7 +32,7 @@ namespace Islanders.Game.GameStates
 
         public override void Enter()
         {
-            _placer.Disable();
+            _placer.Enabled = false;
             _playerScore.SetToZero();
             _menuScreen.Hide();
         }

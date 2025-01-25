@@ -8,42 +8,44 @@ namespace Islanders.Game.Pause
     {
         #region Variables
 
-        private readonly MenuState _menuState;
-        private readonly PlacingState _placingState;
-
         private readonly LocalStateMachine _stateMachine;
-        private bool _isPaused;
+
+        #endregion
+
+        #region Properties
+
+        public bool IsPaused => _stateMachine.Is<MenuState>();
 
         #endregion
 
         #region Setup/Teardown
 
         [Inject]
-        public PauseService(LocalStateMachine stateMachine, PlacingState placingState, MenuState menuState)
+        public PauseService(LocalStateMachine stateMachine)
         {
             _stateMachine = stateMachine;
-            _placingState = placingState;
-            _menuState = menuState;
         }
 
         #endregion
 
         #region Public methods
 
+        public void ForcePause()
+        {
+            _stateMachine.TransitionTo<MenuState>();
+            Debug.Log("pause on");
+        }
+
         public void Toggle()
         {
-            if (_isPaused)
+            if (_stateMachine.Is<MenuState>())
             {
-                _stateMachine.TransitionTo(_placingState);
-                Debug.Log("pause off");
+                _stateMachine.TransitionTo<PlacingState>();
             }
-            else
+            else if (_stateMachine.Is<PlacingState>())
             {
-                _stateMachine.TransitionTo(_menuState);
-                Debug.Log("pause on");
+                _stateMachine.TransitionTo<MenuState>();
             }
-
-            _isPaused = !_isPaused;
         }
 
         #endregion

@@ -1,10 +1,15 @@
+using System;
+using System.Collections.Generic;
+using UnityEngine;
 using Zenject;
 
 namespace Islanders.Game.GameStates
 {
-    public class LocalStateMachine
+    public class LocalStateMachine : MonoBehaviour
     {
         #region Variables
+
+        private readonly List<GameState> _states = new();
 
         private GameState _currentState;
 
@@ -13,24 +18,54 @@ namespace Islanders.Game.GameStates
         #region Setup/Teardown
 
         [Inject]
-        public LocalStateMachine(BootsTrapState bootsTrap)
+        public void Construct(BootsTrapState bootsTrap, MenuState menu, PlacingState placing, ChoosingState choosing,
+            GoToNewIslandState newIsland)
         {
+            _states.Add(bootsTrap);
+            _states.Add(menu);
+            _states.Add(placing);
+            _states.Add(choosing);
+            _states.Add(newIsland);
             _currentState = bootsTrap;
-            _currentState.Enter();
         }
 
         #endregion
+
+        private void Start()
+        {
+            _currentState.Enter();
+            
+            // 
+            
+            TransitionTo<MenuState>();
+        }
 
         #region Public methods
 
-        public void TransitionTo(GameState newGameState)
+        public bool Is<T>() where T : GameState
+        {
+            return typeof(T) == _currentState.GetType();
+        }
+
+        public void TransitionTo<T>() where T : GameState
         {
             _currentState.Exit();
-            _currentState = newGameState;
-            _currentState.Enter();
+
+            foreach (GameState state in _states)
+            {
+                if (state.GetType() != typeof(T))
+                {
+                    continue;
+                }
+
+                _currentState = state;
+                state.Enter();
+                return;
+            }
+
+            Debug.LogError($"Sate {nameof(T)} not present in state list");
         }
 
         #endregion
-        
     }
 }

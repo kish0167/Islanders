@@ -25,7 +25,9 @@ namespace Islanders.Game.Buildings_placing
         private Vector3? _cursorPosition;
         private Material _defaultMaterial;
         private bool _defaultMaterialIsSet;
-        private bool _enabled;
+
+        public bool Enabled { get; set; } = false;
+
         private PlaceableObjectFactory _placeableObjectFactory;
         private bool _placingPossible;
 
@@ -48,15 +50,9 @@ namespace Islanders.Game.Buildings_placing
         #endregion
 
         #region Unity lifecycle
-
-        private void Start()
-        {
-            // SetBuilding(_buildingPrefab);
-        }
-
         private void Update()
         {
-            if (!_enabled)
+            if (!Enabled)
             {
                 return;
             }
@@ -78,12 +74,12 @@ namespace Islanders.Game.Buildings_placing
 
         public void Disable()
         {
-            _enabled = false;
+            Enabled = false;
         }
 
-        private void Enable()
+        public void Enable()
         {
-            _enabled = true;
+            Enabled = true;
         }
 
         public void SetBuilding(PlaceableObject buildingPrefab)

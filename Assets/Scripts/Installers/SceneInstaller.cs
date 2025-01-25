@@ -33,16 +33,16 @@ namespace Islanders.Installers
             Container.Bind<PrefabsProvider>().FromInstance(_prefabProvider).AsSingle();
             Container.Bind<Player>().FromNewComponentOnNewGameObject().AsSingle().NonLazy();
             Container.Bind<PlayerHotBar>().FromInstance(_playerHotBar).AsSingle().NonLazy();
-            Container.Bind<LocalStateMachine>().FromNew().AsSingle().NonLazy();
+            Container.Bind<LocalStateMachine>().FromNewComponentOnNewGameObject().AsSingle().NonLazy();
             Container.Bind<PlayerScore>().FromNew().AsSingle().NonLazy();
             Container.Bind<LocalInputService>().FromNewComponentOnNewGameObject().AsSingle().NonLazy();
             Container.Bind<KeysActions>().FromNew().AsSingle().NonLazy();
-            Container.Bind<PauseService>().FromNew().AsSingle().NonLazy();
+            Container.Bind<PauseService>().FromNew().AsSingle();
             Container.Bind<UiInput>().FromNew().AsSingle().NonLazy();
             Container.Bind<CameraMovement>().FromInstance(_cameraMovement).AsSingle();
 
             // screens
-            Container.Bind<MenuScreen>().FromInstance(_menuScreen).AsSingle().NonLazy();
+            Container.Bind<MenuScreen>().FromInstance(_menuScreen).AsSingle();
             Container.Bind<ChoiceScreen>().FromInstance(_choiceScreen).AsSingle().NonLazy();
 
             // states
