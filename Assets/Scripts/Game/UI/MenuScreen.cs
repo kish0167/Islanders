@@ -1,4 +1,5 @@
 using Islanders.Game.Pause;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
@@ -11,6 +12,7 @@ namespace Islanders.Game.UI
 
         [SerializeField] private GameObject _content;
         [SerializeField] private Button _continueButton;
+        [SerializeField] private Button _exitButton;
 
         private PauseService _pauseService;
 
@@ -22,15 +24,8 @@ namespace Islanders.Game.UI
         private void Construct(PauseService pauseService)
         {
             _pauseService = pauseService;
-        }
-
-        #endregion
-
-        #region Unity lifecycle
-
-        private void Start()
-        {
             _continueButton.onClick.AddListener(ContinueButtonPressedCallback);
+            _exitButton.onClick.AddListener(ExitButtonPressedCallback);
         }
 
         #endregion
@@ -54,6 +49,15 @@ namespace Islanders.Game.UI
         private void ContinueButtonPressedCallback()
         {
             _pauseService.Toggle();
+        }
+
+        private void ExitButtonPressedCallback()
+        {
+#if UNITY_EDITOR
+            EditorApplication.isPlaying = false;
+#else
+            Application.Quit();
+#endif
         }
 
         #endregion

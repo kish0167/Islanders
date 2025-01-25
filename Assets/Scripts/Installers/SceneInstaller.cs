@@ -5,6 +5,7 @@ using Islanders.Game.LocalInput;
 using Islanders.Game.Pause;
 using Islanders.Game.Player;
 using Islanders.Game.UI;
+using Islanders.Game.UI.Hotbar;
 using Islanders.Game.Utility;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -42,6 +43,7 @@ namespace Islanders.Installers
             Container.Bind<UiInput>().FromNew().AsSingle().NonLazy();
             Container.Bind<CameraMovement>().FromInstance(_cameraMovement).AsSingle();
             Container.Bind<HotBar>().FromInstance(_hotBar).AsSingle();
+            Container.Bind<HotBarButtonFactory>().FromNew().AsSingle();
 
             // screens
             Container.Bind<MenuScreen>().FromInstance(_menuScreen).AsSingle();
@@ -54,6 +56,7 @@ namespace Islanders.Installers
             Container.Bind<MenuState>().FromNew().AsSingle().NonLazy();
             Container.Bind<ChoosingState>().FromNew().AsSingle().NonLazy();
             Container.Bind<GoToNewIslandState>().FromNew().AsSingle().NonLazy();
+            
 
             Debug.Log("scene context installed");
         }

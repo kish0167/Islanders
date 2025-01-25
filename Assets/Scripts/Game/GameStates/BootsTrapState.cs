@@ -13,17 +13,19 @@ namespace Islanders.Game.GameStates
 
         private readonly BuildingsPlacer _placer;
         private readonly PlayerScore _playerScore;
+        private PlacingScreen _placingScreen;
 
         #endregion
 
         #region Setup/Teardown
 
         [Inject]
-        public BootsTrapState(MenuScreen menuScreen, PlayerScore playerScore, BuildingsPlacer placer)
+        public BootsTrapState(MenuScreen menuScreen, PlayerScore playerScore, BuildingsPlacer placer, PlacingScreen placingScreen)
         {
             _menuScreen = menuScreen;
             _playerScore = playerScore;
             _placer = placer;
+            _placingScreen = placingScreen;
         }
 
         #endregion
@@ -35,6 +37,7 @@ namespace Islanders.Game.GameStates
             _placer.Enabled = false;
             _playerScore.SetToZero();
             _menuScreen.Hide();
+            _placingScreen.Hide();
         }
 
         public override void Exit() { }
