@@ -7,6 +7,7 @@ using Islanders.Game.Player;
 using Islanders.Game.UI;
 using Islanders.Game.Utility;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Zenject;
 
 namespace Islanders.Installers
@@ -17,10 +18,11 @@ namespace Islanders.Installers
 
         [SerializeField] private BuildingsPlacer _buildingsPlacer;
         [SerializeField] private PrefabsProvider _prefabProvider;
-        [SerializeField] private PlayerHotBar _playerHotBar;
+        [FormerlySerializedAs("_playerHotBar")] [SerializeField] private PlacingScreen _placingScreen;
         [SerializeField] private MenuScreen _menuScreen;
         [SerializeField] private ChoiceScreen _choiceScreen;
         [SerializeField] private CameraMovement _cameraMovement;
+        [SerializeField] private HotBar _hotBar;
 
         #endregion
 
@@ -32,7 +34,6 @@ namespace Islanders.Installers
             Container.Bind<BuildingsPlacer>().FromInstance(_buildingsPlacer).AsSingle();
             Container.Bind<PrefabsProvider>().FromInstance(_prefabProvider).AsSingle();
             Container.Bind<Player>().FromNewComponentOnNewGameObject().AsSingle().NonLazy();
-            Container.Bind<PlayerHotBar>().FromInstance(_playerHotBar).AsSingle().NonLazy();
             Container.Bind<LocalStateMachine>().FromNewComponentOnNewGameObject().AsSingle().NonLazy();
             Container.Bind<PlayerScore>().FromNew().AsSingle().NonLazy();
             Container.Bind<LocalInputService>().FromNewComponentOnNewGameObject().AsSingle().NonLazy();
@@ -40,10 +41,12 @@ namespace Islanders.Installers
             Container.Bind<PauseService>().FromNew().AsSingle();
             Container.Bind<UiInput>().FromNew().AsSingle().NonLazy();
             Container.Bind<CameraMovement>().FromInstance(_cameraMovement).AsSingle();
+            Container.Bind<HotBar>().FromInstance(_hotBar).AsSingle();
 
             // screens
             Container.Bind<MenuScreen>().FromInstance(_menuScreen).AsSingle();
             Container.Bind<ChoiceScreen>().FromInstance(_choiceScreen).AsSingle().NonLazy();
+            Container.Bind<PlacingScreen>().FromInstance(_placingScreen).AsSingle().NonLazy();
 
             // states
             Container.Bind<BootsTrapState>().FromNew().AsSingle().NonLazy();
