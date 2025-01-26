@@ -46,7 +46,7 @@ namespace Islanders.Game.Player
 
         private void Update()
         {
-            if (!UnityEngine.Input.GetKeyDown(KeyCode.F1))
+            if (!Input.GetKeyDown(KeyCode.F1))
             {
                 return;
             }
