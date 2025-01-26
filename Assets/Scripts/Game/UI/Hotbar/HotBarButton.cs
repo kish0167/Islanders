@@ -53,7 +53,6 @@ namespace Islanders.Game.UI.Hotbar
             }
 
             _placer.SetBuilding(Prefab);
-            Quantity--;
         }
 
         #endregion

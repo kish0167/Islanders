@@ -20,13 +20,13 @@ namespace Islanders.Game.Buildings_placing
         [Header("Required components")]
         [SerializeField] private PlacingChecker _checker;
 
+        private Camera _mainCamera;
+
         private PlaceableObject _building;
 
         private Vector3? _cursorPosition;
         private Material _defaultMaterial;
         private bool _defaultMaterialIsSet;
-
-        public bool Enabled { get; set; } = false;
 
         private PlaceableObjectFactory _placeableObjectFactory;
         private bool _placingPossible;
@@ -39,19 +39,32 @@ namespace Islanders.Game.Buildings_placing
 
         #endregion
 
+        #region Properties
+
+        public bool Enabled { get; set; }
+
+        #endregion
+
         #region Setup/Teardown
 
         [Inject]
         public void Construct(PlaceableObjectFactory placeableObjectFactory)
         {
             _placeableObjectFactory = placeableObjectFactory;
+            _mainCamera = Camera.main;
         }
 
         #endregion
 
         #region Unity lifecycle
+
         private void Update()
         {
+            if (_buildingPrefab == null)
+            {
+                Enabled = false;
+            }
+            
             if (!Enabled)
             {
                 return;
@@ -88,6 +101,11 @@ namespace Islanders.Game.Buildings_placing
 
             if (_building != null)
             {
+                if (!_defaultMaterialIsSet)
+                {
+                    SetDefaultBuildingMaterial();
+                }
+
                 _placeableObjectFactory.Deconstruct(_building);
             }
 
@@ -106,7 +124,14 @@ namespace Islanders.Game.Buildings_placing
 
         private void CastARay()
         {
-            Ray ray = Camera.main.ScreenPointToRay(UnityEngine.Input.mousePosition);
+            Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
+
+            if (Input.mousePosition.y <= Screen.height * 0.12)
+            {
+                Debug.Log(Input.mousePosition.y);
+                _cursorPosition = null;
+                return;
+            }
 
             if (Physics.Raycast(ray, out RaycastHit hit, _maxDistance, ~LayerMask.GetMask(Layers.ActiveBuilding)))
             {
@@ -169,9 +194,21 @@ namespace Islanders.Game.Buildings_placing
             _building.Sphere.Dispose();
             PlaceableObject buf = _building;
             _building = null;
+            _buildingPrefab = null;
             Disable();
-            
+
             OnBuildingPlaced?.Invoke(buf, _cursorPosition ?? Vector3.zero);
+        }
+
+        private void SetDefaultBuildingMaterial()
+        {
+            if (_building == null || !_building.TryGetComponent(out MeshRenderer meshRenderer))
+            {
+                return;
+            }
+
+            meshRenderer.material = _defaultMaterial;
+            _defaultMaterialIsSet = true;
         }
 
         private void UpdateBuildingMaterial()

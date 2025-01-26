@@ -9,9 +9,10 @@ namespace Islanders.Game.GameStates
     {
         #region Variables
 
-        private BuildingsPlacer _placer;
-        private CameraMovement _cameraMovement;
-        private PlacingScreen _placingScreen;
+        private readonly CameraMovement _cameraMovement;
+
+        private readonly BuildingsPlacer _placer;
+        private readonly PlacingScreen _placingScreen;
 
         #endregion
 
@@ -33,7 +34,7 @@ namespace Islanders.Game.GameStates
         {
             _cameraMovement.Enabled = true;
             _placingScreen.Show();
-            //_placer.Enabled = true;
+            _placer.Enabled = true;
         }
 
         public override void Exit()

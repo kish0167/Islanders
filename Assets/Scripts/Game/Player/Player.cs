@@ -34,33 +34,19 @@ namespace Islanders.Game.Player
         {
             _placer = placer;
             _placer.OnBuildingPlaced += BuildingPlacedCallback;
-            Step step = Resources.Load("Script/Step 1") as Step;
-            AddToInventory(step?.Choise1);
-            _selectedObject = _placeableObjectInventory.Keys.ToList()[0];
-            _selectedObjectIndex = 0;
         }
 
         #endregion
 
         #region Unity lifecycle
+        
 
-        private void Update()
+        private void Start()
         {
-            if (!Input.GetKeyDown(KeyCode.F1))
-            {
-                return;
-            }
-
-            return;
-            _selectedObject = _placeableObjectInventory.Keys.ToList()[_selectedObjectIndex];
-            _selectedObjectIndex++;
-
-            if (_selectedObjectIndex >= _placeableObjectInventory.Keys.Count)
-            {
-                _selectedObjectIndex %= _placeableObjectInventory.Keys.Count;
-            }
-
-            _placer.SetBuilding(_selectedObject);
+            Step step = Resources.Load("Script/Step 1") as Step;
+            AddToInventory(step?.Choise1);
+            _selectedObject = _placeableObjectInventory.Keys.ToList()[0];
+            _selectedObjectIndex = 0;
         }
 
         #endregion
