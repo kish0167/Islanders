@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mime;
 using Islanders.Game.Buildings_placing;
 using Islanders.ScriptableObjects;
+using Islanders.Utils.Log;
 using UnityEngine;
 using Zenject;
 using Vector3 = UnityEngine.Vector3;
@@ -64,7 +66,10 @@ namespace Islanders.Game.Player
 
                 _placeableObjectInventory[incomingArray.PlaceableObject] += (int)incomingArray.Quantity;
             }
-
+            
+            this.Log("Pack added to inventory");
+            LogInventoryContent();
+            
             OnInventoryUpdated?.Invoke(_placeableObjectInventory, _selectedObject);
         }
 
@@ -89,7 +94,25 @@ namespace Islanders.Game.Player
 
             _selectedObject = null;
             _placer.Disable();
+            
+            LogInventoryContent();
+            
             OnInventoryUpdated?.Invoke(_placeableObjectInventory, _selectedObject);
+        }
+
+        private void LogInventoryContent()
+        {
+            string text = "Inventory contains:\n";
+            
+            foreach (PlaceableObject placeableObject in _placeableObjectInventory.Keys.ToList())
+            {
+                text += placeableObject.name;
+                text += "\t";
+                text += _placeableObjectInventory[placeableObject];
+                text += "\n";
+            }
+            
+            this.Log(text);
         }
 
         #endregion
