@@ -20,13 +20,11 @@ namespace Islanders.Game.Buildings_placing
         [SerializeField] private PlacingChecker _checker;
 
         private Camera _mainCamera;
-
         private PlaceableObject _building;
-
         private Vector3? _cursorPosition;
-
         private PlaceableObjectFactory _placeableObjectFactory;
         private bool _placingPossible;
+        private bool _isPlacing = false;
 
         #endregion
 
@@ -57,7 +55,7 @@ namespace Islanders.Game.Buildings_placing
 
         private void Update()
         {
-            if (!Enabled)
+            if (!Enabled || !_isPlacing)
             {
                 return;
             }
@@ -89,6 +87,7 @@ namespace Islanders.Game.Buildings_placing
 
         public void SetBuilding(PlaceableObject buildingPrefab)
         {
+            _isPlacing = true;
             _buildingPrefab = buildingPrefab;
 
             if (_building != null)
@@ -172,6 +171,7 @@ namespace Islanders.Game.Buildings_placing
             _building = null;
             _buildingPrefab = null;
             Enabled = false;
+            _isPlacing = false;
             Disable();
 
             OnBuildingPlaced?.Invoke(buf, _cursorPosition ?? Vector3.zero);

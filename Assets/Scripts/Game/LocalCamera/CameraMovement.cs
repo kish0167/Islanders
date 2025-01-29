@@ -45,32 +45,32 @@ namespace Islanders.Game.LocalCamera
 
             if (key == KeyBind.CameraForward)
             {
-                _cameraTransform.position += _cameraTransform.forward * (_slideSpeed * 0.01f);
+                _cameraTransform.position += _cameraTransform.forward * (_slideSpeed * Time.deltaTime);
             }
 
             if (key == KeyBind.CameraBackward)
             {
-                _cameraTransform.position -= _cameraTransform.forward * (_slideSpeed * 0.01f);
+                _cameraTransform.position -= _cameraTransform.forward * (_slideSpeed * Time.deltaTime);
             }
 
             if (key == KeyBind.CameraSlideRight)
             {
-                _cameraTransform.position += _cameraTransform.right * (_slideSpeed * 0.01f);
+                _cameraTransform.position += _cameraTransform.right * (_slideSpeed * Time.deltaTime);
             }
 
             if (key == KeyBind.CameraSlideLeft)
             {
-                _cameraTransform.position -= _cameraTransform.right * (_slideSpeed * 0.01f);
+                _cameraTransform.position -= _cameraTransform.right * (_slideSpeed * Time.deltaTime);
             }
 
             if (key == KeyBind.CameraYawRight)
             {
-                _cameraTransform.Rotate(Vector3.up, -_rotateSpeed * 0.01f);
+                _cameraTransform.Rotate(Vector3.up, -_rotateSpeed * Time.deltaTime);
             }
 
             if (key == KeyBind.CameraYawLeft)
             {
-                _cameraTransform.Rotate(Vector3.up, _rotateSpeed * 0.01f);
+                _cameraTransform.Rotate(Vector3.up, _rotateSpeed * Time.deltaTime);
             }
         }
 
