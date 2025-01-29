@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Islanders.Game.Buildings_placing;
+using Islanders.Utils.Log;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
@@ -30,7 +31,6 @@ namespace Islanders.Game.UI.Hotbar
         private void Construct(Player.Player player, HotBarButtonFactory factory)
         {
             _player = player;
-            _player.OnInventoryUpdated += InventoryUpdatedCallback;
 
             _buttonFactory = factory;
 
@@ -96,15 +96,9 @@ namespace Islanders.Game.UI.Hotbar
             _leftArrow.gameObject.SetActive(false);
             _rightArrow.gameObject.SetActive(false);
 
-            PlaceableObject[] buildings = _allBuildings.Keys.ToArray();
-
             for (int i = 0; i < _allBuildings.Count; i++)
             {
-                HotBarButton btn = _buildingsButtons[i];
-                btn.gameObject.SetActive(true);
-                btn.Prefab = buildings[i];
-                btn.Quantity = _allBuildings[buildings[i]];
-                btn.PrefabName = buildings[i].name;
+                ActivateButton(i, i);
             }
 
             for (int i = _allBuildings.Count; i < _buildingsButtons.Count; i++)
@@ -119,23 +113,27 @@ namespace Islanders.Game.UI.Hotbar
         {
             if (_overflowPointer > _allBuildings.Count - _buildingsButtons.Count)
             {
-                Debug.LogError("index out of buttons range");
+                this.Error("index out of buttons range");
                 return;
             }
 
             _leftArrow.gameObject.SetActive(true);
             _rightArrow.gameObject.SetActive(true);
-
-            PlaceableObject[] buildings = _allBuildings.Keys.ToArray();
-
+            
             for (int i = 0; i < _buildingsButtons.Count; i++)
             {
-                HotBarButton btn = _buildingsButtons[i];
-                btn.gameObject.SetActive(true);
-                btn.Prefab = buildings[i + _overflowPointer];
-                btn.Quantity = _allBuildings[buildings[i + _overflowPointer]];
-                btn.PrefabName = buildings[i + _overflowPointer].name;
+                ActivateButton(i, i + _overflowPointer);
             }
+        }
+
+        private void ActivateButton(int buttonIndex, int prefabIndex)
+        {
+            PlaceableObject[] buildings = _allBuildings.Keys.ToArray();
+            HotBarButton btn = _buildingsButtons[buttonIndex];
+            btn.gameObject.SetActive(true);
+            btn.Prefab = buildings[prefabIndex];
+            btn.Quantity = _allBuildings[buildings[prefabIndex]];
+            btn.UpdateLabels();
         }
 
         #endregion

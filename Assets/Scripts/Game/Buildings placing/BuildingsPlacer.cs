@@ -24,7 +24,6 @@ namespace Islanders.Game.Buildings_placing
         private PlaceableObject _building;
 
         private Vector3? _cursorPosition;
-        private bool _defaultMaterialIsSet;
 
         private PlaceableObjectFactory _placeableObjectFactory;
         private bool _placingPossible;
@@ -99,7 +98,6 @@ namespace Islanders.Game.Buildings_placing
 
             SpawnBuildingFromPrefab();
             
-            _defaultMaterialIsSet = true;
             _checker.SetBuilding(_building);
 
             Enable();
@@ -186,6 +184,7 @@ namespace Islanders.Game.Buildings_placing
             {
                 return;
             }
+            
             _building.SetMaterial(_placingPossible);
         }
 

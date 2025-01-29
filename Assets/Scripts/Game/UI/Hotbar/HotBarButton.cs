@@ -1,3 +1,4 @@
+using Islanders.Game.Player;
 using Islanders.Game.Buildings_placing;
 using TMPro;
 using UnityEngine;
@@ -13,14 +14,13 @@ namespace Islanders.Game.UI.Hotbar
         [SerializeField] private TMP_Text _quantityLabel;
         [SerializeField] private TMP_Text _nameLabel;
 
-        private BuildingsPlacer _placer;
+        private Player.Player _player;
 
         #endregion
 
         #region Properties
 
         public PlaceableObject Prefab { get; set; }
-        public string PrefabName { get; set; }
         public int Quantity { get; set; }
 
         #endregion
@@ -36,9 +36,9 @@ namespace Islanders.Game.UI.Hotbar
 
         #region Public methods
 
-        public void Construct(BuildingsPlacer placer)
+        public void Construct(Player.Player player)
         {
-            _placer = placer;
+            _player = player;
         }
 
         #endregion
@@ -47,14 +47,15 @@ namespace Islanders.Game.UI.Hotbar
 
         private void PressedCallback()
         {
-            if (Prefab == null || Quantity < 1)
-            {
-                return;
-            }
-
-            _placer.SetBuilding(Prefab);
+            _player.SelectBuilding(Prefab);
         }
 
         #endregion
+
+        public void UpdateLabels()
+        {
+            _nameLabel.text = Prefab.name;
+            _quantityLabel.text = Quantity.ToString();
+        }
     }
 }

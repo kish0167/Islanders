@@ -78,6 +78,22 @@ namespace Islanders.Game.Player
             _placer.OnBuildingPlaced -= BuildingPlacedCallback;
         }
 
+        public void SelectBuilding(PlaceableObject selectedBuilding)
+        {
+            foreach (PlaceableObject placeableObject in _placeableObjectInventory.Keys.ToList())   
+            {
+                if (placeableObject == selectedBuilding)
+                {
+                    _selectedObject = selectedBuilding;
+                    _placer.SetBuilding(selectedBuilding);
+                    OnInventoryUpdated?.Invoke(_placeableObjectInventory, _selectedObject);
+                    return;
+                }
+            }
+            
+            this.Error($"No such building ({selectedBuilding.name}) in inventory");
+        }
+
         #endregion
 
         #region Private methods
@@ -86,34 +102,33 @@ namespace Islanders.Game.Player
         {
             _placeableObjectInventory[_selectedObject] -= 1;
 
-            if (_placeableObjectInventory[_selectedObject] > 0)
+            if (_placeableObjectInventory[_selectedObject] <= 0)
             {
-                OnInventoryUpdated?.Invoke(_placeableObjectInventory, _selectedObject);
-                return;
+                _placeableObjectInventory.Remove(_selectedObject);
+                _selectedObject = null;
+                _placer.Disable();
             }
-
-            _selectedObject = null;
-            _placer.Disable();
-            
-            LogInventoryContent();
             
             OnInventoryUpdated?.Invoke(_placeableObjectInventory, _selectedObject);
+            LogInventoryContent();
         }
 
-        private void LogInventoryContent()
+        private void LogInventoryContent() // TODO: Delete after
         {
             string text = "Inventory contains:\n";
             
             foreach (PlaceableObject placeableObject in _placeableObjectInventory.Keys.ToList())
             {
                 text += placeableObject.name;
-                text += "\t";
+                text += " ";
                 text += _placeableObjectInventory[placeableObject];
-                text += "\n";
+                text += ";  ";
             }
             
             this.Log(text);
         }
+        
+        
 
         #endregion
     }
