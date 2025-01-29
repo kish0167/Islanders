@@ -17,7 +17,7 @@ namespace Islanders.Game.Player
 
         private BuildingsPlacer _placer;
         private PlaceableObject _selectedObject;
-        private int _selectedObjectIndex;
+        // private int _selectedObjectIndex;
 
         #endregion
 
@@ -46,7 +46,7 @@ namespace Islanders.Game.Player
             Step step = Resources.Load("Script/Step 1") as Step;
             AddToInventory(step?.Choise1);
             _selectedObject = _placeableObjectInventory.Keys.ToList()[0];
-            _selectedObjectIndex = 0;
+            //_selectedObjectIndex = 0;
         }
 
         #endregion

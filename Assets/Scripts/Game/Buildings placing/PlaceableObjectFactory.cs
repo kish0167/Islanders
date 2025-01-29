@@ -12,7 +12,7 @@ namespace Islanders.Game.Buildings_placing
 
         private BuildingsPlacer _buildingsPlacer;
         private ScoreTableService _scoreTableService;
-        private PrefabsProvider _prefabProvider;
+        private PrefabsProvider _prefabsProvider;
 
         #endregion
 
@@ -23,7 +23,7 @@ namespace Islanders.Game.Buildings_placing
         {
             _scoreTableService = tableService;
             _buildingsPlacer = placer;
-            _prefabProvider = provider;
+            _prefabsProvider = provider;
         }
 
         #endregion
@@ -35,9 +35,10 @@ namespace Islanders.Game.Buildings_placing
             PlaceableObject building = LeanPool.Spawn(prefab, position, Quaternion.identity);
             building.gameObject.GetComponent<ScoreCounter>().Construct(_scoreTableService, _buildingsPlacer);
             building.gameObject.layer = LayerMask.NameToLayer(Layers.ActiveBuilding);
+            building.FetchDefaultMaterialAndMeshRendarer();
+            building.ProhibitingMaterial = _prefabsProvider.ProhibitingMaterial;
             
-            VisualSphere sphere = LeanPool.Spawn(_prefabProvider.TransparentSphere, position, Quaternion.identity);
-            //sphere.Construct(_buildingsPlacer);
+            VisualSphere sphere = LeanPool.Spawn(_prefabsProvider.TransparentSphere, position, Quaternion.identity);
             sphere.transform.SetParent(building.transform);
             sphere.transform.localPosition = Vector3.zero;
             sphere.transform.localScale = Vector3.one * building.gameObject.GetComponent<ScoreCounter>().Radius * 2;
@@ -50,6 +51,7 @@ namespace Islanders.Game.Buildings_placing
 
         public void Deconstruct(PlaceableObject building)
         {
+            building.SetMaterialToDefault();
             LeanPool.Despawn(building.Sphere);
             LeanPool.Despawn(building);
         }

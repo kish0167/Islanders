@@ -35400,6 +35400,7 @@ MonoBehaviour:
   _transparentSpherePrefab: {fileID: -8357441191215311953, guid: e9b2e252642367a4cb1940e591d4c5a4,
     type: 3}
   _hotBarButton: {fileID: 0}
+  _prohibitingMaterial: {fileID: 0}
 --- !u!4 &844653455
 Transform:
   m_ObjectHideFlags: 0
@@ -52034,8 +52035,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _buildingPrefab: {fileID: 0}
   _maxDistance: 10206.3
-  _prohibitingMaterial: {fileID: 2100000, guid: 028b21ca7adb34c4aa77de3a59f57463,
-    type: 2}
   _checker: {fileID: 1186642261}
 --- !u!4 &1186642260
 Transform:
@@ -81449,11 +81448,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _buildingsButtons:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 1400575725}
+  - {fileID: 1051292748}
+  - {fileID: 1389358244}
+  - {fileID: 1285865425}
+  - {fileID: 1545738093}
   _leftArrow: {fileID: 1156029128}
   _rightArrow: {fileID: 1442779452}
   _newBuildingButton: {fileID: 1128036248}

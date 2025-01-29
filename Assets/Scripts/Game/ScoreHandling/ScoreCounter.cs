@@ -22,8 +22,8 @@ namespace Islanders.Game.ScoreHandling
         #region Events
 
         public static event Action<int> OnScoreAcquiring; // для начисления очков
-        public static event Action<int> OnScoreCalculated; // для "предпоказа" очков
-        public static event Action<Dictionary<Transform, int>> OnSphereCasted; // для UI чисел над постройками на сцене
+        public static event Action<int> OnPreScoreCalculated; // для "предпоказа" очков
+        public static event Action<Dictionary<Transform, int>> OnPreScoreDrawing; // для UI чисел над постройками на сцене
 
         #endregion
 
@@ -45,17 +45,6 @@ namespace Islanders.Game.ScoreHandling
             }
 
             CastASphereAndCalculateScore();
-        }
-
-        public void OnDrawGizmos()
-        {
-            if (_isPlaced)
-            {
-                return;
-            }
-
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(gameObject.transform.position, _radius);
         }
 
         #endregion
@@ -101,8 +90,8 @@ namespace Islanders.Game.ScoreHandling
                 _currentScore += _ownScoreMap[scoreCounter.Type];
             }
 
-            OnScoreCalculated?.Invoke(_currentScore);
-            OnSphereCasted?.Invoke(numbersToShow);
+            OnPreScoreCalculated?.Invoke(_currentScore);
+            OnPreScoreDrawing?.Invoke(numbersToShow);
         }
 
         #endregion

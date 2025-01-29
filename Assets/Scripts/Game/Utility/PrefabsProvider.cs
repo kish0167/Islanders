@@ -10,6 +10,9 @@ namespace Islanders.Game.Utility
 
         [SerializeField] private VisualSphere _transparentSpherePrefab;
         [SerializeField] private HotBarButton _hotBarButton;
+        [SerializeField] private Material _prohibitingMaterial;
+
+        public Material ProhibitingMaterial => _prohibitingMaterial;
 
         #endregion
 

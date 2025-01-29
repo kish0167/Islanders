@@ -34,7 +34,7 @@ namespace Islanders.Game.GameStates
         {
             _cameraMovement.Enabled = true;
             _placingScreen.Show();
-            _placer.Enabled = true;
+            // _placer.Enabled = true;
         }
 
         public override void Exit()
