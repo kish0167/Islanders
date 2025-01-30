@@ -10,7 +10,7 @@ namespace Islanders.Game.GameStates
         #region Variables
 
         private MenuScreen _menuScreen;
-
+        private ChoiceScreen _choiceScreen;
         private readonly BuildingsPlacer _placer;
         private readonly PlayerScore _playerScore;
         private PlacingScreen _placingScreen;
@@ -20,12 +20,13 @@ namespace Islanders.Game.GameStates
         #region Setup/Teardown
 
         [Inject]
-        public BootsTrapState(MenuScreen menuScreen, PlayerScore playerScore, BuildingsPlacer placer, PlacingScreen placingScreen)
+        public BootsTrapState(MenuScreen menuScreen, PlayerScore playerScore, BuildingsPlacer placer, PlacingScreen placingScreen, ChoiceScreen choiceScreen)
         {
             _menuScreen = menuScreen;
             _playerScore = playerScore;
             _placer = placer;
             _placingScreen = placingScreen;
+            _choiceScreen = choiceScreen;
         }
 
         #endregion
@@ -38,6 +39,7 @@ namespace Islanders.Game.GameStates
             _playerScore.SetToZero();
             _menuScreen.Hide();
             _placingScreen.Hide();
+            _choiceScreen.Hide();
         }
 
         public override void Exit() { }

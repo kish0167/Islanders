@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Islanders.Game.Buildings_placing;
+using Islanders.Game.GameStates;
 using Islanders.Utils.Log;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,6 +22,7 @@ namespace Islanders.Game.UI.Hotbar
 
         private Dictionary<PlaceableObject, int> _allBuildings;
         private HotBarButtonFactory _buttonFactory;
+        private LocalStateMachine _stateMachine;
         private int _overflowPointer;
         private Player.Player _player;
 
@@ -28,11 +31,11 @@ namespace Islanders.Game.UI.Hotbar
         #region Setup/Teardown
 
         [Inject]
-        private void Construct(Player.Player player, HotBarButtonFactory factory)
+        private void Construct(Player.Player player, HotBarButtonFactory factory, LocalStateMachine stateMachine)
         {
             _player = player;
-
             _buttonFactory = factory;
+            _stateMachine = stateMachine;
 
             foreach (HotBarButton button in _buildingsButtons)
             {
@@ -78,17 +81,19 @@ namespace Islanders.Game.UI.Hotbar
 
         private void LeftArrowPressedCallback()
         {
-            throw new System.NotImplementedException();
+            _overflowPointer = Math.Max(_overflowPointer  - 1, 0);
+            UpdateOverflowedBar();
         }
 
         private void NewBuildingButtonPressedCallback()
         {
-            throw new System.NotImplementedException();
+            _stateMachine.TransitionTo<ChoosingState>();   
         }
 
         private void RightArrowPressedCallback()
         {
-            throw new System.NotImplementedException();
+            _overflowPointer = Math.Min(_overflowPointer + 1, _allBuildings.Count - _buildingsButtons.Count);
+            UpdateOverflowedBar();
         }
 
         private void UpdateNotFullBar()
@@ -111,11 +116,7 @@ namespace Islanders.Game.UI.Hotbar
 
         private void UpdateOverflowedBar()
         {
-            if (_overflowPointer > _allBuildings.Count - _buildingsButtons.Count)
-            {
-                this.Error("index out of buttons range");
-                return;
-            }
+            AdjustOverflowPointer();
 
             _leftArrow.gameObject.SetActive(true);
             _rightArrow.gameObject.SetActive(true);
@@ -137,5 +138,11 @@ namespace Islanders.Game.UI.Hotbar
         }
 
         #endregion
+
+        private void AdjustOverflowPointer()
+        {
+            _overflowPointer = Math.Max(_overflowPointer, 0);
+            _overflowPointer = Math.Min(_overflowPointer, _allBuildings.Count - _buildingsButtons.Count);
+        }
     }
 }

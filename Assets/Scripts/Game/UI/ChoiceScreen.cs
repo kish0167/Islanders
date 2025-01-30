@@ -4,17 +4,20 @@ namespace Islanders.Game.UI
 {
     public class ChoiceScreen : MonoBehaviour, IScreen
     {
+        [SerializeField] private GameObject _content;
+        
         #region IScreen
-
-        public void Show()
-        {
-            throw new System.NotImplementedException();
-        }
 
         public void Hide()
         {
-            throw new System.NotImplementedException();
+            _content.SetActive(false);
         }
+
+        public void Show()
+        {
+            _content.SetActive(true);
+        }
+        
 
         #endregion
     }

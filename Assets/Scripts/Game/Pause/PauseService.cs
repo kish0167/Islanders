@@ -33,7 +33,6 @@ namespace Islanders.Game.Pause
         public void ForcePause()
         {
             _stateMachine.TransitionTo<MenuState>();
-            Debug.Log("pause on");
         }
 
         public void Toggle()
@@ -45,6 +44,10 @@ namespace Islanders.Game.Pause
             else if (_stateMachine.Is<PlacingState>())
             {
                 _stateMachine.TransitionTo<MenuState>();
+            } 
+            else if (_stateMachine.Is<ChoosingState>())
+            {
+                _stateMachine.TransitionTo<PlacingState>();
             }
         }
 

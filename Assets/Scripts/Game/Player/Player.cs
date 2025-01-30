@@ -68,7 +68,6 @@ namespace Islanders.Game.Player
             }
             
             this.Log("Pack added to inventory");
-            LogInventoryContent();
             
             OnInventoryUpdated?.Invoke(_placeableObjectInventory, _selectedObject);
         }
@@ -110,7 +109,6 @@ namespace Islanders.Game.Player
             }
             
             OnInventoryUpdated?.Invoke(_placeableObjectInventory, _selectedObject);
-            LogInventoryContent();
         }
 
         private void LogInventoryContent() // TODO: Delete after
