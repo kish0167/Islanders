@@ -24,6 +24,8 @@ namespace Islanders.Installers
         [SerializeField] private ChoiceScreen _choiceScreen;
         [SerializeField] private CameraMovement _cameraMovement;
         [SerializeField] private HotBar _hotBar;
+        [FormerlySerializedAs("_scoreLabel")] [SerializeField] private ScoreBox _scoreBox;
+        
 
         #endregion
 
@@ -44,6 +46,7 @@ namespace Islanders.Installers
             Container.Bind<CameraMovement>().FromInstance(_cameraMovement).AsSingle();
             Container.Bind<HotBar>().FromInstance(_hotBar).AsSingle();
             Container.Bind<HotBarButtonFactory>().FromNew().AsSingle();
+            Container.Bind<ScoreBox>().FromInstance(_scoreBox).AsSingle();
 
             // screens
             Container.Bind<MenuScreen>().FromInstance(_menuScreen).AsSingle();

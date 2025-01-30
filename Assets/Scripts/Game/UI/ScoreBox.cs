@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Islanders.Game.UI
 {
-    public class ScoreLabel : MonoBehaviour
+    public class ScoreBox : MonoBehaviour
     {
         [SerializeField] private TMP_Text _scoreFloorLabel;
         [SerializeField] private TMP_Text _scoreLabel;

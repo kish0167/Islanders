@@ -81,7 +81,7 @@ namespace Islanders.Game.LocalCamera
         private void Zoom(float wheelScroll)
         {
             float newFov = _camera.fieldOfView;
-            newFov += wheelScroll * _fovChangeSpeed * Time.deltaTime * 60;
+            newFov -= wheelScroll * _fovChangeSpeed * Time.deltaTime * 60;
             newFov = Math.Clamp(newFov, _minFov, _maxFov);
             _camera.fieldOfView = newFov;
         }
