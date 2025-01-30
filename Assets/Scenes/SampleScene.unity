@@ -77365,7 +77365,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 50.8
+  field of view: 30
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -83543,6 +83543,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _slideSpeed: 10
   _rotateSpeed: 40
+  _fovChangeSpeed: 20
+  _maxFov: 30
+  _minFov: 7
   _cameraTransform: {fileID: 1976235000}
   _camera: {fileID: 1831510834}
 --- !u!4 &1976235000

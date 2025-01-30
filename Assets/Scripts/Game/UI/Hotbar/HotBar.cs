@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Islanders.Game.Buildings_placing;
 using Islanders.Game.GameStates;
+using Islanders.Game.LocalInput;
 using Islanders.Utils.Log;
 using UnityEngine;
 using UnityEngine.UI;
@@ -23,6 +24,7 @@ namespace Islanders.Game.UI.Hotbar
         private Dictionary<PlaceableObject, int> _allBuildings;
         private HotBarButtonFactory _buttonFactory;
         private LocalStateMachine _stateMachine;
+        private LocalInputService _inputService;
         private int _overflowPointer;
         private Player.Player _player;
 
@@ -31,11 +33,13 @@ namespace Islanders.Game.UI.Hotbar
         #region Setup/Teardown
 
         [Inject]
-        private void Construct(Player.Player player, HotBarButtonFactory factory, LocalStateMachine stateMachine)
+        private void Construct(Player.Player player, HotBarButtonFactory factory,
+            LocalStateMachine stateMachine, LocalInputService inputService)
         {
             _player = player;
             _buttonFactory = factory;
             _stateMachine = stateMachine;
+            _inputService = inputService;
 
             foreach (HotBarButton button in _buildingsButtons)
             {
@@ -54,11 +58,23 @@ namespace Islanders.Game.UI.Hotbar
         private void OnEnable()
         {
             _player.OnInventoryUpdated += InventoryUpdatedCallback;
+            _inputService.OnKeyPressed += KeyPressedCallback;
+        }
+
+        private void KeyPressedCallback(KeyBind key)
+        {
+            if (key <= KeyBind.UiStart || key >= KeyBind.UiEnd || !_buildingsButtons[key - KeyBind.HotBar1].enabled)
+            {
+                return;
+            }
+            
+            _player.SelectBuilding(_buildingsButtons[key - KeyBind.HotBar1].Prefab);
         }
 
         private void OnDisable()
         {
             _player.OnInventoryUpdated -= InventoryUpdatedCallback;
+            _inputService.OnKeyPressed -= KeyPressedCallback;
         }
 
         #endregion

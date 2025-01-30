@@ -1,3 +1,4 @@
+using System;
 using Islanders.Game.LocalInput;
 using Islanders.Game.Utility;
 using UnityEngine;
@@ -11,10 +12,13 @@ namespace Islanders.Game.LocalCamera
         [Header("Options")]
         [SerializeField] private float _slideSpeed = 10;
         [SerializeField] private float _rotateSpeed = 40;
+        [SerializeField] private float _fovChangeSpeed = 20;
+        [SerializeField] private float _maxFov = 30;
+        [SerializeField] private float _minFov = 7;
         [Header("Required")]
         [SerializeField] private Transform _cameraTransform;
         [SerializeField] private Camera _camera;
-
+        
         #endregion
 
         #region Properties
@@ -31,10 +35,10 @@ namespace Islanders.Game.LocalCamera
             {
                 return;
             }
-
-            float scroll = Input.GetAxis("Mouse ScrollWheel");
-            _camera.fieldOfView += scroll *= -20;  // TODO: REDO
+            
+            Zoom(Input.GetAxis("Mouse ScrollWheel"));
         }
+        
 
         public void DoAction(KeyBind key)
         {
@@ -72,6 +76,14 @@ namespace Islanders.Game.LocalCamera
             {
                 _cameraTransform.Rotate(Vector3.up, _rotateSpeed * Time.deltaTime);
             }
+        }
+
+        private void Zoom(float wheelScroll)
+        {
+            float newFov = _camera.fieldOfView;
+            newFov += wheelScroll * _fovChangeSpeed * Time.deltaTime * 60;
+            newFov = Math.Clamp(newFov, _minFov, _maxFov);
+            _camera.fieldOfView = newFov;
         }
 
         #endregion
