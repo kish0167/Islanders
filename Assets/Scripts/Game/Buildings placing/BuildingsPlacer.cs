@@ -18,13 +18,13 @@ namespace Islanders.Game.Buildings_placing
 
         [Header("Required components")]
         [SerializeField] private PlacingChecker _checker;
-
-        private Camera _mainCamera;
         private PlaceableObject _building;
         private Vector3? _cursorPosition;
+        private bool _isPlacing;
+
+        private Camera _mainCamera;
         private PlaceableObjectFactory _placeableObjectFactory;
         private bool _placingPossible;
-        private bool _isPlacing = false;
 
         #endregion
 
@@ -41,7 +41,7 @@ namespace Islanders.Game.Buildings_placing
         #endregion
 
         #region Setup/Teardown
-        
+
         [Inject]
         public void Construct(PlaceableObjectFactory placeableObjectFactory)
         {
@@ -96,7 +96,7 @@ namespace Islanders.Game.Buildings_placing
             }
 
             SpawnBuildingFromPrefab();
-            
+
             _checker.SetBuilding(_building);
 
             Enable();
@@ -176,7 +176,11 @@ namespace Islanders.Game.Buildings_placing
 
             OnBuildingPlaced?.Invoke(buf, _cursorPosition ?? Vector3.zero);
         }
-        
+
+        private void SpawnBuildingFromPrefab()
+        {
+            _building = _placeableObjectFactory.CreateFromPrefab(_buildingPrefab, _cursorPosition ?? Vector3.zero);
+        }
 
         private void UpdateBuildingMaterial()
         {
@@ -184,13 +188,8 @@ namespace Islanders.Game.Buildings_placing
             {
                 return;
             }
-            
-            _building.SetMaterial(_placingPossible);
-        }
 
-        private void SpawnBuildingFromPrefab()
-        {
-            _building = _placeableObjectFactory.CreateFromPrefab(_buildingPrefab, _cursorPosition ?? Vector3.zero);
+            _building.SetMaterial(_placingPossible);
         }
 
         #endregion

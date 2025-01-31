@@ -1,15 +1,14 @@
-using Islanders.Game.Buildings_placing;
 using Zenject;
 
 namespace Islanders.Game.UI.Hotbar
 {
     public class HotBarButtonFactory
     {
-        #region Variabless
+        #region Variables
 
         private HotBarButton _buttonPrefab;
 
-        private Player.Player _player;
+        private readonly Player.Player _player;
 
         #endregion
 

@@ -5,13 +5,23 @@ namespace Islanders.Game.GameStates
 {
     public class ChoosingState : GameState
     {
-        private ChoiceScreen _choiceScreen;
-        
+        #region Variables
+
+        private readonly ChoiceScreen _choiceScreen;
+
+        #endregion
+
+        #region Setup/Teardown
+
         [Inject]
         public ChoosingState(ChoiceScreen choiceScreen)
         {
             _choiceScreen = choiceScreen;
         }
+
+        #endregion
+
+        #region Public methods
 
         public override void Enter()
         {
@@ -22,5 +32,7 @@ namespace Islanders.Game.GameStates
         {
             _choiceScreen.Hide();
         }
+
+        #endregion
     }
 }

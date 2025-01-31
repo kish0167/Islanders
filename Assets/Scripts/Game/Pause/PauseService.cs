@@ -1,5 +1,4 @@
 using Islanders.Game.GameStates;
-using UnityEngine;
 using Zenject;
 
 namespace Islanders.Game.Pause
@@ -44,7 +43,7 @@ namespace Islanders.Game.Pause
             else if (_stateMachine.Is<PlacingState>())
             {
                 _stateMachine.TransitionTo<MenuState>();
-            } 
+            }
             else if (_stateMachine.Is<ChoosingState>())
             {
                 _stateMachine.TransitionTo<PlacingState>();

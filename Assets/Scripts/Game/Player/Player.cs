@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Mime;
 using Islanders.Game.Buildings_placing;
 using Islanders.ScriptableObjects;
 using Islanders.Utils.Log;
@@ -19,7 +18,6 @@ namespace Islanders.Game.Player
 
         private BuildingsPlacer _placer;
         private PlaceableObject _selectedObject;
-        // private int _selectedObjectIndex;
 
         #endregion
 
@@ -41,14 +39,12 @@ namespace Islanders.Game.Player
         #endregion
 
         #region Unity lifecycle
-        
 
         private void Start()
         {
             Step step = Resources.Load("Script/Step 1") as Step;
             AddToInventory(step?.Choise1);
             _selectedObject = _placeableObjectInventory.Keys.ToList()[0];
-            //_selectedObjectIndex = 0;
         }
 
         #endregion
@@ -66,9 +62,9 @@ namespace Islanders.Game.Player
 
                 _placeableObjectInventory[incomingArray.PlaceableObject] += (int)incomingArray.Quantity;
             }
-            
+
             this.Log("Pack added to inventory");
-            
+
             OnInventoryUpdated?.Invoke(_placeableObjectInventory, _selectedObject);
         }
 
@@ -79,7 +75,7 @@ namespace Islanders.Game.Player
 
         public void SelectBuilding(PlaceableObject selectedBuilding)
         {
-            foreach (PlaceableObject placeableObject in _placeableObjectInventory.Keys.ToList())   
+            foreach (PlaceableObject placeableObject in _placeableObjectInventory.Keys.ToList())
             {
                 if (placeableObject == selectedBuilding)
                 {
@@ -89,7 +85,7 @@ namespace Islanders.Game.Player
                     return;
                 }
             }
-            
+
             this.Error($"No such building ({selectedBuilding.name}) in inventory");
         }
 
@@ -107,14 +103,14 @@ namespace Islanders.Game.Player
                 _selectedObject = null;
                 _placer.Disable();
             }
-            
+
             OnInventoryUpdated?.Invoke(_placeableObjectInventory, _selectedObject);
         }
 
         private void LogInventoryContent() // TODO: Delete after
         {
             string text = "Inventory contains:\n";
-            
+
             foreach (PlaceableObject placeableObject in _placeableObjectInventory.Keys.ToList())
             {
                 text += placeableObject.name;
@@ -122,12 +118,15 @@ namespace Islanders.Game.Player
                 text += _placeableObjectInventory[placeableObject];
                 text += ";  ";
             }
-            
+
             this.Log(text);
         }
-        
-        
 
         #endregion
+
+        public void ForceUiUpdate()
+        {
+            OnInventoryUpdated?.Invoke(_placeableObjectInventory, _selectedObject);
+        }
     }
 }

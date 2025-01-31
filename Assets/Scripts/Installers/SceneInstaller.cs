@@ -1,4 +1,5 @@
 using Islanders.Game.Buildings_placing;
+using Islanders.Game.GameScript;
 using Islanders.Game.GameStates;
 using Islanders.Game.LocalCamera;
 using Islanders.Game.LocalInput;
@@ -47,6 +48,7 @@ namespace Islanders.Installers
             Container.Bind<HotBar>().FromInstance(_hotBar).AsSingle();
             Container.Bind<HotBarButtonFactory>().FromNew().AsSingle();
             Container.Bind<ScoreBox>().FromInstance(_scoreBox).AsSingle();
+            Container.Bind<IScriptService>().To<LinearScriptService>().FromNew().AsSingle().NonLazy();
 
             // screens
             Container.Bind<MenuScreen>().FromInstance(_menuScreen).AsSingle();

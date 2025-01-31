@@ -6,9 +6,16 @@ namespace Islanders.Game.Player
 {
     public class PlayerScore
     {
-        private int _score = 0;
-        private int _scoreFloor = 0;
-        private int _scoreCeiling = 0;
+        #region Variables
+
+        private readonly ScoreBox _box;
+        private int _score;
+        private int _scoreCeiling;
+        private int _scoreFloor;
+
+        #endregion
+
+        #region Properties
 
         public int Score
         {
@@ -16,6 +23,16 @@ namespace Islanders.Game.Player
             private set
             {
                 _score = value;
+                UpdateUI();
+            }
+        }
+
+        public int ScoreCeiling
+        {
+            get => _scoreCeiling;
+            private set
+            {
+                _scoreCeiling = value;
                 UpdateUI();
             }
         }
@@ -30,24 +47,31 @@ namespace Islanders.Game.Player
             }
         }
 
-        public int ScoreCeiling
-        {
-            get => _scoreCeiling;
-            private set
-            {
-                _scoreCeiling = value;
-                UpdateUI();
-            }
-        }
-        
-        private ScoreBox _box;
+        #endregion
+
+        #region Setup/Teardown
+
         [Inject]
         public PlayerScore(ScoreBox box)
         {
             _box = box;
             ScoreCounter.OnScoreAcquiring += ScoreAcquiringCallback;
         }
-        
+
+        #endregion
+
+        #region Public methods
+
+        public void SetToZero()
+        {
+            Score = 0;
+            ScoreFloor = 0;
+            ScoreCeiling = 0;
+        }
+
+        #endregion
+
+        #region Private methods
 
         private void ScoreAcquiringCallback(int quantity)
         {
@@ -57,15 +81,6 @@ namespace Islanders.Game.Player
         private void UpdateUI()
         {
             _box.UpdateLabels(_scoreFloor, _score, _scoreCeiling);
-        }
-
-        #region Public methods
-
-        public void SetToZero()
-        {
-            Score = 0;
-            ScoreFloor = 0;
-            ScoreCeiling = 0;
         }
 
         #endregion

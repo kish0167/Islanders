@@ -18,7 +18,7 @@ namespace Islanders.Game.LocalCamera
         [Header("Required")]
         [SerializeField] private Transform _cameraTransform;
         [SerializeField] private Camera _camera;
-        
+
         #endregion
 
         #region Properties
@@ -27,7 +27,7 @@ namespace Islanders.Game.LocalCamera
 
         #endregion
 
-        #region IInputControllable
+        #region Unity lifecycle
 
         private void Update()
         {
@@ -35,10 +35,13 @@ namespace Islanders.Game.LocalCamera
             {
                 return;
             }
-            
+
             Zoom(Input.GetAxis("Mouse ScrollWheel"));
         }
-        
+
+        #endregion
+
+        #region IInputControllable
 
         public void DoAction(KeyBind key)
         {
@@ -78,10 +81,14 @@ namespace Islanders.Game.LocalCamera
             }
         }
 
+        #endregion
+
+        #region Private methods
+
         private void Zoom(float wheelScroll)
         {
             float newFov = _camera.fieldOfView;
-            newFov -= wheelScroll * _fovChangeSpeed * Time.deltaTime * 60;
+            newFov -= wheelScroll * _fovChangeSpeed;
             newFov = Math.Clamp(newFov, _minFov, _maxFov);
             _camera.fieldOfView = newFov;
         }

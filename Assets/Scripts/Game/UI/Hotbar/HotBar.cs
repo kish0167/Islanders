@@ -4,7 +4,6 @@ using System.Linq;
 using Islanders.Game.Buildings_placing;
 using Islanders.Game.GameStates;
 using Islanders.Game.LocalInput;
-using Islanders.Utils.Log;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
@@ -23,10 +22,11 @@ namespace Islanders.Game.UI.Hotbar
 
         private Dictionary<PlaceableObject, int> _allBuildings;
         private HotBarButtonFactory _buttonFactory;
-        private LocalStateMachine _stateMachine;
         private LocalInputService _inputService;
         private int _overflowPointer;
         private Player.Player _player;
+        private PlaceableObject _selectedBuilding;
+        private LocalStateMachine _stateMachine;
 
         #endregion
 
@@ -59,16 +59,7 @@ namespace Islanders.Game.UI.Hotbar
         {
             _player.OnInventoryUpdated += InventoryUpdatedCallback;
             _inputService.OnKeyPressed += KeyPressedCallback;
-        }
-
-        private void KeyPressedCallback(KeyBind key)
-        {
-            if (key <= KeyBind.UiStart || key >= KeyBind.UiEnd || !_buildingsButtons[key - KeyBind.HotBar1].enabled)
-            {
-                return;
-            }
-            
-            _player.SelectBuilding(_buildingsButtons[key - KeyBind.HotBar1].Prefab);
+            _player.ForceUiUpdate();
         }
 
         private void OnDisable()
@@ -81,10 +72,46 @@ namespace Islanders.Game.UI.Hotbar
 
         #region Private methods
 
+        private void ActivateButton(int buttonIndex, int prefabIndex)
+        {
+            PlaceableObject[] buildings = _allBuildings.Keys.ToArray();
+            HotBarButton btn = _buildingsButtons[buttonIndex];
+            btn.gameObject.SetActive(true);
+            btn.Prefab = buildings[prefabIndex];
+            btn.Quantity = _allBuildings[buildings[prefabIndex]];
+            btn.UpdateLabels();
+        }
+
+        private void AdjustOverflowPointer()
+        {
+            _overflowPointer = Math.Max(_overflowPointer, 0);
+            _overflowPointer = Math.Min(_overflowPointer, _allBuildings.Count - _buildingsButtons.Count);
+        }
+
+        private void HighLightButtonWith(PlaceableObject selected)
+        {
+            foreach (HotBarButton button in _buildingsButtons)
+            {
+                if (!button.enabled)
+                {
+                    continue;
+                }
+                if (button.Prefab == selected)
+                {
+                    button.Highlight();
+                }
+                else
+                {
+                    button.RemoveHighlighting();
+                }
+            }
+        }
+
         private void InventoryUpdatedCallback(Dictionary<PlaceableObject, int> inventory, PlaceableObject selected)
         {
             _allBuildings = inventory;
-
+            _selectedBuilding = selected;
+            
             if (inventory.Count <= _buildingsButtons.Count)
             {
                 UpdateNotFullBar();
@@ -93,17 +120,29 @@ namespace Islanders.Game.UI.Hotbar
             {
                 UpdateOverflowedBar();
             }
+            
+            HighLightButtonWith(selected);
+        }
+
+        private void KeyPressedCallback(KeyBind key)
+        {
+            if (key < KeyBind.HotBar1 || key >= KeyBind.UiEnd || !_buildingsButtons[key - KeyBind.HotBar1].enabled)
+            {
+                return;
+            }
+
+            _player.SelectBuilding(_buildingsButtons[key - KeyBind.HotBar1].Prefab);
         }
 
         private void LeftArrowPressedCallback()
         {
-            _overflowPointer = Math.Max(_overflowPointer  - 1, 0);
+            _overflowPointer = Math.Max(_overflowPointer - 1, 0);
             UpdateOverflowedBar();
         }
 
         private void NewBuildingButtonPressedCallback()
         {
-            _stateMachine.TransitionTo<ChoosingState>();   
+            _stateMachine.TransitionTo<ChoosingState>();
         }
 
         private void RightArrowPressedCallback()
@@ -136,29 +175,13 @@ namespace Islanders.Game.UI.Hotbar
 
             _leftArrow.gameObject.SetActive(true);
             _rightArrow.gameObject.SetActive(true);
-            
+
             for (int i = 0; i < _buildingsButtons.Count; i++)
             {
                 ActivateButton(i, i + _overflowPointer);
             }
         }
 
-        private void ActivateButton(int buttonIndex, int prefabIndex)
-        {
-            PlaceableObject[] buildings = _allBuildings.Keys.ToArray();
-            HotBarButton btn = _buildingsButtons[buttonIndex];
-            btn.gameObject.SetActive(true);
-            btn.Prefab = buildings[prefabIndex];
-            btn.Quantity = _allBuildings[buildings[prefabIndex]];
-            btn.UpdateLabels();
-        }
-
         #endregion
-
-        private void AdjustOverflowPointer()
-        {
-            _overflowPointer = Math.Max(_overflowPointer, 0);
-            _overflowPointer = Math.Min(_overflowPointer, _allBuildings.Count - _buildingsButtons.Count);
-        }
     }
 }
