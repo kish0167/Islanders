@@ -61864,7 +61864,7 @@ GameObject:
   - component: {fileID: 1459059297}
   - component: {fileID: 1459059296}
   m_Layer: 5
-  m_Name: 1Choise Button (1)
+  m_Name: 2Choise Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -80810,6 +80810,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _content: {fileID: 504753836}
+  _1ChoiceButton: {fileID: 1307082160}
+  _2ChoiceButton: {fileID: 1459059296}
 --- !u!1001 &1888710854
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -12,6 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1962609a128144f2b9b7482ddffb7b48, type: 3}
   m_Name: Step 2
   m_EditorClassIdentifier: 
-  _choise1: []
-  _choise2: []
+  _choise1:
+  - _name: tumur
+    _placeableObject: {fileID: 5329374275806281584, guid: 3ce14f53e145e2a4ca6234b4e79563b9,
+      type: 3}
+    _quantity: 100
+  _choise2:
+  - _name: Tower
+    _placeableObject: {fileID: 8255254960364829407, guid: 16e541c84f30c964ba133819dc7b3d14,
+      type: 3}
+    _quantity: 300
   _scoreToPass: 1

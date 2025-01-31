@@ -1,8 +1,7 @@
 using Islanders.Game.GameStates;
+using Islanders.Game.Player;
 using Islanders.Game.UI;
-using Islanders.ScriptableObjects;
 using Islanders.Utils.Log;
-using UnityEditor;
 using Zenject;
 
 namespace Islanders.Game.GameScript
@@ -12,20 +11,13 @@ namespace Islanders.Game.GameScript
         #region Setup/Teardown
 
         [Inject]
-        public LinearScriptService(Player.Player player, ChoiceScreen choiceScreen, LocalStateMachine stateMachine) :
-            base(player, choiceScreen, stateMachine)
-        {
-            this.Log();
-        }
+        public LinearScriptService(Player.Player player, ChoiceScreen choiceScreen, LocalStateMachine stateMachine,
+            PlayerScore playerScore) :
+            base(player, choiceScreen, stateMachine, playerScore) { }
 
         #endregion
 
         #region Public methods
-
-        public override void ProceedToNextStep()
-        {
-            _currentStepIndex++;
-        }
 
         public override void ChoiceMadeCallback(int choice)
         {
@@ -36,7 +28,7 @@ namespace Islanders.Game.GameScript
                     _player.AddToInventory(_script.Steps[_currentStepIndex].Choise1);
                     break;
                 }
-                    
+
                 case 2:
                 {
                     _player.AddToInventory(_script.Steps[_currentStepIndex].Choise2);
@@ -48,7 +40,8 @@ namespace Islanders.Game.GameScript
                     break;
                 }
             }
-            
+
+            _currentStepIndex++;
             _stateMachine.TransitionTo<PlacingState>();
         }
 

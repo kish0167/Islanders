@@ -84,5 +84,11 @@ namespace Islanders.Game.Player
         }
 
         #endregion
+
+        public void SetNewScoreGoal(int scoreToPass)
+        {
+            ScoreFloor = ScoreCeiling;
+            ScoreCeiling += scoreToPass;
+        }
     }
 }

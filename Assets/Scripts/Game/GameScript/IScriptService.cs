@@ -2,7 +2,10 @@ namespace Islanders.Game.GameScript
 {
     public interface IScriptService
     {
-        public void ProceedToNextStep(){}
+        #region Public methods
+
         public void ChoiceMadeCallback(int choice);
+
+        #endregion
     }
 }

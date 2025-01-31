@@ -137,7 +137,7 @@ namespace Islanders.Game.UI.Hotbar
         private void LeftArrowPressedCallback()
         {
             _overflowPointer = Math.Max(_overflowPointer - 1, 0);
-            UpdateOverflowedBar();
+            _player.ForceUiUpdate();
         }
 
         private void NewBuildingButtonPressedCallback()
@@ -148,7 +148,7 @@ namespace Islanders.Game.UI.Hotbar
         private void RightArrowPressedCallback()
         {
             _overflowPointer = Math.Min(_overflowPointer + 1, _allBuildings.Count - _buildingsButtons.Count);
-            UpdateOverflowedBar();
+            _player.ForceUiUpdate();
         }
 
         private void UpdateNotFullBar()

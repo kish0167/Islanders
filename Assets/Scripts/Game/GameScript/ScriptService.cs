@@ -1,4 +1,5 @@
 using Islanders.Game.GameStates;
+using Islanders.Game.Player;
 using Islanders.Game.UI;
 using UnityEngine;
 using Zenject;
@@ -14,17 +15,20 @@ namespace Islanders.Game.GameScript
         protected readonly LocalStateMachine _stateMachine;
         protected int _currentStepIndex = 0;
         protected Player.Player _player;
+        protected PlayerScore _playerScore;
 
         #endregion
 
         #region Setup/Teardown
 
         [Inject]
-        protected ScriptService(Player.Player player, ChoiceScreen choiceScreen, LocalStateMachine stateMachine)
+        protected ScriptService(Player.Player player, ChoiceScreen choiceScreen, LocalStateMachine stateMachine,
+            PlayerScore playerScore)
         {
             _player = player;
             _choiceScreen = choiceScreen;
             _stateMachine = stateMachine;
+            _playerScore = playerScore;
             _script = Resources.Load<ScriptableObjects.GameScript>("Script/GameScript");
             _choiceScreen.OnChoiceMade += ChoiceMadeCallback;
         }
@@ -32,8 +36,6 @@ namespace Islanders.Game.GameScript
         #endregion
 
         #region IScriptService
-
-        public abstract void ProceedToNextStep();
 
         public abstract void ChoiceMadeCallback(int choice);
 
@@ -45,7 +47,6 @@ namespace Islanders.Game.GameScript
         {
             _choiceScreen.OnChoiceMade -= ChoiceMadeCallback;
         }
-        
 
         #endregion
     }

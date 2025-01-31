@@ -14,7 +14,7 @@ namespace Islanders.Game.UI.Hotbar
         [SerializeField] private TMP_Text _nameLabel;
 
         private Player.Player _player;
-        private Color _defaultColor;
+        private static Color _defaultColor = new Color(0,0,0,0.7f);
 
         #endregion
 
@@ -30,7 +30,6 @@ namespace Islanders.Game.UI.Hotbar
         private void Start()
         {
             _button.onClick.AddListener(PressedCallback);
-            _defaultColor = _button.image.color;
         }
 
         #endregion
@@ -61,7 +60,7 @@ namespace Islanders.Game.UI.Hotbar
 
         public void Highlight()
         {
-            _button.image.color = new Color(0, 0, 0, 0.8f);
+            _button.image.color = new Color(0, 0, 0, 0.9f);
         }
 
         public void RemoveHighlighting()

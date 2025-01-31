@@ -58,7 +58,7 @@ namespace Islanders.Game.ScoreHandling
             _table[ObjectType.TestHouse1][ObjectType.TestHouse1] = -1;
             _table[ObjectType.TestHouse1][ObjectType.TestHouse2] = 1;
 
-            _table[ObjectType.TestHouse2][ObjectType.TestHouse1] = 5;
+            _table[ObjectType.TestHouse2][ObjectType.TestHouse2] = 5;
         }
 
         #endregion
