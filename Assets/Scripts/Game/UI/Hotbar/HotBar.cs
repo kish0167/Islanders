@@ -4,13 +4,14 @@ using System.Linq;
 using Islanders.Game.Buildings_placing;
 using Islanders.Game.GameStates;
 using Islanders.Game.LocalInput;
+using Islanders.Game.Utility;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
 
 namespace Islanders.Game.UI.Hotbar
 {
-    public class HotBar : MonoBehaviour
+    public class HotBar : MonoBehaviour, IInputControllable
     {
         #region Variables
 
@@ -25,7 +26,6 @@ namespace Islanders.Game.UI.Hotbar
         private LocalInputService _inputService;
         private int _overflowPointer;
         private Player.PlayerInventory _playerInventory;
-        private PlaceableObject _selectedBuilding;
         private LocalStateMachine _stateMachine;
 
         #endregion
@@ -58,14 +58,12 @@ namespace Islanders.Game.UI.Hotbar
         private void OnEnable()
         {
             _playerInventory.OnInventoryUpdated += InventoryUpdatedCallback;
-            _inputService.OnKeyPressed += KeyPressedCallback;
             _playerInventory.ForceUiUpdate();
         }
 
         private void OnDisable()
         {
             _playerInventory.OnInventoryUpdated -= InventoryUpdatedCallback;
-            _inputService.OnKeyPressed -= KeyPressedCallback;
         }
 
         #endregion
@@ -110,7 +108,6 @@ namespace Islanders.Game.UI.Hotbar
         private void InventoryUpdatedCallback(Dictionary<PlaceableObject, int> inventory, PlaceableObject selected)
         {
             _allBuildings = inventory;
-            _selectedBuilding = selected;
             
             if (inventory.Count <= _buildingsButtons.Count)
             {
@@ -122,16 +119,6 @@ namespace Islanders.Game.UI.Hotbar
             }
             
             HighLightButtonWith(selected);
-        }
-
-        private void KeyPressedCallback(KeyBind key)
-        {
-            if (key < KeyBind.HotBar1 || key >= KeyBind.UiEnd || !_buildingsButtons[key - KeyBind.HotBar1].enabled)
-            {
-                return;
-            }
-
-            _playerInventory.SelectBuilding(_buildingsButtons[key - KeyBind.HotBar1].Prefab);
         }
 
         private void LeftArrowPressedCallback()
@@ -192,6 +179,16 @@ namespace Islanders.Game.UI.Hotbar
         public void HideNewBuildingsButton()
         {
             _newBuildingButton.gameObject.SetActive(false);
+        }
+
+        public void DoAction(KeyBind key)
+        {
+            if (!_buildingsButtons[key - KeyBind.HotBar1].gameObject.activeSelf)
+            {
+                return;
+            }
+
+            _playerInventory.SelectBuilding(_buildingsButtons[key - KeyBind.HotBar1].Prefab);
         }
     }
 }

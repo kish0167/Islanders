@@ -1,5 +1,6 @@
 using Islanders.Game.LocalInput;
 using Islanders.Game.Pause;
+using Islanders.Game.UI.Hotbar;
 using Islanders.Game.Utility;
 using Zenject;
 
@@ -7,13 +8,25 @@ namespace Islanders.Game.UI
 {
     public class UiInput : IInputControllable
     {
-        private PauseService _pause;
-        
+        #region Variables
+
+        private HotBar _hotBar;
+        private readonly PauseService _pause;
+
+        #endregion
+
+        #region Setup/Teardown
+
         [Inject]
-        public UiInput(PauseService pause)
+        public UiInput(PauseService pause, HotBar hotBar)
         {
             _pause = pause;
+            _hotBar = hotBar;
         }
+
+        #endregion
+
+        #region IInputControllable
 
         public void DoAction(KeyBind bind)
         {
@@ -21,6 +34,12 @@ namespace Islanders.Game.UI
             {
                 _pause.Toggle();
             }
+            else if (bind >= KeyBind.HotBar1 && bind < KeyBind.UiEnd)
+            {
+                _hotBar.DoAction(bind);
+            }
         }
+
+        #endregion
     }
 }
