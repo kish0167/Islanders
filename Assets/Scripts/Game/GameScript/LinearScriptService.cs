@@ -11,9 +11,9 @@ namespace Islanders.Game.GameScript
         #region Setup/Teardown
 
         [Inject]
-        public LinearScriptService(Player.Player player, ChoiceScreen choiceScreen, LocalStateMachine stateMachine,
+        public LinearScriptService(Player.PlayerInventory playerInventory, ChoiceScreen choiceScreen, LocalStateMachine stateMachine,
             PlayerScore playerScore) :
-            base(player, choiceScreen, stateMachine, playerScore) { }
+            base(playerInventory, choiceScreen, stateMachine, playerScore) { }
 
         #endregion
 
@@ -25,13 +25,13 @@ namespace Islanders.Game.GameScript
             {
                 case 1:
                 {
-                    _player.AddToInventory(_script.Steps[_currentStepIndex].Choise1);
+                    _playerInventory.AddToInventory(_script.Steps[_currentStepIndex].Choise1);
                     break;
                 }
 
                 case 2:
                 {
-                    _player.AddToInventory(_script.Steps[_currentStepIndex].Choise2);
+                    _playerInventory.AddToInventory(_script.Steps[_currentStepIndex].Choise2);
                     break;
                 }
                 default:
@@ -40,9 +40,10 @@ namespace Islanders.Game.GameScript
                     break;
                 }
             }
-
-            _currentStepIndex++;
+            
+            _playerScore.SetNewScoreGoal((int)_script.Steps[_currentStepIndex].ScoreToPass);
             _stateMachine.TransitionTo<PlacingState>();
+            _currentStepIndex++;
         }
 
         #endregion

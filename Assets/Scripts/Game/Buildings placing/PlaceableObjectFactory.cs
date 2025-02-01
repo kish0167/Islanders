@@ -52,6 +52,7 @@ namespace Islanders.Game.Buildings_placing
         public void Deconstruct(PlaceableObject building)
         {
             building.SetMaterialToDefault();
+            building.gameObject.GetComponent<ScoreCounter>().Deconstruct();
             LeanPool.Despawn(building.Sphere);
             LeanPool.Despawn(building);
         }

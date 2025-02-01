@@ -14,7 +14,7 @@ namespace Islanders.Game.GameScript
         protected readonly ScriptableObjects.GameScript _script;
         protected readonly LocalStateMachine _stateMachine;
         protected int _currentStepIndex = 0;
-        protected Player.Player _player;
+        protected Player.PlayerInventory _playerInventory;
         protected PlayerScore _playerScore;
 
         #endregion
@@ -22,10 +22,10 @@ namespace Islanders.Game.GameScript
         #region Setup/Teardown
 
         [Inject]
-        protected ScriptService(Player.Player player, ChoiceScreen choiceScreen, LocalStateMachine stateMachine,
+        protected ScriptService(Player.PlayerInventory playerInventory, ChoiceScreen choiceScreen, LocalStateMachine stateMachine,
             PlayerScore playerScore)
         {
-            _player = player;
+            _playerInventory = playerInventory;
             _choiceScreen = choiceScreen;
             _stateMachine = stateMachine;
             _playerScore = playerScore;

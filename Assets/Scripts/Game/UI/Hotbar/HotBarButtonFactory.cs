@@ -8,16 +8,16 @@ namespace Islanders.Game.UI.Hotbar
 
         private HotBarButton _buttonPrefab;
 
-        private readonly Player.Player _player;
+        private readonly Player.PlayerInventory _playerInventory;
 
         #endregion
 
         #region Setup/Teardown
 
         [Inject]
-        public HotBarButtonFactory(Player.Player player)
+        public HotBarButtonFactory(Player.PlayerInventory playerInventory)
         {
-            _player = player;
+            _playerInventory = playerInventory;
         }
 
         #endregion
@@ -26,7 +26,7 @@ namespace Islanders.Game.UI.Hotbar
 
         public void Setup(HotBarButton button)
         {
-            button.Construct(_player);
+            button.Construct(_playerInventory);
         }
 
         #endregion

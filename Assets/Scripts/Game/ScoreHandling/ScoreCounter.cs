@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Islanders.Game.Buildings_placing;
 using Islanders.Game.Utility;
+using Islanders.Utils.Log;
 using UnityEngine;
 
 namespace Islanders.Game.ScoreHandling
@@ -21,9 +22,11 @@ namespace Islanders.Game.ScoreHandling
 
         #region Events
 
-        public static event Action<int> OnScoreAcquiring; // для начисления очков
         public static event Action<int> OnPreScoreCalculated; // для "предпоказа" очков
-        public static event Action<Dictionary<Transform, int>> OnPreScoreDrawing; // для UI чисел над постройками на сцене
+        public static event Action<Dictionary<Transform, int>>
+            OnPreScoreDrawing; // для UI чисел над постройками на сцене
+
+        public static event Action<int> OnScoreAcquiring; // для начисления очков
 
         #endregion
 
@@ -56,6 +59,11 @@ namespace Islanders.Game.ScoreHandling
             _placer = placer;
             _ownScoreMap = tableService.GetDictionaryForType(_objectType);
             _placer.OnBuildingPlaced += BuildingPlacedCallback;
+        }
+
+        public void Deconstruct()
+        {
+            _placer.OnBuildingPlaced -= BuildingPlacedCallback;
         }
 
         #endregion

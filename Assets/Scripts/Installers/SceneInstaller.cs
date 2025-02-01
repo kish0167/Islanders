@@ -37,7 +37,7 @@ namespace Islanders.Installers
             Container.Bind<PlaceableObjectFactory>().FromNew().AsSingle();
             Container.Bind<BuildingsPlacer>().FromInstance(_buildingsPlacer).AsSingle();
             Container.Bind<PrefabsProvider>().FromInstance(_prefabProvider).AsSingle();
-            Container.Bind<Player>().FromNewComponentOnNewGameObject().AsSingle().NonLazy();
+            Container.Bind<PlayerInventory>().FromNewComponentOnNewGameObject().AsSingle().NonLazy();
             Container.Bind<LocalStateMachine>().FromNewComponentOnNewGameObject().AsSingle().NonLazy();
             Container.Bind<PlayerScore>().FromNew().AsSingle().NonLazy();
             Container.Bind<LocalInputService>().FromNewComponentOnNewGameObject().AsSingle().NonLazy();

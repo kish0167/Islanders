@@ -22,4 +22,4 @@ MonoBehaviour:
     _placeableObject: {fileID: 5329374275806281584, guid: 6d2af8427edaa6a49bb4f7d66d8dbbc5,
       type: 3}
     _quantity: 2
-  _scoreToPass: 1
+  _scoreToPass: 60

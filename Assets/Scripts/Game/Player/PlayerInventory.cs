@@ -10,7 +10,7 @@ using Vector3 = UnityEngine.Vector3;
 
 namespace Islanders.Game.Player
 {
-    public class Player : MonoBehaviour
+    public class PlayerInventory : MonoBehaviour
     {
         #region Variables
 
@@ -38,17 +38,6 @@ namespace Islanders.Game.Player
 
         #endregion
 
-        #region Unity lifecycle
-
-        private void Start()
-        {
-            Step step = Resources.Load("Script/Step 1") as Step;
-            AddToInventory(step?.Choise1);
-            _selectedObject = _placeableObjectInventory.Keys.ToList()[0];
-        }
-
-        #endregion
-
         #region Public methods
 
         public void AddToInventory(List<PlaceableObjectArray> incomingObjectArrays)
@@ -71,6 +60,11 @@ namespace Islanders.Game.Player
         public void Dispose()
         {
             _placer.OnBuildingPlaced -= BuildingPlacedCallback;
+        }
+
+        public void ForceUiUpdate()
+        {
+            OnInventoryUpdated?.Invoke(_placeableObjectInventory, _selectedObject);
         }
 
         public void SelectBuilding(PlaceableObject selectedBuilding)
@@ -101,32 +95,11 @@ namespace Islanders.Game.Player
             {
                 _placeableObjectInventory.Remove(_selectedObject);
                 _selectedObject = null;
-                _placer.Disable();
             }
 
             OnInventoryUpdated?.Invoke(_placeableObjectInventory, _selectedObject);
-        }
-
-        private void LogInventoryContent() // TODO: Delete after
-        {
-            string text = "Inventory contains:\n";
-
-            foreach (PlaceableObject placeableObject in _placeableObjectInventory.Keys.ToList())
-            {
-                text += placeableObject.name;
-                text += " ";
-                text += _placeableObjectInventory[placeableObject];
-                text += ";  ";
-            }
-
-            this.Log(text);
         }
 
         #endregion
-
-        public void ForceUiUpdate()
-        {
-            OnInventoryUpdated?.Invoke(_placeableObjectInventory, _selectedObject);
-        }
     }
 }

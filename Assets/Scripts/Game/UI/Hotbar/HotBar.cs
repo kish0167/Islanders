@@ -24,7 +24,7 @@ namespace Islanders.Game.UI.Hotbar
         private HotBarButtonFactory _buttonFactory;
         private LocalInputService _inputService;
         private int _overflowPointer;
-        private Player.Player _player;
+        private Player.PlayerInventory _playerInventory;
         private PlaceableObject _selectedBuilding;
         private LocalStateMachine _stateMachine;
 
@@ -33,10 +33,10 @@ namespace Islanders.Game.UI.Hotbar
         #region Setup/Teardown
 
         [Inject]
-        private void Construct(Player.Player player, HotBarButtonFactory factory,
+        private void Construct(Player.PlayerInventory playerInventory, HotBarButtonFactory factory,
             LocalStateMachine stateMachine, LocalInputService inputService)
         {
-            _player = player;
+            _playerInventory = playerInventory;
             _buttonFactory = factory;
             _stateMachine = stateMachine;
             _inputService = inputService;
@@ -57,14 +57,14 @@ namespace Islanders.Game.UI.Hotbar
 
         private void OnEnable()
         {
-            _player.OnInventoryUpdated += InventoryUpdatedCallback;
+            _playerInventory.OnInventoryUpdated += InventoryUpdatedCallback;
             _inputService.OnKeyPressed += KeyPressedCallback;
-            _player.ForceUiUpdate();
+            _playerInventory.ForceUiUpdate();
         }
 
         private void OnDisable()
         {
-            _player.OnInventoryUpdated -= InventoryUpdatedCallback;
+            _playerInventory.OnInventoryUpdated -= InventoryUpdatedCallback;
             _inputService.OnKeyPressed -= KeyPressedCallback;
         }
 
@@ -131,13 +131,13 @@ namespace Islanders.Game.UI.Hotbar
                 return;
             }
 
-            _player.SelectBuilding(_buildingsButtons[key - KeyBind.HotBar1].Prefab);
+            _playerInventory.SelectBuilding(_buildingsButtons[key - KeyBind.HotBar1].Prefab);
         }
 
         private void LeftArrowPressedCallback()
         {
             _overflowPointer = Math.Max(_overflowPointer - 1, 0);
-            _player.ForceUiUpdate();
+            _playerInventory.ForceUiUpdate();
         }
 
         private void NewBuildingButtonPressedCallback()
@@ -148,7 +148,7 @@ namespace Islanders.Game.UI.Hotbar
         private void RightArrowPressedCallback()
         {
             _overflowPointer = Math.Min(_overflowPointer + 1, _allBuildings.Count - _buildingsButtons.Count);
-            _player.ForceUiUpdate();
+            _playerInventory.ForceUiUpdate();
         }
 
         private void UpdateNotFullBar()
@@ -183,5 +183,15 @@ namespace Islanders.Game.UI.Hotbar
         }
 
         #endregion
+
+        public void ShowNewBuildingsButton()
+        {
+            _newBuildingButton.gameObject.SetActive(true);
+        }
+
+        public void HideNewBuildingsButton()
+        {
+            _newBuildingButton.gameObject.SetActive(false);
+        }
     }
 }

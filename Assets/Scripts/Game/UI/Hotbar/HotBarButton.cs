@@ -13,7 +13,7 @@ namespace Islanders.Game.UI.Hotbar
         [SerializeField] private TMP_Text _quantityLabel;
         [SerializeField] private TMP_Text _nameLabel;
 
-        private Player.Player _player;
+        private Player.PlayerInventory _playerInventory;
         private static Color _defaultColor = new Color(0,0,0,0.7f);
 
         #endregion
@@ -36,9 +36,9 @@ namespace Islanders.Game.UI.Hotbar
 
         #region Public methods
 
-        public void Construct(Player.Player player)
+        public void Construct(Player.PlayerInventory playerInventory)
         {
-            _player = player;
+            _playerInventory = playerInventory;
         }
 
         public void UpdateLabels()
@@ -53,7 +53,7 @@ namespace Islanders.Game.UI.Hotbar
 
         private void PressedCallback()
         {
-            _player.SelectBuilding(Prefab);
+            _playerInventory.SelectBuilding(Prefab);
         }
 
         #endregion

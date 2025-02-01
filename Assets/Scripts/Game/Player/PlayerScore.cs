@@ -1,5 +1,6 @@
 using Islanders.Game.ScoreHandling;
 using Islanders.Game.UI;
+using Islanders.Game.UI.Hotbar;
 using Zenject;
 
 namespace Islanders.Game.Player
@@ -9,6 +10,7 @@ namespace Islanders.Game.Player
         #region Variables
 
         private readonly ScoreBox _box;
+        private readonly HotBar _hotBar;
         private int _score;
         private int _scoreCeiling;
         private int _scoreFloor;
@@ -52,15 +54,22 @@ namespace Islanders.Game.Player
         #region Setup/Teardown
 
         [Inject]
-        public PlayerScore(ScoreBox box)
+        public PlayerScore(ScoreBox box, HotBar hotBar)
         {
             _box = box;
+            _hotBar = hotBar;
             ScoreCounter.OnScoreAcquiring += ScoreAcquiringCallback;
         }
 
         #endregion
 
         #region Public methods
+
+        public void SetNewScoreGoal(int scoreToPass)
+        {
+            ScoreFloor = ScoreCeiling;
+            ScoreCeiling += scoreToPass;
+        }
 
         public void SetToZero()
         {
@@ -81,14 +90,17 @@ namespace Islanders.Game.Player
         private void UpdateUI()
         {
             _box.UpdateLabels(_scoreFloor, _score, _scoreCeiling);
+
+            if (Score >= ScoreCeiling)
+            {
+                _hotBar.ShowNewBuildingsButton();
+            }
+            else
+            {
+                _hotBar.HideNewBuildingsButton();
+            }
         }
 
         #endregion
-
-        public void SetNewScoreGoal(int scoreToPass)
-        {
-            ScoreFloor = ScoreCeiling;
-            ScoreCeiling += scoreToPass;
-        }
     }
 }
