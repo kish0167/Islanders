@@ -11,7 +11,8 @@ namespace Islanders.Game.GameScript
         #region Setup/Teardown
 
         [Inject]
-        public LinearScriptService(Player.PlayerInventory playerInventory, ChoiceScreen choiceScreen, LocalStateMachine stateMachine,
+        public LinearScriptService(PlayerInventory playerInventory, ChoiceScreen choiceScreen,
+            LocalStateMachine stateMachine,
             PlayerScore playerScore) :
             base(playerInventory, choiceScreen, stateMachine, playerScore) { }
 
@@ -40,7 +41,7 @@ namespace Islanders.Game.GameScript
                     break;
                 }
             }
-            
+
             _playerScore.SetNewScoreGoal((int)_script.Steps[_currentStepIndex].ScoreToPass);
             _stateMachine.TransitionTo<PlacingState>();
             _currentStepIndex++;

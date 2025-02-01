@@ -75,7 +75,7 @@ namespace Islanders.Game.Player
                 {
                     _selectedObject = selectedBuilding;
                     _placer.SetBuilding(selectedBuilding);
-                    OnInventoryUpdated?.Invoke(_placeableObjectInventory, _selectedObject);
+                    UpdateUi();
                     return;
                 }
             }
@@ -97,9 +97,20 @@ namespace Islanders.Game.Player
                 _selectedObject = null;
             }
 
-            OnInventoryUpdated?.Invoke(_placeableObjectInventory, _selectedObject);
+            UpdateUi();
         }
 
         #endregion
+
+        public void RemoveSelection()
+        {
+            _selectedObject = null;
+            UpdateUi();
+        }
+
+        private void UpdateUi()
+        {
+            OnInventoryUpdated?.Invoke(_placeableObjectInventory, _selectedObject);
+        }
     }
 }

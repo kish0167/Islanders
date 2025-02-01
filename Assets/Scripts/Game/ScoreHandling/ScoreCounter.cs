@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using Islanders.Game.Buildings_placing;
 using Islanders.Game.Utility;
-using Islanders.Utils.Log;
 using UnityEngine;
 
 namespace Islanders.Game.ScoreHandling

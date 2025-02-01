@@ -38,7 +38,7 @@ namespace Islanders.Game.Buildings_placing
 
         public VisualSphere Sphere;
 
-        public void FetchDefaultMaterialAndMeshRendarer()
+        public void FetchDefaultMaterialAndMeshRenderer()
         {
             if (TryGetComponent(out MeshRenderer meshRenderer))
             {

@@ -23,6 +23,8 @@ namespace Islanders.Game.LocalCamera
 
         #region Properties
 
+        public Camera Camera => _camera;
+
         public bool Enabled { get; set; } = false;
 
         #endregion

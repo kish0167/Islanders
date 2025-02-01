@@ -8,6 +8,8 @@ namespace Islanders.Game.UI
 
         [SerializeField] private GameObject _content;
 
+        public Transform ContentTransform => _content.transform;
+
         #endregion
 
         #region IScreen

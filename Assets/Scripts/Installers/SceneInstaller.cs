@@ -7,6 +7,7 @@ using Islanders.Game.Pause;
 using Islanders.Game.Player;
 using Islanders.Game.UI;
 using Islanders.Game.UI.Hotbar;
+using Islanders.Game.UI.HoveringLabels;
 using Islanders.Game.Utility;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -49,6 +50,9 @@ namespace Islanders.Installers
             Container.Bind<HotBarButtonFactory>().FromNew().AsSingle();
             Container.Bind<ScoreBox>().FromInstance(_scoreBox).AsSingle();
             Container.Bind<IScriptService>().To<LinearScriptService>().FromNew().AsSingle().NonLazy();
+            Container.Bind<HoveringLabelsService>().FromNew().AsSingle();
+            Container.Bind<HoveringLabelsFactory>().FromNew().AsSingle();
+
 
             // screens
             Container.Bind<MenuScreen>().FromInstance(_menuScreen).AsSingle();

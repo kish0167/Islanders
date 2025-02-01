@@ -1,5 +1,6 @@
 using Islanders.Game.Buildings_placing;
 using Islanders.Game.LocalCamera;
+using Islanders.Game.Player;
 using Islanders.Game.UI;
 using Zenject;
 
@@ -13,17 +14,19 @@ namespace Islanders.Game.GameStates
 
         private readonly BuildingsPlacer _placer;
         private readonly PlacingScreen _placingScreen;
+        private readonly PlayerInventory _playerInventory;
 
         #endregion
 
         #region Setup/Teardown
 
         [Inject]
-        public PlacingState(BuildingsPlacer placer, CameraMovement cameraMovement, PlacingScreen placingScreen)
+        public PlacingState(BuildingsPlacer placer, CameraMovement cameraMovement, PlacingScreen placingScreen, PlayerInventory playerInventory)
         {
             _placer = placer;
             _cameraMovement = cameraMovement;
             _placingScreen = placingScreen;
+            _playerInventory = playerInventory;
         }
 
         #endregion
@@ -35,6 +38,7 @@ namespace Islanders.Game.GameStates
             _cameraMovement.Enabled = true;
             _placingScreen.Show();
             _placer.Enabled = true;
+            _playerInventory.RemoveSelection();
         }
 
         public override void Exit()

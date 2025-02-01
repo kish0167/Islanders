@@ -35,7 +35,7 @@ namespace Islanders.Game.Buildings_placing
             PlaceableObject building = LeanPool.Spawn(prefab, position, Quaternion.identity);
             building.gameObject.GetComponent<ScoreCounter>().Construct(_scoreTableService, _buildingsPlacer);
             building.gameObject.layer = LayerMask.NameToLayer(Layers.ActiveBuilding);
-            building.FetchDefaultMaterialAndMeshRendarer();
+            building.FetchDefaultMaterialAndMeshRenderer();
             building.ProhibitingMaterial = _prefabsProvider.ProhibitingMaterial;
             
             VisualSphere sphere = LeanPool.Spawn(_prefabsProvider.TransparentSphere, position, Quaternion.identity);

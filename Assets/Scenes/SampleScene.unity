@@ -84047,8 +84047,8 @@ MonoBehaviour:
   _slideSpeed: 15
   _rotateSpeed: 60
   _fovChangeSpeed: 20
-  _maxFov: 30
-  _minFov: 7
+  _maxFov: 37
+  _minFov: 10
   _cameraTransform: {fileID: 1976235000}
   _camera: {fileID: 1831510834}
 --- !u!4 &1976235000
