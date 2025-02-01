@@ -9,7 +9,6 @@ namespace Islanders.Game.UI.HoveringLabels
 
         [SerializeField] private TMP_Text _label;
 
-        private Transform _cameraTransform;
         private Transform _targetTransform;
 
         #endregion
@@ -22,10 +21,10 @@ namespace Islanders.Game.UI.HoveringLabels
 
         #region Public methods
 
-        public void Construct(Transform mainCameraTransform, Transform targetTransform)
+        public void Construct(Transform targetTransform, int number)
         {
-            _cameraTransform = mainCameraTransform;
             _targetTransform = targetTransform;
+            _label.text = number == 0 ? "" : $"+{number}";
         }
 
         #endregion

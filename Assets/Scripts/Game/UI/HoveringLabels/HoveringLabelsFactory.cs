@@ -8,25 +8,23 @@ namespace Islanders.Game.UI.HoveringLabels
     public class HoveringLabelsFactory
     {
         private PlacingScreen _placingScreen;
-        private Transform _mainCameraTransform;
         
         [Inject]
-        public HoveringLabelsFactory(PlacingScreen placingScreen, CameraMovement cameraMovement)
+        public HoveringLabelsFactory(PlacingScreen placingScreen)
         {
             _placingScreen = placingScreen;
-            _mainCameraTransform = cameraMovement.Camera.transform;
         }
         
-        public HoveringLabel CreateFromPrefab(HoveringLabel prefab, Transform targetTransform)
+        public HoveringLabel CreateFromPrefab(HoveringLabel prefab, Transform targetTransform, int number)
         {
             HoveringLabel newLabel = LeanPool.Spawn(prefab, _placingScreen.ContentTransform);
-            newLabel.Construct(_mainCameraTransform, targetTransform);
+            newLabel.Construct(targetTransform, number);
             return newLabel;
         }
         
         public void Destroy(HoveringLabel instance)
         {
-            
+            LeanPool.Despawn(instance);
         }
     }
 }

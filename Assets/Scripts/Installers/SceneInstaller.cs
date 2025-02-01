@@ -50,7 +50,7 @@ namespace Islanders.Installers
             Container.Bind<HotBarButtonFactory>().FromNew().AsSingle();
             Container.Bind<ScoreBox>().FromInstance(_scoreBox).AsSingle();
             Container.Bind<IScriptService>().To<LinearScriptService>().FromNew().AsSingle().NonLazy();
-            Container.Bind<HoveringLabelsService>().FromNew().AsSingle();
+            Container.Bind<HoveringLabelsService>().FromNew().AsSingle().NonLazy();
             Container.Bind<HoveringLabelsFactory>().FromNew().AsSingle();
 
 

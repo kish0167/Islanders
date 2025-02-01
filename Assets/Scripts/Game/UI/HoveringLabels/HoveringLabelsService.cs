@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
+using Islanders.Game.Buildings_placing;
+using Islanders.Game.LocalCamera;
 using Islanders.Game.ScoreHandling;
 using Islanders.Game.Utility;
 using UnityEngine;
@@ -12,9 +14,9 @@ namespace Islanders.Game.UI.HoveringLabels
         #region Variables
 
         private readonly HoveringLabelsFactory _factory;
-        private List<HoveringLabel> _hoveringLabels;
-
-        private HoveringLabel _labelPrefab;
+        private readonly HoveringLabel _labelPrefab;
+        private readonly Camera _mainCamera;
+        private readonly List<HoveringLabel> _hoveringLabels;
         private PlacingScreen _placingScreen;
 
         #endregion
@@ -22,16 +24,35 @@ namespace Islanders.Game.UI.HoveringLabels
         #region Setup/Teardown
 
         [Inject]
-        public HoveringLabelsService(PrefabsProvider prefabsProvider, HoveringLabelsFactory factory)
+        public HoveringLabelsService(PrefabsProvider prefabsProvider, HoveringLabelsFactory factory,
+            CameraMovement mainCameraMovement, BuildingsPlacer placer)
         {
             _factory = factory;
+            _mainCamera = mainCameraMovement.Camera;
             _labelPrefab = prefabsProvider.HoveringTextLabel;
+            _hoveringLabels = new List<HoveringLabel>();
             ScoreCounter.OnPreScoreDrawing += PreScoreDrawingCallback;
+            placer.OnBuildingPlaced += BuildingPlacedCallback;
         }
 
         #endregion
 
         #region Private methods
+
+        private void BuildingPlacedCallback(PlaceableObject arg1, Vector3 arg2)
+        {
+            DestroyAllLabels();
+        }
+
+        private void DestroyAllLabels()
+        {
+            foreach (HoveringLabel label in _hoveringLabels)
+            {
+                _factory.Destroy(label);
+            }
+
+            _hoveringLabels.Clear();
+        }
 
         private bool InstanceExists(Transform item)
         {
@@ -44,6 +65,14 @@ namespace Islanders.Game.UI.HoveringLabels
             }
 
             return false;
+        }
+
+        private void MoveAllLabels()
+        {
+            foreach (HoveringLabel label in _hoveringLabels)
+            {
+                label.transform.position = _mainCamera.WorldToScreenPoint(label.TargetTransform.position);
+            }
         }
 
         private void PreScoreDrawingCallback(Dictionary<Transform, int> items)
@@ -62,9 +91,11 @@ namespace Islanders.Game.UI.HoveringLabels
             {
                 if (!InstanceExists(item))
                 {
-                    _hoveringLabels.Add(_factory.CreateFromPrefab(_labelPrefab, item));
+                    _hoveringLabels.Add(_factory.CreateFromPrefab(_labelPrefab, item, items[item]));
                 }
             }
+
+            MoveAllLabels();
         }
 
         #endregion
