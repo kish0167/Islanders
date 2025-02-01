@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Islanders.Game.Buildings_placing;
-using Islanders.Game.LocalCamera;
 using Islanders.Game.ScoreHandling;
 using Islanders.Game.Utility;
 using UnityEngine;
@@ -13,10 +12,11 @@ namespace Islanders.Game.UI.HoveringLabels
     {
         #region Variables
 
+        private readonly Vector3 _activeBuildingLabelScale = new(1.4f, 1.4f, 1.4f);
         private readonly HoveringLabelsFactory _factory;
-        private readonly HoveringLabel _labelPrefab;
-        private readonly Camera _mainCamera;
         private readonly List<HoveringLabel> _hoveringLabels;
+        private readonly HoveringLabel _labelPrefab;
+        private HoveringLabel _activeBuildingLabel;
         private PlacingScreen _placingScreen;
 
         #endregion
@@ -25,13 +25,13 @@ namespace Islanders.Game.UI.HoveringLabels
 
         [Inject]
         public HoveringLabelsService(PrefabsProvider prefabsProvider, HoveringLabelsFactory factory,
-            CameraMovement mainCameraMovement, BuildingsPlacer placer)
+            BuildingsPlacer placer)
         {
             _factory = factory;
-            _mainCamera = mainCameraMovement.Camera;
             _labelPrefab = prefabsProvider.HoveringTextLabel;
             _hoveringLabels = new List<HoveringLabel>();
             ScoreCounter.OnPreScoreDrawing += PreScoreDrawingCallback;
+            ScoreCounter.OnPreScoreCalculated += PreScoreCalculatedCallback;
             placer.OnBuildingPlaced += BuildingPlacedCallback;
         }
 
@@ -52,6 +52,10 @@ namespace Islanders.Game.UI.HoveringLabels
             }
 
             _hoveringLabels.Clear();
+
+            _activeBuildingLabel.transform.localScale = Vector3.one;
+            _factory.Destroy(_activeBuildingLabel);
+            _activeBuildingLabel = null;
         }
 
         private bool InstanceExists(Transform item)
@@ -67,11 +71,16 @@ namespace Islanders.Game.UI.HoveringLabels
             return false;
         }
 
-        private void MoveAllLabels()
+        private void PreScoreCalculatedCallback(Transform activeBuildingTransform, int currentScore)
         {
-            foreach (HoveringLabel label in _hoveringLabels)
+            if (_activeBuildingLabel == null)
             {
-                label.transform.position = _mainCamera.WorldToScreenPoint(label.TargetTransform.position);
+                _activeBuildingLabel = _factory.CreateFromPrefab(_labelPrefab, activeBuildingTransform, currentScore);
+                _activeBuildingLabel.transform.localScale = _activeBuildingLabelScale;
+            }
+            else
+            {
+                _activeBuildingLabel.Value = currentScore;
             }
         }
 
@@ -94,8 +103,6 @@ namespace Islanders.Game.UI.HoveringLabels
                     _hoveringLabels.Add(_factory.CreateFromPrefab(_labelPrefab, item, items[item]));
                 }
             }
-
-            MoveAllLabels();
         }
 
         #endregion

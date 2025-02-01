@@ -21,7 +21,7 @@ namespace Islanders.Game.ScoreHandling
 
         #region Events
 
-        public static event Action<int> OnPreScoreCalculated; // для "предпоказа" очков
+        public static event Action<Transform, int> OnPreScoreCalculated; // для "предпоказа" очков
         public static event Action<Dictionary<Transform, int>>
             OnPreScoreDrawing; // для UI чисел над постройками на сцене
 
@@ -97,7 +97,7 @@ namespace Islanders.Game.ScoreHandling
                 _currentScore += _ownScoreMap[scoreCounter.Type];
             }
 
-            OnPreScoreCalculated?.Invoke(_currentScore);
+            OnPreScoreCalculated?.Invoke(transform, _currentScore);
             OnPreScoreDrawing?.Invoke(numbersToShow);
         }
 

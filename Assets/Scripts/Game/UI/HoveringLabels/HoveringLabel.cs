@@ -7,9 +7,13 @@ namespace Islanders.Game.UI.HoveringLabels
     {
         #region Variables
 
+        private static readonly Vector3 VerticalLabelsCorrection = new(0, 1, 0);
+
         [SerializeField] private TMP_Text _label;
+        private Camera _mainCamera;
 
         private Transform _targetTransform;
+        private int _value;
 
         #endregion
 
@@ -17,14 +21,48 @@ namespace Islanders.Game.UI.HoveringLabels
 
         public Transform TargetTransform => _targetTransform;
 
+        public int Value
+        {
+            get => _value;
+            set
+            {
+                _value = value;
+                UpdateLabel();
+            }
+        }
+
+        #endregion
+
+        #region Unity lifecycle
+
+        private void LateUpdate()
+        {
+            Move();
+        }
+
         #endregion
 
         #region Public methods
 
-        public void Construct(Transform targetTransform, int number)
+        public void Construct(Transform targetTransform, int number, Camera mainCamera)
         {
+            _mainCamera = mainCamera;
             _targetTransform = targetTransform;
-            _label.text = number == 0 ? "" : $"+{number}";
+            Value = number;
+        }
+
+        #endregion
+
+        #region Private methods
+
+        private void Move()
+        {
+            transform.position = _mainCamera.WorldToScreenPoint(TargetTransform.position + VerticalLabelsCorrection);
+        }
+
+        private void UpdateLabel()
+        {
+            _label.text = _value == 0 ? "" : $"+{_value}";
         }
 
         #endregion
