@@ -35908,6 +35908,8 @@ MonoBehaviour:
     type: 3}
   _hotBarButton: {fileID: 0}
   _prohibitingMaterial: {fileID: 0}
+  _hoveringTextLabel: {fileID: 515960623426686283, guid: 03a7e603aa4f37645b25a9b4e7b12e21,
+    type: 3}
 --- !u!4 &844653455
 Transform:
   m_ObjectHideFlags: 0

@@ -14,7 +14,7 @@ namespace Islanders.Game.Player
         private int _score;
         private int _scoreCeiling;
         private int _scoreFloor;
-
+        
         #endregion
 
         #region Properties
@@ -22,7 +22,7 @@ namespace Islanders.Game.Player
         public int Score
         {
             get => _score;
-            private set
+            set
             {
                 _score = value;
                 UpdateUI();

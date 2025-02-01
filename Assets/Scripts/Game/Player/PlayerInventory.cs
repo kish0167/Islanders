@@ -19,6 +19,8 @@ namespace Islanders.Game.Player
         private BuildingsPlacer _placer;
         private PlaceableObject _selectedObject;
 
+        public int ItemsCount => _placeableObjectInventory.Count;
+
         #endregion
 
         #region Events

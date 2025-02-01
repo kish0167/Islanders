@@ -1,4 +1,5 @@
 using Islanders.Game.Buildings_placing;
+using Islanders.Game.GameOver;
 using Islanders.Game.GameScript;
 using Islanders.Game.GameStates;
 using Islanders.Game.LocalCamera;
@@ -21,13 +22,14 @@ namespace Islanders.Installers
 
         [SerializeField] private BuildingsPlacer _buildingsPlacer;
         [SerializeField] private PrefabsProvider _prefabProvider;
-        [FormerlySerializedAs("_playerHotBar")] [SerializeField] private PlacingScreen _placingScreen;
+        [FormerlySerializedAs("_playerHotBar")] [SerializeField]
+        private PlacingScreen _placingScreen;
         [SerializeField] private MenuScreen _menuScreen;
         [SerializeField] private ChoiceScreen _choiceScreen;
         [SerializeField] private CameraMovement _cameraMovement;
         [SerializeField] private HotBar _hotBar;
-        [FormerlySerializedAs("_scoreLabel")] [SerializeField] private ScoreBox _scoreBox;
-        
+        [FormerlySerializedAs("_scoreLabel")] [SerializeField]
+        private ScoreBox _scoreBox;
 
         #endregion
 
@@ -35,37 +37,45 @@ namespace Islanders.Installers
 
         public override void InstallBindings()
         {
-            Container.Bind<PlaceableObjectFactory>().FromNew().AsSingle();
-            Container.Bind<BuildingsPlacer>().FromInstance(_buildingsPlacer).AsSingle();
-            Container.Bind<PrefabsProvider>().FromInstance(_prefabProvider).AsSingle();
-            Container.Bind<PlayerInventory>().FromNewComponentOnNewGameObject().AsSingle().NonLazy();
+            // Local state machine
             Container.Bind<LocalStateMachine>().FromNewComponentOnNewGameObject().AsSingle().NonLazy();
-            Container.Bind<PlayerScore>().FromNew().AsSingle().NonLazy();
-            Container.Bind<LocalInputService>().FromNewComponentOnNewGameObject().AsSingle().NonLazy();
-            Container.Bind<KeysActions>().FromNew().AsSingle().NonLazy();
-            Container.Bind<PauseService>().FromNew().AsSingle();
-            Container.Bind<UiInput>().FromNew().AsSingle().NonLazy();
-            Container.Bind<CameraMovement>().FromInstance(_cameraMovement).AsSingle();
-            Container.Bind<HotBar>().FromInstance(_hotBar).AsSingle();
+            
+            // Factories
+            Container.Bind<PlaceableObjectFactory>().FromNew().AsSingle();
             Container.Bind<HotBarButtonFactory>().FromNew().AsSingle();
-            Container.Bind<ScoreBox>().FromInstance(_scoreBox).AsSingle();
-            Container.Bind<IScriptService>().To<LinearScriptService>().FromNew().AsSingle().NonLazy();
-            Container.Bind<HoveringLabelsService>().FromNew().AsSingle().NonLazy();
             Container.Bind<HoveringLabelsFactory>().FromNew().AsSingle();
 
+            // Services
+            Container.Bind<PauseService>().FromNew().AsSingle();
+            Container.Bind<UiInput>().FromNew().AsSingle().NonLazy();
+            Container.Bind<LocalInputService>().FromNewComponentOnNewGameObject().AsSingle().NonLazy();
+            Container.Bind<HoveringLabelsService>().FromNew().AsSingle().NonLazy();
+            Container.Bind<GameOverService>().FromNew().AsSingle().NonLazy();
+            Container.Bind<IScriptService>().To<LinearScriptService>().FromNew().AsSingle().NonLazy();
 
-            // screens
+            // Player-related bindings
+            Container.Bind<PlayerInventory>().FromNewComponentOnNewGameObject().AsSingle().NonLazy();
+            Container.Bind<PlayerScore>().FromNew().AsSingle().NonLazy();
+            Container.Bind<KeysActions>().FromNew().AsSingle().NonLazy();
+
+            // Game logic
+            Container.Bind<BuildingsPlacer>().FromInstance(_buildingsPlacer).AsSingle();
+            Container.Bind<PrefabsProvider>().FromInstance(_prefabProvider).AsSingle();
+            Container.Bind<CameraMovement>().FromInstance(_cameraMovement).AsSingle();
+            Container.Bind<HotBar>().FromInstance(_hotBar).AsSingle();
+            Container.Bind<ScoreBox>().FromInstance(_scoreBox).AsSingle();
+
+            // Screens
             Container.Bind<MenuScreen>().FromInstance(_menuScreen).AsSingle();
             Container.Bind<ChoiceScreen>().FromInstance(_choiceScreen).AsSingle().NonLazy();
             Container.Bind<PlacingScreen>().FromInstance(_placingScreen).AsSingle().NonLazy();
 
-            // states
+            // States
             Container.Bind<BootsTrapState>().FromNew().AsSingle().NonLazy();
-            Container.Bind<PlacingState>().FromNew().AsSingle().NonLazy();
             Container.Bind<MenuState>().FromNew().AsSingle().NonLazy();
             Container.Bind<ChoosingState>().FromNew().AsSingle().NonLazy();
+            Container.Bind<PlacingState>().FromNew().AsSingle().NonLazy();
             Container.Bind<GoToNewIslandState>().FromNew().AsSingle().NonLazy();
-            
 
             Debug.Log("scene context installed");
         }

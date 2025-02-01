@@ -29,9 +29,9 @@ MonoBehaviour:
   - _name: Tower
     _placeableObject: {fileID: 8255254960364829407, guid: 16e541c84f30c964ba133819dc7b3d14,
       type: 3}
-    _quantity: 10
+    _quantity: 1
   - _name: qwdqe
     _placeableObject: {fileID: 5329374275806281584, guid: c69a74fa5a8949647894adb16271578b,
       type: 3}
-    _quantity: 4
+    _quantity: 1
   _scoreToPass: 20
