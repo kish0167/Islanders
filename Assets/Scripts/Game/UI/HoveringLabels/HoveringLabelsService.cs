@@ -33,11 +33,17 @@ namespace Islanders.Game.UI.HoveringLabels
             ScoreCounter.OnPreScoreDrawing += PreScoreDrawingCallback;
             ScoreCounter.OnPreScoreCalculated += PreScoreCalculatedCallback;
             placer.OnBuildingPlaced += BuildingPlacedCallback;
+            placer.OnBuildingHiding += BuildingHidingCallback;
         }
 
         #endregion
 
         #region Private methods
+
+        private void BuildingHidingCallback()
+        {
+            DestroyAllLabels();
+        }
 
         private void BuildingPlacedCallback(PlaceableObject arg1, PlaceableObject arg2, Vector3 arg3)
         {
@@ -52,6 +58,11 @@ namespace Islanders.Game.UI.HoveringLabels
             }
 
             _hoveringLabels.Clear();
+
+            if (_activeBuildingLabel == null)
+            {
+                return;
+            }
 
             _activeBuildingLabel.transform.localScale = Vector3.one;
             _factory.Destroy(_activeBuildingLabel);

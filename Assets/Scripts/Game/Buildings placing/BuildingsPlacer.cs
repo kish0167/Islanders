@@ -28,7 +28,9 @@ namespace Islanders.Game.Buildings_placing
 
         #endregion
 
-        #region Events 
+        #region Events
+
+        public event Action OnBuildingHiding;
 
         public event Action<PlaceableObject, PlaceableObject, Vector3> OnBuildingPlaced;
 
@@ -137,7 +139,7 @@ namespace Islanders.Game.Buildings_placing
             _placingPossible = _checker.IsPossible();
         }
 
-        private void MoveBuildingWithCursor() // TODO: maybe use DoTween
+        private void MoveBuildingWithCursor()
         {
             if (_building == null && _cursorPosition == null)
             {
@@ -146,8 +148,8 @@ namespace Islanders.Game.Buildings_placing
 
             if (_cursorPosition == null)
             {
+                OnBuildingHiding?.Invoke();
                 _placeableObjectFactory.Deconstruct(_building);
-
                 _building = null;
                 return;
             }
