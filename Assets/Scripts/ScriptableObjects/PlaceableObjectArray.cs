@@ -16,11 +16,19 @@ namespace Islanders.ScriptableObjects
 
         public PlaceableObject PlaceableObject => _placeableObject;
 
+        public PlaceableObjectArray(PlaceableObject prefab, int quantity)
+        {
+            _placeableObject = prefab;
+            _quantity = (uint)quantity;
+        }
+
         public uint Quantity => _quantity;
 
         public void Validate()
         {
             _name = _placeableObject != null ? _placeableObject.name : "Empty!" ;
         }
+        
+        
     }
 }

@@ -9,7 +9,9 @@ using Islanders.Game.Player;
 using Islanders.Game.UI;
 using Islanders.Game.UI.Hotbar;
 using Islanders.Game.UI.HoveringLabels;
+using Islanders.Game.Undo;
 using Islanders.Game.Utility;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Zenject;
@@ -50,8 +52,9 @@ namespace Islanders.Installers
             Container.Bind<LocalInputService>().FromNewComponentOnNewGameObject().AsSingle().NonLazy();
             Container.Bind<HoveringLabelsService>().FromNew().AsSingle().NonLazy();
             Container.Bind<GameOverService>().FromNew().AsSingle().NonLazy();
+            Container.Bind<UndoService>().FromNew().AsSingle().NonLazy();
             Container.Bind<IScriptService>().To<LinearScriptService>().FromNew().AsSingle().NonLazy();
-
+            
             // Player-related bindings
             Container.Bind<PlayerInventory>().FromNewComponentOnNewGameObject().AsSingle().NonLazy();
             Container.Bind<PlayerScore>().FromNew().AsSingle().NonLazy();

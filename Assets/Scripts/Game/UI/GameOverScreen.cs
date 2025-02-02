@@ -1,5 +1,4 @@
 using System;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
@@ -12,9 +11,15 @@ namespace Islanders.Game.UI
 
         [SerializeField] private GameObject _content;
         [SerializeField] private Button _nextButton;
+        [SerializeField] private Button _undoButton;
+
+        #endregion
+
+        #region Events
 
         public event Action OnNextButtonPressed;
-        
+        public event Action OnUndoButtonPressed;
+
         #endregion
 
         #region Setup/Teardown
@@ -23,11 +28,7 @@ namespace Islanders.Game.UI
         private void Construct()
         {
             _nextButton.onClick.AddListener(NextButtonPressedCallback);
-        }
-
-        private void NextButtonPressedCallback()
-        {
-            OnNextButtonPressed?.Invoke();
+            _nextButton.onClick.AddListener(UndoButtonPressedCallback);
         }
 
         #endregion
@@ -42,6 +43,20 @@ namespace Islanders.Game.UI
         public void Show()
         {
             _content.SetActive(true);
+        }
+
+        #endregion
+
+        #region Private methods
+
+        private void NextButtonPressedCallback()
+        {
+            OnNextButtonPressed?.Invoke();
+        }
+
+        private void UndoButtonPressedCallback()
+        {
+            OnUndoButtonPressed?.Invoke();
         }
 
         #endregion

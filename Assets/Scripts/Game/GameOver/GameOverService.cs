@@ -57,6 +57,11 @@ namespace Islanders.Game.GameOver
         {
             if (_playerInventory.ItemsCount != 0 || _playerScore.Score >= _playerScore.ScoreCeiling)
             {
+                if (_stateMachine.Is<GameOverState>())
+                {
+                    _stateMachine.TransitionTo<PlacingState>();
+                }
+
                 return;
             }
 

@@ -1,6 +1,8 @@
+using Islanders.Game.Buildings_placing;
 using Islanders.Game.ScoreHandling;
 using Islanders.Game.UI;
 using Islanders.Game.UI.Hotbar;
+using Islanders.Game.Undo;
 using Zenject;
 
 namespace Islanders.Game.Player
@@ -11,10 +13,11 @@ namespace Islanders.Game.Player
 
         private readonly ScoreBox _box;
         private readonly HotBar _hotBar;
+        private readonly UndoService _undoService;
         private int _score;
         private int _scoreCeiling;
         private int _scoreFloor;
-        
+
         #endregion
 
         #region Properties
@@ -54,10 +57,12 @@ namespace Islanders.Game.Player
         #region Setup/Teardown
 
         [Inject]
-        public PlayerScore(ScoreBox box, HotBar hotBar)
+        public PlayerScore(ScoreBox box, HotBar hotBar, UndoService undoService)
         {
             _box = box;
             _hotBar = hotBar;
+            _undoService = undoService;
+            _undoService.OnPlacingUndone += PlacingUndoneCallback;
             ScoreCounter.OnScoreAcquiring += ScoreAcquiringCallback;
         }
 
@@ -81,6 +86,11 @@ namespace Islanders.Game.Player
         #endregion
 
         #region Private methods
+
+        private void PlacingUndoneCallback(int score, PlaceableObject arg2)
+        {
+            Score -= score;
+        }
 
         private void ScoreAcquiringCallback(int quantity)
         {

@@ -39,7 +39,7 @@ namespace Islanders.Game.UI.HoveringLabels
 
         #region Private methods
 
-        private void BuildingPlacedCallback(PlaceableObject arg1, Vector3 arg2)
+        private void BuildingPlacedCallback(PlaceableObject arg1, PlaceableObject arg2, Vector3 arg3)
         {
             DestroyAllLabels();
         }

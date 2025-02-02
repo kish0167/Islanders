@@ -28,9 +28,9 @@ namespace Islanders.Game.Buildings_placing
 
         #endregion
 
-        #region Events
+        #region Events 
 
-        public event Action<PlaceableObject, Vector3> OnBuildingPlaced;
+        public event Action<PlaceableObject, PlaceableObject, Vector3> OnBuildingPlaced;
 
         #endregion
 
@@ -169,12 +169,12 @@ namespace Islanders.Game.Buildings_placing
             _building.Sphere.Dispose();
             PlaceableObject buf = _building;
             _building = null;
-            _buildingPrefab = null;
             Enabled = false;
             _isPlacing = false;
             Disable();
 
-            OnBuildingPlaced?.Invoke(buf, _cursorPosition ?? Vector3.zero);
+            OnBuildingPlaced?.Invoke(buf, _buildingPrefab, _cursorPosition ?? Vector3.zero);
+            _buildingPrefab = null;
         }
 
         private void SpawnBuildingFromPrefab()

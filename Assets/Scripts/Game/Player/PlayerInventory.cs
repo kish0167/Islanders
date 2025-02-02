@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Islanders.Game.Buildings_placing;
+using Islanders.Game.Undo;
 using Islanders.ScriptableObjects;
 using Islanders.Utils.Log;
 using UnityEngine;
@@ -18,8 +19,7 @@ namespace Islanders.Game.Player
 
         private BuildingsPlacer _placer;
         private PlaceableObject _selectedObject;
-
-        public int ItemsCount => _placeableObjectInventory.Count;
+        private UndoService _undoService;
 
         #endregion
 
@@ -29,13 +29,21 @@ namespace Islanders.Game.Player
 
         #endregion
 
+        #region Properties
+
+        public int ItemsCount => _placeableObjectInventory.Count;
+
+        #endregion
+
         #region Setup/Teardown
 
         [Inject]
-        public void Construct(BuildingsPlacer placer)
+        public void Construct(BuildingsPlacer placer, UndoService undoService)
         {
             _placer = placer;
             _placer.OnBuildingPlaced += BuildingPlacedCallback;
+            _undoService = undoService;
+            _undoService.OnPlacingUndone += PlacingUndoneCallback;
         }
 
         #endregion
@@ -69,6 +77,12 @@ namespace Islanders.Game.Player
             OnInventoryUpdated?.Invoke(_placeableObjectInventory, _selectedObject);
         }
 
+        public void RemoveSelection()
+        {
+            _selectedObject = null;
+            UpdateUi();
+        }
+
         public void SelectBuilding(PlaceableObject selectedBuilding)
         {
             foreach (PlaceableObject placeableObject in _placeableObjectInventory.Keys.ToList())
@@ -89,7 +103,7 @@ namespace Islanders.Game.Player
 
         #region Private methods
 
-        private void BuildingPlacedCallback(PlaceableObject building, Vector3 place)
+        private void BuildingPlacedCallback(PlaceableObject building, PlaceableObject prefab, Vector3 place)
         {
             _placeableObjectInventory[_selectedObject] -= 1;
 
@@ -102,17 +116,19 @@ namespace Islanders.Game.Player
             UpdateUi();
         }
 
-        #endregion
-
-        public void RemoveSelection()
+        private void PlacingUndoneCallback(int arg1, PlaceableObject prefab)
         {
-            _selectedObject = null;
-            UpdateUi();
+            List<PlaceableObjectArray> listToAdd = new();
+            PlaceableObjectArray buildingToAdd = new(prefab, 1);
+            listToAdd.Add(buildingToAdd);
+            AddToInventory(listToAdd);
         }
 
         private void UpdateUi()
         {
             OnInventoryUpdated?.Invoke(_placeableObjectInventory, _selectedObject);
         }
+
+        #endregion
     }
 }
