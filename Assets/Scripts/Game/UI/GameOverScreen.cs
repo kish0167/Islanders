@@ -28,7 +28,7 @@ namespace Islanders.Game.UI
         private void Construct()
         {
             _nextButton.onClick.AddListener(NextButtonPressedCallback);
-            _nextButton.onClick.AddListener(UndoButtonPressedCallback);
+            _undoButton.onClick.AddListener(UndoButtonPressedCallback);
         }
 
         #endregion

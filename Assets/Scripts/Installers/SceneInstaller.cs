@@ -9,6 +9,7 @@ using Islanders.Game.Player;
 using Islanders.Game.UI;
 using Islanders.Game.UI.Hotbar;
 using Islanders.Game.UI.HoveringLabels;
+using Islanders.Game.UI.ScoreBox;
 using Islanders.Game.Undo;
 using Islanders.Game.Utility;
 using UnityEditor;

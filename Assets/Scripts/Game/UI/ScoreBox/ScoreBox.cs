@@ -1,7 +1,7 @@
 ﻿using TMPro;
 using UnityEngine;
 
-namespace Islanders.Game.UI
+namespace Islanders.Game.UI.ScoreBox
 {
     public class ScoreBox : MonoBehaviour
     {

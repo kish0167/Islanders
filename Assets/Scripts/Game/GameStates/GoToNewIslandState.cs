@@ -1,10 +1,12 @@
+using UnityEngine.SceneManagement;
+
 namespace Islanders.Game.GameStates
 {
     public class GoToNewIslandState : GameState
     {
         public override void Enter()
         {
-            // play animation, load new scene
+            SceneManager.LoadScene("SampleScene");
         }
 
         public override void Exit()
