@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
@@ -19,13 +18,14 @@ namespace Islanders.Game.GameStates
 
         [Inject]
         public void Construct(BootsTrapState bootsTrap, MenuState menu, PlacingState placing, ChoosingState choosing,
-            GoToNewIslandState newIsland)
+            GoToNewIslandState newIsland, GameOverState gameOver)
         {
             _states.Add(bootsTrap);
             _states.Add(menu);
             _states.Add(placing);
             _states.Add(choosing);
             _states.Add(newIsland);
+            _states.Add(gameOver);
             _currentState = bootsTrap;
         }
 

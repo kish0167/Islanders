@@ -22,7 +22,7 @@ namespace Islanders.Game.GameScript
         #region Setup/Teardown
 
         [Inject]
-        protected ScriptService(Player.PlayerInventory playerInventory, ChoiceScreen choiceScreen, LocalStateMachine stateMachine,
+        protected ScriptService(PlayerInventory playerInventory, ChoiceScreen choiceScreen, LocalStateMachine stateMachine,
             PlayerScore playerScore)
         {
             _playerInventory = playerInventory;
