@@ -1,9 +1,9 @@
 using Islanders.Game.Buildings_placing;
 using Islanders.Game.ScoreHandling;
-using Islanders.Game.UI;
 using Islanders.Game.UI.Hotbar;
 using Islanders.Game.UI.ScoreBox;
 using Islanders.Game.Undo;
+using UnityEngine;
 using Zenject;
 
 namespace Islanders.Game.Player
@@ -65,6 +65,7 @@ namespace Islanders.Game.Player
             _undoService = undoService;
             _undoService.OnPlacingUndone += PlacingUndoneCallback;
             ScoreCounter.OnScoreAcquiring += ScoreAcquiringCallback;
+            ScoreCounter.OnPreScoreCalculated += PreScoreCalculatedCallback;
         }
 
         #endregion
@@ -75,6 +76,7 @@ namespace Islanders.Game.Player
         {
             ScoreFloor = ScoreCeiling;
             ScoreCeiling += scoreToPass;
+            _box.UpdatePrecalculatedScore(0);
         }
 
         public void SetToZero()
@@ -91,6 +93,12 @@ namespace Islanders.Game.Player
         private void PlacingUndoneCallback(int score, PlaceableObject arg2)
         {
             Score -= score;
+            _box.UpdatePrecalculatedScore(0);
+        }
+
+        private void PreScoreCalculatedCallback(Transform arg1, int value)
+        {
+            _box.UpdatePrecalculatedScore(value);
         }
 
         private void ScoreAcquiringCallback(int quantity)
@@ -100,7 +108,7 @@ namespace Islanders.Game.Player
 
         private void UpdateUI()
         {
-            _box.UpdateLabels(_scoreFloor, _score, _scoreCeiling);
+            _box.UpdateScore(_scoreFloor, _score, _scoreCeiling);
 
             if (Score >= ScoreCeiling)
             {

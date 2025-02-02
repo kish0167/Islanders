@@ -12,9 +12,7 @@ using Islanders.Game.UI.HoveringLabels;
 using Islanders.Game.UI.ScoreBox;
 using Islanders.Game.Undo;
 using Islanders.Game.Utility;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Zenject;
 
 namespace Islanders.Installers
@@ -41,7 +39,7 @@ namespace Islanders.Installers
         {
             // Local state machine
             Container.Bind<LocalStateMachine>().FromNewComponentOnNewGameObject().AsSingle().NonLazy();
-            
+
             // Factories
             Container.Bind<PlaceableObjectFactory>().FromNew().AsSingle();
             Container.Bind<HotBarButtonFactory>().FromNew().AsSingle();
@@ -55,7 +53,7 @@ namespace Islanders.Installers
             Container.Bind<GameOverService>().FromNew().AsSingle().NonLazy();
             Container.Bind<UndoService>().FromNew().AsSingle().NonLazy();
             Container.Bind<IScriptService>().To<LinearScriptService>().FromNew().AsSingle().NonLazy();
-            
+
             // Player-related bindings
             Container.Bind<PlayerInventory>().FromNewComponentOnNewGameObject().AsSingle().NonLazy();
             Container.Bind<PlayerScore>().FromNew().AsSingle().NonLazy();
