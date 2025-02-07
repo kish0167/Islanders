@@ -27,6 +27,7 @@ namespace Islanders.Game.Buildings_placing
         }
 
         private MeshRenderer _meshRenderer;
+        private List<MeshRenderer> _meshRenderers = new();
 
         #endregion
 
@@ -40,27 +41,43 @@ namespace Islanders.Game.Buildings_placing
 
         public void FetchDefaultMaterialAndMeshRenderer()
         {
-            if (TryGetComponent(out MeshRenderer meshRenderer))
-            {
-                _meshRenderer = meshRenderer;
-            }
+            _meshRenderers.Clear();
+            AddChildrenMeshRenderersRecursive(gameObject);
+            return;
 
-            else
+            void AddChildrenMeshRenderersRecursive(GameObject obj)
             {
-                Debug.LogError("No MeshRenderer found");
+                if (obj.TryGetComponent(out MeshRenderer meshRenderer))
+                {
+                    _meshRenderers.Add(meshRenderer);
+                    _defaultMaterial = meshRenderer.material;
+                }
+
+                for (int i = 0; i < obj.transform.childCount; i++)
+                {
+                    AddChildrenMeshRenderersRecursive(obj.transform.GetChild(i).gameObject);
+                }
             }
-            
-            _defaultMaterial = _meshRenderer.material;
         }
 
         public void SetMaterial(bool isDefault)
         {
-            _meshRenderer.material = isDefault ? _defaultMaterial : _prohibitingMaterial;
+            foreach (MeshRenderer meshRenderer in _meshRenderers)
+            {
+                meshRenderer.material = isDefault ? _defaultMaterial : _prohibitingMaterial;
+            }
+            
+            //_meshRenderer.material = isDefault ? _defaultMaterial : _prohibitingMaterial;
         }
 
         public void SetMaterialToDefault()
         {
-            _meshRenderer.material = _defaultMaterial;
+            foreach (MeshRenderer meshRenderer in _meshRenderers)
+            {
+                meshRenderer.material = _defaultMaterial;
+            }
+            
+            //_meshRenderer.material = _defaultMaterial;
         }
 
         #endregion
