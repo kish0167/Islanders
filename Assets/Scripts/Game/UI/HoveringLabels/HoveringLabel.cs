@@ -7,9 +7,12 @@ namespace Islanders.Game.UI.HoveringLabels
     {
         #region Variables
 
-        private static readonly Vector3 VerticalLabelsCorrection = new(0, 1, 0);
+        private static readonly Vector3 VerticalLabelsCorrection = new(0, 0.27f, 0);
 
         [SerializeField] private TMP_Text _label;
+        [SerializeField] private Color _positiveColor;
+        [SerializeField] private Color _negativeColor;
+
         private Camera _mainCamera;
 
         private Transform _targetTransform;
@@ -62,7 +65,20 @@ namespace Islanders.Game.UI.HoveringLabels
 
         private void UpdateLabel()
         {
-            _label.text = _value == 0 ? "" : $"+{_value}";
+            if (_value < 0)
+            {
+                _label.text = $"{_value}";
+                _label.color = _negativeColor;
+            }
+            else if (_value == 0)
+            {
+                _label.text = "";
+            }
+            else
+            {
+                _label.text = $"+{_value}";
+                _label.color = _positiveColor;
+            }
         }
 
         #endregion

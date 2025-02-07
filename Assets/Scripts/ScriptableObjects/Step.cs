@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Islanders.Game.Player;
 using UnityEngine;
 
 namespace Islanders.ScriptableObjects
@@ -9,13 +8,23 @@ namespace Islanders.ScriptableObjects
     {
         #region Variables
 
-        [SerializeField] private List<PlaceableObjectArray> _choise1;
-        [SerializeField] private List<PlaceableObjectArray> _choise2;
+        [SerializeField] private string _choice1Caption;
+        [SerializeField] private List<PlaceableObjectArray> _choice1;
+        [SerializeField] private string _choice2Caption;
+        [SerializeField] private List<PlaceableObjectArray> _choice2;
         [SerializeField] private uint _scoreToPass = 1;
 
-        public List<PlaceableObjectArray> Choise1 => _choise1;
+        #endregion
 
-        public List<PlaceableObjectArray> Choise2 => _choise2;
+        #region Properties
+
+        public List<PlaceableObjectArray> Choice1 => _choice1;
+
+        public string Choice1Caption => _choice1Caption;
+
+        public List<PlaceableObjectArray> Choice2 => _choice2;
+
+        public string Choice2Caption => _choice2Caption;
 
         public uint ScoreToPass => _scoreToPass;
 
@@ -25,12 +34,12 @@ namespace Islanders.ScriptableObjects
 
         private void OnValidate()
         {
-            foreach (PlaceableObjectArray placeableObjectArray in _choise1)
+            foreach (PlaceableObjectArray placeableObjectArray in _choice1)
             {
                 placeableObjectArray.Validate();
             }
 
-            foreach (PlaceableObjectArray placeableObjectArray in _choise2)
+            foreach (PlaceableObjectArray placeableObjectArray in _choice2)
             {
                 placeableObjectArray.Validate();
             }

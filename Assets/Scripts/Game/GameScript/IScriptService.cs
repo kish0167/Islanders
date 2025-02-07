@@ -6,6 +6,8 @@ namespace Islanders.Game.GameScript
 
         public void ChoiceMadeCallback(int choice);
 
+        public void UpdateUi();
+
         #endregion
     }
 }

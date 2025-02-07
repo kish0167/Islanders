@@ -12,14 +12,44 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1962609a128144f2b9b7482ddffb7b48, type: 3}
   m_Name: Step 4
   m_EditorClassIdentifier: 
-  _choise1:
-  - _name: 4g3bt
-    _placeableObject: {fileID: 5329374275806281584, guid: 70aeb006718720343baa600e2b700de5,
+  _choice1Caption: Watermill pack
+  _choice1:
+  - _name: Watermill
+    _placeableObject: {fileID: 390090088289352250, guid: 62050df8367218c4e8d69dccdb77c851,
+      type: 3}
+    _quantity: 3
+  - _name: Mine
+    _placeableObject: {fileID: 3322519733307679251, guid: abb843ec52fa7184d922328d58ba13e8,
+      type: 3}
+    _quantity: 2
+  - _name: Watermill
+    _placeableObject: {fileID: 390090088289352250, guid: 62050df8367218c4e8d69dccdb77c851,
+      type: 3}
+    _quantity: 3
+  - _name: TowerRedSmall
+    _placeableObject: {fileID: 2446577986469681267, guid: e9347d885e9994141bc434dda9b12f3d,
+      type: 3}
+    _quantity: 2
+  _choice2Caption: Windmill pack
+  _choice2:
+  - _name: Windmill
+    _placeableObject: {fileID: 729508914886704456, guid: 4299a259d15ea7748895c47e1624ff7e,
+      type: 3}
+    _quantity: 3
+  - _name: Poor house
+    _placeableObject: {fileID: 2778909838500215352, guid: e85f8e0a455a28744b234d7284e3540e,
+      type: 3}
+    _quantity: 3
+  - _name: Rich house
+    _placeableObject: {fileID: 4839403689392567921, guid: 7feea68ff146a114db5c4ed0cfcab692,
+      type: 3}
+    _quantity: 3
+  - _name: TowerBlueSmall
+    _placeableObject: {fileID: 8050316831863556997, guid: 4b9e12f76a09f4445b7077ea9b39008b,
       type: 3}
     _quantity: 1
-  _choise2:
-  - _name: Tower
-    _placeableObject: {fileID: 8255254960364829407, guid: 16e541c84f30c964ba133819dc7b3d14,
+  - _name: TowerBlue
+    _placeableObject: {fileID: 8561655961511733936, guid: f69a8fd293c81194ca47df40a822ad9e,
       type: 3}
     _quantity: 1
   _scoreToPass: 80

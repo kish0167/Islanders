@@ -40,6 +40,8 @@ namespace Islanders.Game.Buildings_placing
 
         public bool Enabled { get; set; }
 
+        public bool IsPlacing => _isPlacing;
+
         #endregion
 
         #region Setup/Teardown
@@ -195,5 +197,15 @@ namespace Islanders.Game.Buildings_placing
         }
 
         #endregion
+
+        public void RotateBuilding(float scrollAmount)
+        {
+            if (!IsPlacing || !Enabled || _building == null)
+            {
+                return;
+            }
+            
+            _building.transform.rotation *= Quaternion.Euler(0, scrollAmount > 0 ? 30 : -30 ,0);
+        }
     }
 }

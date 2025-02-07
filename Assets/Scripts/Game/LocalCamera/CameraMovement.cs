@@ -29,20 +29,6 @@ namespace Islanders.Game.LocalCamera
 
         #endregion
 
-        #region Unity lifecycle
-
-        private void Update()
-        {
-            if (!Enabled)
-            {
-                return;
-            }
-
-            Zoom(Input.GetAxis("Mouse ScrollWheel"));
-        }
-
-        #endregion
-
         #region IInputControllable
 
         public void DoAction(KeyBind key)
@@ -96,5 +82,13 @@ namespace Islanders.Game.LocalCamera
         }
 
         #endregion
+
+        public void ChangeFov(float scrollAmount)
+        {
+            if (Enabled)
+            {
+                Zoom(scrollAmount);
+            }
+        }
     }
 }

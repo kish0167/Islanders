@@ -70,7 +70,11 @@ namespace Islanders.Game.Undo
 
         private void UndoButtonPressedCallback()
         {
-            //_placeableObjectFactory.Deconstruct(_lastPlacedObject);
+            if (!_available)
+            {
+                return;
+            }
+            
             Object.Destroy(_lastPlacedObject.gameObject);
             _available = false;
             OnPlacingUndone?.Invoke(_lastAcquiredScore, _lastPlacedObjectPrefab);

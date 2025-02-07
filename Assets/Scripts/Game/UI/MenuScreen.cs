@@ -1,4 +1,6 @@
+using Islanders.Game.GameStates;
 using Islanders.Game.Pause;
+using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,19 +15,28 @@ namespace Islanders.Game.UI
         [SerializeField] private GameObject _content;
         [SerializeField] private Button _continueButton;
         [SerializeField] private Button _exitButton;
+        [SerializeField] private Button _newGameButton;
 
         private PauseService _pauseService;
+        private LocalStateMachine _stateMachine;
 
         #endregion
 
         #region Setup/Teardown
 
         [Inject]
-        private void Construct(PauseService pauseService)
+        private void Construct(PauseService pauseService, LocalStateMachine stateMachine)
         {
+            _stateMachine = stateMachine;
             _pauseService = pauseService;
             _continueButton.onClick.AddListener(ContinueButtonPressedCallback);
             _exitButton.onClick.AddListener(ExitButtonPressedCallback);
+            _newGameButton.onClick.AddListener(NewGameButtonPressedCallback);
+        }
+
+        private void NewGameButtonPressedCallback()
+        {
+            _stateMachine.TransitionTo<GoToNewIslandState>();
         }
 
         #endregion

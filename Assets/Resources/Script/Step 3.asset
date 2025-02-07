@@ -12,14 +12,44 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1962609a128144f2b9b7482ddffb7b48, type: 3}
   m_Name: Step 3
   m_EditorClassIdentifier: 
-  _choise1:
-  - _name: bfdbg[[i
-    _placeableObject: {fileID: 5329374275806281584, guid: eb92994b8456cfa4f8fc200100eaf80f,
+  _choice1Caption: Towers pack
+  _choice1:
+  - _name: TowerBlueSmall
+    _placeableObject: {fileID: 8050316831863556997, guid: 4b9e12f76a09f4445b7077ea9b39008b,
       type: 3}
     _quantity: 2
-  _choise2:
-  - _name: BlueCube
-    _placeableObject: {fileID: 5329374275806281584, guid: 6d2af8427edaa6a49bb4f7d66d8dbbc5,
+  - _name: TowerRed
+    _placeableObject: {fileID: 2633668968148538683, guid: 14ee6732d46b9594480ea18d886490cd,
+      type: 3}
+    _quantity: 1
+  - _name: TowerBlue
+    _placeableObject: {fileID: 8561655961511733936, guid: f69a8fd293c81194ca47df40a822ad9e,
+      type: 3}
+    _quantity: 1
+  - _name: TowerRedSmall
+    _placeableObject: {fileID: 2446577986469681267, guid: e9347d885e9994141bc434dda9b12f3d,
       type: 3}
     _quantity: 2
+  - _name: Mine
+    _placeableObject: {fileID: 3322519733307679251, guid: abb843ec52fa7184d922328d58ba13e8,
+      type: 3}
+    _quantity: 1
+  _choice2Caption: Church pack
+  _choice2:
+  - _name: Church
+    _placeableObject: {fileID: 9078645067420696713, guid: 3f0da2d6aa18f484794e6220b04bb18b,
+      type: 3}
+    _quantity: 1
+  - _name: Poor house
+    _placeableObject: {fileID: 2778909838500215352, guid: e85f8e0a455a28744b234d7284e3540e,
+      type: 3}
+    _quantity: 3
+  - _name: Rich house
+    _placeableObject: {fileID: 4839403689392567921, guid: 7feea68ff146a114db5c4ed0cfcab692,
+      type: 3}
+    _quantity: 3
+  - _name: Mansion
+    _placeableObject: {fileID: 1987070292815534134, guid: a9efd0d8402173b4bbde17abe46dc73e,
+      type: 3}
+    _quantity: 1
   _scoreToPass: 60

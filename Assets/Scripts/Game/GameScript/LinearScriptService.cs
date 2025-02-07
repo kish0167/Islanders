@@ -14,7 +14,15 @@ namespace Islanders.Game.GameScript
         public LinearScriptService(PlayerInventory playerInventory, ChoiceScreen choiceScreen,
             LocalStateMachine stateMachine,
             PlayerScore playerScore) :
-            base(playerInventory, choiceScreen, stateMachine, playerScore) { }
+            base(playerInventory, choiceScreen, stateMachine, playerScore)
+        {
+            _choiceScreen.OnScreenShown += ScreenShownCallback;
+        }
+
+        private void ScreenShownCallback()
+        {
+            UpdateUi();
+        }
 
         #endregion
 
@@ -26,13 +34,13 @@ namespace Islanders.Game.GameScript
             {
                 case 1:
                 {
-                    _playerInventory.AddToInventory(_script.Steps[_currentStepIndex].Choise1);
+                    _playerInventory.AddToInventory(_script.Steps[_currentStepIndex].Choice1);
                     break;
                 }
 
                 case 2:
                 {
-                    _playerInventory.AddToInventory(_script.Steps[_currentStepIndex].Choise2);
+                    _playerInventory.AddToInventory(_script.Steps[_currentStepIndex].Choice2);
                     break;
                 }
                 default:
@@ -43,8 +51,19 @@ namespace Islanders.Game.GameScript
             }
 
             _playerScore.SetNewScoreGoal((int)_script.Steps[_currentStepIndex].ScoreToPass);
+
+            if (_script.Steps.Count - 1 < _currentStepIndex)
+            {
+                _currentStepIndex++;
+            }
+            
             _stateMachine.TransitionTo<PlacingState>();
-            _currentStepIndex++;
+        }
+
+        public override void UpdateUi()
+        {
+            _choiceScreen.SetButtonsText(_script.Steps[_currentStepIndex].Choice1Caption,
+                _script.Steps[_currentStepIndex].Choice2Caption);
         }
 
         #endregion

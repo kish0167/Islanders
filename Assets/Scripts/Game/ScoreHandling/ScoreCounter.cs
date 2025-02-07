@@ -15,6 +15,7 @@ namespace Islanders.Game.ScoreHandling
         private int _currentScore;
         private bool _isPlaced;
         private Dictionary<ObjectType, int> _ownScoreMap;
+        private int _ownScore;
         private BuildingsPlacer _placer;
 
         #endregion
@@ -31,7 +32,16 @@ namespace Islanders.Game.ScoreHandling
 
         #region Properties
 
-        public float Radius => _radius;
+        public float Radius
+        {
+            get
+            {
+                float radius = gameObject.transform.localScale.x + gameObject.transform.localScale.y +
+                               gameObject.transform.localScale.z;
+                radius = _radius * 3 / radius;
+                return radius;
+            }
+        }
 
         public ObjectType Type => _objectType;
 
@@ -57,6 +67,7 @@ namespace Islanders.Game.ScoreHandling
         {
             _placer = placer;
             _ownScoreMap = tableService.GetDictionaryForType(_objectType);
+            _ownScore = tableService.GetOwnScore(_objectType);
             _placer.OnBuildingPlaced += BuildingPlacedCallback;
         }
 
@@ -84,7 +95,7 @@ namespace Islanders.Game.ScoreHandling
 
             Dictionary<Transform, int> numbersToShow = new();
 
-            _currentScore = 0;
+            _currentScore = _ownScore;
 
             foreach (Collider hit in hits)
             {

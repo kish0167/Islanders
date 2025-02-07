@@ -1,4 +1,5 @@
 using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
@@ -12,12 +13,16 @@ namespace Islanders.Game.UI
         [SerializeField] private GameObject _content;
         [SerializeField] private Button _1ChoiceButton;
         [SerializeField] private Button _2ChoiceButton;
+        [SerializeField] private TMP_Text _button1Caption;
+        [SerializeField] private TMP_Text _button2Caption;
+        
 
         #endregion
 
         #region Events
 
         public event Action<int> OnChoiceMade;
+        public event Action OnScreenShown;
 
         #endregion
 
@@ -42,6 +47,17 @@ namespace Islanders.Game.UI
         public void Show()
         {
             _content.SetActive(true);
+            OnScreenShown?.Invoke();
+        }
+
+        #endregion
+
+        #region Public methods
+
+        public void SetButtonsText(string text1, string text2)
+        {
+            _button1Caption.text = text1;
+            _button2Caption.text = text2;
         }
 
         #endregion

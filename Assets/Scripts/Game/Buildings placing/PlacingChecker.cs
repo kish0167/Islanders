@@ -67,7 +67,8 @@ namespace Islanders.Game.Buildings_placing
         private bool CheckTags()
         {
             Vector3 v1 = _building.transform.position - Vector3.down * _pivotGap;
-            Vector3 v2 = v1 + _building.LinecastDirection.normalized * _linecastDepth;
+            Vector3 v2 = v1 + _building.transform.TransformDirection(_building.LinecastDirection).normalized * _linecastDepth;
+            
 
             if (!Physics.Linecast(v1, v2, out RaycastHit hit, ~LayerMask.GetMask(Layers.ActiveBuilding)))
             {

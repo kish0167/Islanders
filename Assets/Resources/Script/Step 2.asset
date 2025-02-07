@@ -12,14 +12,40 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1962609a128144f2b9b7482ddffb7b48, type: 3}
   m_Name: Step 2
   m_EditorClassIdentifier: 
-  _choise1:
-  - _name: tumur
-    _placeableObject: {fileID: 5329374275806281584, guid: 3ce14f53e145e2a4ca6234b4e79563b9,
+  _choice1Caption: Tavern pack
+  _choice1:
+  - _name: Tavern
+    _placeableObject: {fileID: 791753473243770389, guid: e1c3406b7cf6f2c4aa9ed4724af5fc4f,
       type: 3}
-    _quantity: 100
-  _choise2:
-  - _name: Tower
-    _placeableObject: {fileID: 8255254960364829407, guid: 16e541c84f30c964ba133819dc7b3d14,
+    _quantity: 1
+  - _name: Poor house
+    _placeableObject: {fileID: 2778909838500215352, guid: e85f8e0a455a28744b234d7284e3540e,
       type: 3}
-    _quantity: 300
+    _quantity: 1
+  - _name: Rich house
+    _placeableObject: {fileID: 4839403689392567921, guid: 7feea68ff146a114db5c4ed0cfcab692,
+      type: 3}
+    _quantity: 1
+  - _name: Well
+    _placeableObject: {fileID: 2678253356817665172, guid: 09f6f1ca05356e64489b6d4ee70cc1e3,
+      type: 3}
+    _quantity: 1
+  _choice2Caption: Castle pack
+  _choice2:
+  - _name: Castle
+    _placeableObject: {fileID: 4738313839692950023, guid: 434eb0842a363504f932ff2070da9f2b,
+      type: 3}
+    _quantity: 1
+  - _name: TowerBlue
+    _placeableObject: {fileID: 8561655961511733936, guid: f69a8fd293c81194ca47df40a822ad9e,
+      type: 3}
+    _quantity: 1
+  - _name: TowerRedSmall
+    _placeableObject: {fileID: 2446577986469681267, guid: e9347d885e9994141bc434dda9b12f3d,
+      type: 3}
+    _quantity: 1
+  - _name: Rich house
+    _placeableObject: {fileID: 4839403689392567921, guid: 7feea68ff146a114db5c4ed0cfcab692,
+      type: 3}
+    _quantity: 3
   _scoreToPass: 40

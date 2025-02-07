@@ -1,10 +1,14 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Islanders.Game.Buildings_placing;
 using Islanders.Game.GameStates;
 using Islanders.Game.Player;
 using Islanders.Game.UI;
+using UnityEditor.VersionControl;
+using UnityEngine;
 using Zenject;
+using Task = System.Threading.Tasks.Task;
 
 namespace Islanders.Game.GameOver
 {
@@ -78,6 +82,8 @@ namespace Islanders.Game.GameOver
         {
             _stateMachine.TransitionTo<GoToNewIslandState>();
         }
+
+        
 
         #endregion
     }

@@ -12,6 +12,7 @@ using Islanders.Game.UI.HoveringLabels;
 using Islanders.Game.UI.ScoreBox;
 using Islanders.Game.Undo;
 using Islanders.Game.Utility;
+using Islanders.Utils.Log;
 using UnityEngine;
 using Zenject;
 
@@ -53,6 +54,7 @@ namespace Islanders.Installers
             Container.Bind<GameOverService>().FromNew().AsSingle().NonLazy();
             Container.Bind<UndoService>().FromNew().AsSingle().NonLazy();
             Container.Bind<IScriptService>().To<LinearScriptService>().FromNew().AsSingle().NonLazy();
+            Container.Bind<ScrollWheelService>().FromNewComponentOnNewGameObject().AsSingle().NonLazy();
 
             // Player-related bindings
             Container.Bind<PlayerInventory>().FromNewComponentOnNewGameObject().AsSingle().NonLazy();
@@ -80,7 +82,7 @@ namespace Islanders.Installers
             Container.Bind<GoToNewIslandState>().FromNew().AsSingle().NonLazy();
             Container.Bind<GameOverState>().FromNew().AsSingle().NonLazy();
 
-            Debug.Log("scene context installed");
+            this.Log("scene context installed");
         }
 
         #endregion
