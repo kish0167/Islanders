@@ -1,10 +1,9 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace Islanders.Game.ScoreHandling
 {
-    public class ScoreService
+    public class ScoreTableService
     {
         #region Variables
 
@@ -12,13 +11,12 @@ namespace Islanders.Game.ScoreHandling
 
         #endregion
 
-        #region Unity lifecycle
+        #region Setup/Teardown
 
-        public ScoreService()
+        public ScoreTableService()
         {
             CreateTable();
             InitializeTable();
-            Debug.Log(nameof(ScoreService) + " created");
         }
 
         #endregion
@@ -37,7 +35,7 @@ namespace Islanders.Game.ScoreHandling
         private void CreateTable()
         {
             _table = new Dictionary<ObjectType, Dictionary<ObjectType, int>>();
-            
+
             foreach (ObjectType objectTypeI in Enum.GetValues(typeof(ObjectType)))
             {
                 Dictionary<ObjectType, int> row = new();
@@ -60,7 +58,7 @@ namespace Islanders.Game.ScoreHandling
             _table[ObjectType.TestHouse1][ObjectType.TestHouse1] = -1;
             _table[ObjectType.TestHouse1][ObjectType.TestHouse2] = 1;
 
-            _table[ObjectType.TestHouse2][ObjectType.TestHouse1] = 5;
+            _table[ObjectType.TestHouse2][ObjectType.TestHouse2] = 5;
         }
 
         #endregion

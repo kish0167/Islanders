@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1962609a128144f2b9b7482ddffb7b48, type: 3}
+  m_Name: Step 1
+  m_EditorClassIdentifier: 
+  _choise1:
+  - _name: Tower
+    _placeableObject: {fileID: 8255254960364829407, guid: 16e541c84f30c964ba133819dc7b3d14,
+      type: 3}
+    _quantity: 1
+  - _name: BlueCube
+    _placeableObject: {fileID: 5329374275806281584, guid: 6d2af8427edaa6a49bb4f7d66d8dbbc5,
+      type: 3}
+    _quantity: 2
+  - _name: 4g3bt
+    _placeableObject: {fileID: 5329374275806281584, guid: 70aeb006718720343baa600e2b700de5,
+      type: 3}
+    _quantity: 1999
+  _choise2:
+  - _name: Tower
+    _placeableObject: {fileID: 8255254960364829407, guid: 16e541c84f30c964ba133819dc7b3d14,
+      type: 3}
+    _quantity: 1
+  - _name: qwdqe
+    _placeableObject: {fileID: 5329374275806281584, guid: c69a74fa5a8949647894adb16271578b,
+      type: 3}
+    _quantity: 1
+  _scoreToPass: 20

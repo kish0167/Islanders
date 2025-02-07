@@ -15,16 +15,14 @@ namespace Islanders.Game.Buildings_placing
 
         [Header("Options")]
         [SerializeField] private float _maxDistance = 100f;
-        [SerializeField] private Material _prohibitingMaterial;
 
         [Header("Required components")]
         [SerializeField] private PlacingChecker _checker;
-
         private PlaceableObject _building;
-
         private Vector3? _cursorPosition;
-        private Material _defaultMaterial;
-        private bool _defaultMaterialIsSet;
+        private bool _isPlacing;
+
+        private Camera _mainCamera;
         private PlaceableObjectFactory _placeableObjectFactory;
         private bool _placingPossible;
 
@@ -32,7 +30,15 @@ namespace Islanders.Game.Buildings_placing
 
         #region Events
 
-        public event Action<PlaceableObject, Vector3> OnBuildingPlaced;
+        public event Action OnBuildingHiding;
+
+        public event Action<PlaceableObject, PlaceableObject, Vector3> OnBuildingPlaced;
+
+        #endregion
+
+        #region Properties
+
+        public bool Enabled { get; set; }
 
         #endregion
 
@@ -42,19 +48,20 @@ namespace Islanders.Game.Buildings_placing
         public void Construct(PlaceableObjectFactory placeableObjectFactory)
         {
             _placeableObjectFactory = placeableObjectFactory;
+            _mainCamera = Camera.main;
         }
 
         #endregion
 
         #region Unity lifecycle
 
-        private void Start()
-        {
-            SetBuilding(_buildingPrefab);
-        }
-
         private void Update()
         {
+            if (!Enabled || !_isPlacing)
+            {
+                return;
+            }
+
             CastARay();
             MoveBuildingWithCursor();
             CheckPlacingPossibility();
@@ -63,7 +70,6 @@ namespace Islanders.Game.Buildings_placing
             if (Input.GetMouseButtonDown(0) && _placingPossible) // input system
             {
                 Place();
-                SetBuilding(_buildingPrefab);
             }
         }
 
@@ -71,21 +77,31 @@ namespace Islanders.Game.Buildings_placing
 
         #region Public methods
 
+        public void Disable()
+        {
+            Enabled = false;
+        }
+
+        public void Enable()
+        {
+            Enabled = true;
+        }
+
         public void SetBuilding(PlaceableObject buildingPrefab)
         {
+            _isPlacing = true;
             _buildingPrefab = buildingPrefab;
 
             if (_building != null)
             {
-                Destroy(_building);
+                _placeableObjectFactory.Deconstruct(_building);
             }
 
-            _building = _placeableObjectFactory.CreateFromPrefab(buildingPrefab, _cursorPosition ?? Vector3.zero);
+            SpawnBuildingFromPrefab();
 
-            FetchDefaultMaterial();
-            _building.gameObject.layer = LayerMask.NameToLayer(Layers.ActiveBuilding);
-            _defaultMaterialIsSet = true;
             _checker.SetBuilding(_building);
+
+            Enable();
         }
 
         #endregion
@@ -94,7 +110,13 @@ namespace Islanders.Game.Buildings_placing
 
         private void CastARay()
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
+
+            if (Input.mousePosition.y <= Screen.height * 0.12)
+            {
+                _cursorPosition = null;
+                return;
+            }
 
             if (Physics.Raycast(ray, out RaycastHit hit, _maxDistance, ~LayerMask.GetMask(Layers.ActiveBuilding)))
             {
@@ -117,15 +139,7 @@ namespace Islanders.Game.Buildings_placing
             _placingPossible = _checker.IsPossible();
         }
 
-        private void FetchDefaultMaterial()
-        {
-            if (_building.TryGetComponent(out MeshRenderer meshRenderer))
-            {
-                _defaultMaterial = meshRenderer.material;
-            }
-        }
-
-        private void MoveBuildingWithCursor() // TODO: maybe use DoTween
+        private void MoveBuildingWithCursor()
         {
             if (_building == null && _cursorPosition == null)
             {
@@ -134,15 +148,15 @@ namespace Islanders.Game.Buildings_placing
 
             if (_cursorPosition == null)
             {
+                OnBuildingHiding?.Invoke();
                 _placeableObjectFactory.Deconstruct(_building);
-
                 _building = null;
                 return;
             }
 
             if (_building == null)
             {
-                _building = _placeableObjectFactory.CreateFromPrefab(_buildingPrefab, _cursorPosition ?? Vector3.zero);
+                SpawnBuildingFromPrefab();
                 _checker.Reset();
             }
             else
@@ -154,27 +168,30 @@ namespace Islanders.Game.Buildings_placing
         private void Place()
         {
             _building.gameObject.layer = LayerMask.NameToLayer(Layers.PlacedBuilding);
-            OnBuildingPlaced?.Invoke(_building, _cursorPosition ?? Vector3.zero);
+            _building.Sphere.Dispose();
+            PlaceableObject buf = _building;
             _building = null;
+            Enabled = false;
+            _isPlacing = false;
+            Disable();
+
+            OnBuildingPlaced?.Invoke(buf, _buildingPrefab, _cursorPosition ?? Vector3.zero);
+            _buildingPrefab = null;
+        }
+
+        private void SpawnBuildingFromPrefab()
+        {
+            _building = _placeableObjectFactory.CreateFromPrefab(_buildingPrefab, _cursorPosition ?? Vector3.zero);
         }
 
         private void UpdateBuildingMaterial()
         {
-            if (_building == null || !_building.TryGetComponent(out MeshRenderer meshRenderer))
+            if (_building == null)
             {
                 return;
             }
 
-            if (_placingPossible && !_defaultMaterialIsSet)
-            {
-                meshRenderer.material = _defaultMaterial;
-                _defaultMaterialIsSet = true;
-            }
-            else if (!_placingPossible && _defaultMaterialIsSet)
-            {
-                meshRenderer.material = _prohibitingMaterial;
-                _defaultMaterialIsSet = false;
-            }
+            _building.SetMaterial(_placingPossible);
         }
 
         #endregion

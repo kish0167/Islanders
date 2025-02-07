@@ -11,19 +11,19 @@ namespace Islanders.Game.Buildings_placing
         #region Variables
 
         private BuildingsPlacer _buildingsPlacer;
-        private ScoreService _scoreService;
-        private PrefabsProvider _prefabProvider;
+        private ScoreTableService _scoreTableService;
+        private PrefabsProvider _prefabsProvider;
 
         #endregion
 
         #region Setup/Teardown
 
         [Inject]
-        private void Construct(ScoreService service, BuildingsPlacer placer, PrefabsProvider provider)
+        private void Construct(ScoreTableService tableService, BuildingsPlacer placer, PrefabsProvider provider)
         {
-            _scoreService = service;
+            _scoreTableService = tableService;
             _buildingsPlacer = placer;
-            _prefabProvider = provider;
+            _prefabsProvider = provider;
         }
 
         #endregion
@@ -33,13 +33,16 @@ namespace Islanders.Game.Buildings_placing
         public PlaceableObject CreateFromPrefab(PlaceableObject prefab, Vector3 position)
         {
             PlaceableObject building = LeanPool.Spawn(prefab, position, Quaternion.identity);
-            building.gameObject.GetComponent<ScoreCounter>().Construct(_scoreService, _buildingsPlacer);
+            building.gameObject.GetComponent<ScoreCounter>().Construct(_scoreTableService, _buildingsPlacer);
+            building.gameObject.layer = LayerMask.NameToLayer(Layers.ActiveBuilding);
+            building.FetchDefaultMaterialAndMeshRenderer();
+            building.ProhibitingMaterial = _prefabsProvider.ProhibitingMaterial;
             
-            VisualSphere sphere = LeanPool.Spawn(_prefabProvider.TransparentSphere, position, Quaternion.identity);
-            sphere.Construct(_buildingsPlacer);
+            VisualSphere sphere = LeanPool.Spawn(_prefabsProvider.TransparentSphere, position, Quaternion.identity);
             sphere.transform.SetParent(building.transform);
             sphere.transform.localPosition = Vector3.zero;
             sphere.transform.localScale = Vector3.one * building.gameObject.GetComponent<ScoreCounter>().Radius * 2;
+            building.Sphere = sphere;
             
             return building;
         }
@@ -48,11 +51,9 @@ namespace Islanders.Game.Buildings_placing
 
         public void Deconstruct(PlaceableObject building)
         {
-            if (building.transform.childCount >= 1 && building.transform.GetChild(0).gameObject.TryGetComponent(out VisualSphere sphere))
-            {
-                sphere.Dispose();
-            }
-                
+            building.SetMaterialToDefault();
+            building.gameObject.GetComponent<ScoreCounter>().Deconstruct();
+            LeanPool.Despawn(building.Sphere);
             LeanPool.Despawn(building);
         }
     }

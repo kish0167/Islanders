@@ -21,16 +21,19 @@ namespace Islanders.Game.ScoreHandling
 
         #region Events
 
+        public static event Action<Transform, int> OnPreScoreCalculated; // для "предпоказа" очков
+        public static event Action<Dictionary<Transform, int>>
+            OnPreScoreDrawing; // для UI чисел над постройками на сцене
+
         public static event Action<int> OnScoreAcquiring; // для начисления очков
-        public static event Action<int> OnScoreCalculated; // для "предпоказа" очков
-        public static event Action<Dictionary<Transform, int>> OnSphereCasted; // для UI чисел над постройками на сцене
 
         #endregion
 
         #region Properties
 
-        public ObjectType Type => _objectType;
         public float Radius => _radius;
+
+        public ObjectType Type => _objectType;
 
         #endregion
 
@@ -44,38 +47,29 @@ namespace Islanders.Game.ScoreHandling
             }
 
             CastASphereAndCalculateScore();
-
-            Debug.Log(_currentScore);
-        }
-
-        public void OnDrawGizmos()
-        {
-            if (_isPlaced)
-            {
-                return;
-            }
-
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(gameObject.transform.position, _radius);
         }
 
         #endregion
 
         #region Public methods
 
-        public void Construct(ScoreService service, BuildingsPlacer placer)
+        public void Construct(ScoreTableService tableService, BuildingsPlacer placer)
         {
             _placer = placer;
-            _ownScoreMap = service.GetDictionaryForType(_objectType);
+            _ownScoreMap = tableService.GetDictionaryForType(_objectType);
             _placer.OnBuildingPlaced += BuildingPlacedCallback;
-            Debug.Log("score counter constructed!");
+        }
+
+        public void Deconstruct()
+        {
+            _placer.OnBuildingPlaced -= BuildingPlacedCallback;
         }
 
         #endregion
 
         #region Private methods
 
-        private void BuildingPlacedCallback(PlaceableObject arg1, Vector3 arg2)
+        private void BuildingPlacedCallback(PlaceableObject arg1, PlaceableObject arg2, Vector3 arg3)
         {
             _isPlaced = true;
             OnScoreAcquiring?.Invoke(_currentScore);
@@ -103,8 +97,8 @@ namespace Islanders.Game.ScoreHandling
                 _currentScore += _ownScoreMap[scoreCounter.Type];
             }
 
-            OnScoreCalculated?.Invoke(_currentScore);
-            OnSphereCasted?.Invoke(numbersToShow);
+            OnPreScoreCalculated?.Invoke(transform, _currentScore);
+            OnPreScoreDrawing?.Invoke(numbersToShow);
         }
 
         #endregion
