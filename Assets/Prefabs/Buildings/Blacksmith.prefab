@@ -78,6 +78,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Blacksmith
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: b7b941187ff077f4bbc87a13a71b070f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -171,8 +176,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.287601, y: 0.98510444, z: 1.2451501}
-  m_Center: {x: -0.013795674, y: 0.48744994, z: 0.06257549}
+  m_Size: {x: 1.1612625, y: 0.7715473, z: 0.82198334}
+  m_Center: {x: -0.011241913, y: 0.5942285, z: -0.06924641}
 --- !u!54 &5870134988711913048
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -198,5 +203,5 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 126
   m_CollisionDetection: 0

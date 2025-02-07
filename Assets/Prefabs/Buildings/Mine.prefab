@@ -94,6 +94,14 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 3322519733307679251}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 40d819484c9b78847b430c9fe56cf5b4,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 397857834670431260}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 40d819484c9b78847b430c9fe56cf5b4,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6766417563026291865}
   m_SourcePrefab: {fileID: 100100000, guid: 40d819484c9b78847b430c9fe56cf5b4, type: 3}
 --- !u!1 &1710843549559981142 stripped
 GameObject:
@@ -144,3 +152,51 @@ MonoBehaviour:
   - Stone
   _linecastDirection: {x: 0, y: 0.5, z: -1}
   _observer: {fileID: 2036350535511592100}
+--- !u!65 &397857834670431260
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1710843549559981142}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.2834015, y: 0.9510223, z: 1.0468063}
+  m_Center: {x: -0.0338974, y: 0.6609988, z: 0.084323764}
+--- !u!54 &6766417563026291865
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1710843549559981142}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0
