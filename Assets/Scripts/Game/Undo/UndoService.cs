@@ -1,5 +1,6 @@
 using System;
 using Islanders.Game.Buildings_placing;
+using Islanders.Game.GameOver;
 using Islanders.Game.ScoreHandling;
 using Islanders.Game.UI;
 using Islanders.Game.UI.Hotbar;

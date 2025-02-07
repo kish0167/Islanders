@@ -33,6 +33,7 @@ namespace Islanders.Game.Buildings_placing
         public event Action OnBuildingHiding;
 
         public event Action<PlaceableObject, PlaceableObject, Vector3> OnBuildingPlaced;
+        public event Action OnBuildingPlacedLate;
 
         #endregion
 
@@ -178,6 +179,7 @@ namespace Islanders.Game.Buildings_placing
             Disable();
 
             OnBuildingPlaced?.Invoke(buf, _buildingPrefab, _cursorPosition ?? Vector3.zero);
+            OnBuildingPlacedLate?.Invoke();
             _buildingPrefab = null;
         }
 

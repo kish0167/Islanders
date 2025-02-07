@@ -52,7 +52,7 @@ namespace Islanders.Game.GameScript
 
             _playerScore.SetNewScoreGoal((int)_script.Steps[_currentStepIndex].ScoreToPass);
 
-            if (_script.Steps.Count - 1 < _currentStepIndex)
+            if (_script.Steps.Count - 1 > _currentStepIndex)
             {
                 _currentStepIndex++;
             }

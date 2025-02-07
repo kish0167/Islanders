@@ -5,6 +5,7 @@ using Islanders.Game.Buildings_placing;
 using Islanders.Game.GameStates;
 using Islanders.Game.Player;
 using Islanders.Game.UI;
+using Islanders.Game.Undo;
 using UnityEditor.VersionControl;
 using UnityEngine;
 using Zenject;
@@ -17,8 +18,10 @@ namespace Islanders.Game.GameOver
         #region Variables
 
         private readonly GameOverScreen _gameOverScreen;
+        private readonly UndoService _undoService;
+        private readonly BuildingsPlacer _placer;
         private readonly PlayerInventory _playerInventory;
-
+        
         private readonly PlayerScore _playerScore;
         private readonly LocalStateMachine _stateMachine;
 
@@ -33,15 +36,23 @@ namespace Islanders.Game.GameOver
         #region Setup/Teardown
 
         [Inject]
-        public GameOverService(PlayerScore playerScore, PlayerInventory playerInventory, GameOverScreen gameOverScreen,
-            LocalStateMachine stateMachine)
+        public GameOverService(PlayerScore playerScore, GameOverScreen gameOverScreen,
+            LocalStateMachine stateMachine, BuildingsPlacer placer, PlayerInventory playerInventory, UndoService undoService)
         {
             _playerScore = playerScore;
-            _playerInventory = playerInventory;
             _gameOverScreen = gameOverScreen;
             _stateMachine = stateMachine;
+            _placer = placer;
+            _playerInventory = playerInventory;
+            _undoService = undoService;
             _gameOverScreen.OnNextButtonPressed += NextButtonPressedCallback;
-            _playerInventory.OnInventoryUpdated += InventoryUpdatedCallback;
+            _placer.OnBuildingPlacedLate += InventoryUpdatedCallback;
+            _undoService.OnPlacingUndone += PlacingUndoneCallback;
+        }
+
+        private void PlacingUndoneCallback(int arg1, PlaceableObject arg2)
+        {
+            CheckGameOverConditions();
         }
 
         #endregion
@@ -50,14 +61,14 @@ namespace Islanders.Game.GameOver
 
         public void Destroy()
         {
-            _playerInventory.OnInventoryUpdated -= InventoryUpdatedCallback;
+            _placer.OnBuildingPlacedLate -= InventoryUpdatedCallback;
         }
 
         #endregion
 
         #region Private methods
 
-        private void CheckGameOverConditions()
+        public void CheckGameOverConditions()
         {
             if (_playerInventory.ItemsCount != 0 || _playerScore.Score >= _playerScore.ScoreCeiling)
             {
@@ -73,7 +84,7 @@ namespace Islanders.Game.GameOver
             _stateMachine.TransitionTo<GameOverState>();
         }
 
-        private void InventoryUpdatedCallback(Dictionary<PlaceableObject, int> inventory, PlaceableObject arg2)
+        private void InventoryUpdatedCallback()
         {
             CheckGameOverConditions();
         }
