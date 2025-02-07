@@ -8,6 +8,7 @@ TagManager:
   - Stone
   - Water
   - Grass
+  - Coast
   layers:
   - Default
   - TransparentFX

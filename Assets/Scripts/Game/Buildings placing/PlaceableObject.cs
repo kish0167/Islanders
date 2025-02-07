@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Islanders.Game.ScoreHandling;
 using UnityEngine;
@@ -11,23 +10,20 @@ namespace Islanders.Game.Buildings_placing
     {
         #region Variables
 
+        [HideInInspector]
+        public VisualSphere Sphere;
+
         [Header("Options")]
         [SerializeField] private List<string> _allowedTags;
-        [SerializeField] private Vector3 _linecastDirection;
+        [SerializeField] private Vector3 _linecastDirection = new Vector3(0,-1,0);
 
         [Header("Required components")]
         [SerializeField] private CollisionsObserver _observer;
         private Material _defaultMaterial;
-        private Material _prohibitingMaterial;
-
-        public Material ProhibitingMaterial
-        {
-            get => _prohibitingMaterial;
-            set => _prohibitingMaterial = value;
-        }
 
         private MeshRenderer _meshRenderer;
-        private List<MeshRenderer> _meshRenderers = new();
+        private readonly List<MeshRenderer> _meshRenderers = new();
+        private Material _prohibitingMaterial;
 
         #endregion
 
@@ -37,7 +33,15 @@ namespace Islanders.Game.Buildings_placing
         public Vector3 LinecastDirection => _linecastDirection;
         public CollisionsObserver Observer => _observer;
 
-        public VisualSphere Sphere;
+        public Material ProhibitingMaterial
+        {
+            get => _prohibitingMaterial;
+            set => _prohibitingMaterial = value;
+        }
+
+        #endregion
+
+        #region Public methods
 
         public void FetchDefaultMaterialAndMeshRenderer()
         {
@@ -66,7 +70,7 @@ namespace Islanders.Game.Buildings_placing
             {
                 meshRenderer.material = isDefault ? _defaultMaterial : _prohibitingMaterial;
             }
-            
+
             //_meshRenderer.material = isDefault ? _defaultMaterial : _prohibitingMaterial;
         }
 
@@ -76,7 +80,7 @@ namespace Islanders.Game.Buildings_placing
             {
                 meshRenderer.material = _defaultMaterial;
             }
-            
+
             //_meshRenderer.material = _defaultMaterial;
         }
 

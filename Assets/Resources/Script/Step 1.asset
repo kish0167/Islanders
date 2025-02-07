@@ -21,10 +21,10 @@ MonoBehaviour:
     _placeableObject: {fileID: 5329374275806281584, guid: 6d2af8427edaa6a49bb4f7d66d8dbbc5,
       type: 3}
     _quantity: 2
-  - _name: 4g3bt
-    _placeableObject: {fileID: 5329374275806281584, guid: 70aeb006718720343baa600e2b700de5,
+  - _name: TowerBlueSmall
+    _placeableObject: {fileID: 8050316831863556997, guid: 4b9e12f76a09f4445b7077ea9b39008b,
       type: 3}
-    _quantity: 1999
+    _quantity: 1
   _choise2:
   - _name: Tower
     _placeableObject: {fileID: 8255254960364829407, guid: 16e541c84f30c964ba133819dc7b3d14,

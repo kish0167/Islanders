@@ -32,7 +32,7 @@ namespace Islanders.Game.UI.ScoreBox
             _score = score;
 
             _scoreCircle.fillAmount = CalculateFillAmount(score);
-            _scoreLabel.text = $"{scoreCeiling}/{score}/{scoreFloor}";
+            _scoreLabel.text = $"{score}/{scoreCeiling}";
         }
 
         #endregion
